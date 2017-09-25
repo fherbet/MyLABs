@@ -1,0 +1,185 @@
+---
+PUBLIC_MGMT: false
+CUST_NAME: CUST
+SERVICE_ID: IPC01987
+SR: SR_123456
+CPE_AS: 65505
+CDP_ON_LAN: False
+LAN_UP: True
+CPE_BGP:
+    TIMERS:
+        KEEPALIVE: 10
+        HOLDTIME: 30
+BFD:
+    STATUS: no
+    INTERVAL:
+    MULTIPLIER:
+NETFLOW:
+    STATUS: no
+    VRF: ALL
+
+NETFLOW_DEST: { FRANCE: 172.20.38.56, SPAIN: 172.20.38.56, ITALY: 172.20.38.56, PORTUGAL: 172.20.38.56 }
+NETFLOW_SOURCE: Loopback0
+NETFLOW_PROTOCOL: V9
+NETFLOW_PORT: 9996
+
+EMAIL_DEST_IPCFG:
+  FRANCE: yyy@colt.net
+  SPAIN: xxx@colt.net
+
+EMAIL_DEST_IPTST:
+  FRANCE: yyy@colt.net
+  SPAIN: xxx@colt.net
+
+
+LAN_2ND_OCTET:
+  FRANCE: { REAL: XYZ, NAT: 199 }
+  SPAIN: { REAL: 224, NAT: 124 }
+
+
+TEST_IP:
+        FRANCE:
+          - 10.255.1.3
+          - 8.8.8.8
+        SPAIN:
+          - 172.31.246.254
+          - 8.8.8.8
+
+ERX:
+    SPAIN:
+        DR1.MAD:
+            LB: 10.255.105.99
+        DR2.MAD:
+            LB: 10.255.105.99
+    FRANCE:
+        DR1.PAR:
+            LB: 10.255.92.52
+        DR2.PAR:
+            LB: 10.255.92.52
+    GERMANY:
+        DR1.BER:
+            LB: 10.255.105.153
+        DR1.HAM:
+            LB: 10.255.105.153
+        DR4.FRA:
+            LB: 10.255.105.161
+        DR2.HAM:
+            LB: 10.255.105.161
+        DR1.MUC:
+            LB: 10.255.105.133
+        DR3.FRA:
+            LB: 10.255.105.133
+
+QOS_PARAM:
+    0:
+        NAME: 8M
+        PR:
+            PERCENT: 0
+        B1:
+            PERCENT: 20
+            WRED: yes
+            QUEUELIMIT:
+        B2:
+            PERCENT: 45
+            WRED: yes
+            QUEUELIMIT:
+        B3:
+            PERCENT: 0
+            WRED: yes
+            QUEUELIMIT:
+        Def:
+            PERCENT: 30
+            WRED: yes
+            QUEUELIMIT:
+    1:
+        NAME: 6M
+        PR:
+            PERCENT: 0
+        B1:
+            PERCENT: 25
+            WRED: yes
+            QUEUELIMIT:
+        B2:
+            PERCENT: 40
+            WRED: yes
+            QUEUELIMIT:
+        B3:
+            PERCENT: 0
+            WRED: yes
+            QUEUELIMIT:
+        Def:
+            PERCENT: 30
+            WRED: yes
+            QUEUELIMIT:
+    2:
+        NAME: 4M
+        PR:
+            PERCENT: 0
+        B1:
+            PERCENT: 30
+            WRED: yes
+            QUEUELIMIT:
+        B2:
+            PERCENT: 40
+            WRED: yes
+            QUEUELIMIT:
+        B3:
+            PERCENT: 0
+            WRED: yes
+            QUEUELIMIT:
+        Def:
+            PERCENT: 25
+            WRED: yes
+            QUEUELIMIT:
+    3:
+        NAME: 2M
+        PR:
+            PERCENT: 0
+        B1:
+            PERCENT: 50
+            WRED: yes
+            QUEUELIMIT:
+        B2:
+            PERCENT: 25
+            WRED: yes
+            QUEUELIMIT:
+        B3:
+            PERCENT: 0
+            WRED: yes
+            QUEUELIMIT:
+        Def:
+            PERCENT: 20
+            WRED: yes
+            QUEUELIMIT:
+    4:
+        NAME: 1M
+        PR:
+            PERCENT: 0
+        B1:
+            PERCENT: 0
+            WRED: yes
+            QUEUELIMIT:
+        B2:
+            PERCENT: 55
+            WRED: yes
+            QUEUELIMIT:
+        B3:
+            PERCENT: 0
+            WRED: yes
+            QUEUELIMIT:
+        Def:
+            PERCENT: 40
+            WRED: yes
+            QUEUELIMIT:
+
+
+
+CPE_LB:
+  FRANCE: [100.96.8.0/24, 100.96.9.0/24, 100.96.10.0/24]
+  SPAIN: [100.96.13.0/27, 100.96.18.16/28, 100.96.18.32/27, 100.96.18.64/26]
+  GERMANY: [100.96.13.128/25, 100.96.17.0/26, 100.96.18.128/26]
+  BELGIUM: [100.96.13.32/27, 100.96.13.64/28, 100.96.13.112/28]
+  SWITZERLAND: [100.96.13.96/28]
+  ITALY: [100.96.13.80/28, 100.96.18.0/28]
+  AUSTRIA: [100.96.17.64/26]
+  POLAND: [100.96.17.128/25]
