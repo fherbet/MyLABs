@@ -1,0 +1,10 @@
+{% if SUBVPN[subvpnID].LAN[lanID].IP_HELPER %}
+{% if SUBVPN[subvpnID].LAN[lanID].IP_HELPER is string %}
+ ip helper-address {{ SUBVPN[subvpnID].LAN[lanID].IP_HELPER | ipaddr('address') }}
+{% else %}
+{% for ip in SUBVPN[subvpnID].LAN[lanID].IP_HELPER %}
+ ip helper-address {{ ip | ipaddr('address') }}
+{% endfor %}
+{% endif %}
+{% do IPHELPER_EXIST.append(True) %}
+{% endif %}

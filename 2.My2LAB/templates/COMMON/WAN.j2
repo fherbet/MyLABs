@@ -1,0 +1,71 @@
+!WAN
+{# .............................................. #}
+{# ................WAN........................... #}
+{# .............................................. #}
+{% from 'templates/COMMON/BW_CONVERTER_MACRO.j2' import SERVICE_BW_CONVERTER with context %}
+{% from 'templates/COMMON/TRIM_SPACES_MACRO.j2' import TRIM_SPACES with context %}
+{# .............................................. #}
+{# START #}
+{% set IF_USED = [] %}
+{% set IF_EXIST = [] %}
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].STATUS %}
+{% if SUBVPN[subvpnID].WAN.0.INT %}
+{% set WAN_INT = SUBVPN[subvpnID].WAN.0.INT %}
+{%else%}
+{% set WAN_INT = vars[CPE_MODEL].INT.0.INT %}
+{% endif %}
+{% if not SUBVPN[subvpnID].WAN.0.VLAN %}
+{# WAN UNTAGGED #}
+interface {{ WAN_INT }}
+{% else %}
+{# WAN + DOT1Q #}
+{% for item in IF_USED %}
+{% if item == WAN_INT %}
+{% do IF_EXIST.append(True) %}
+{% endif %}
+{% endfor %}
+{% if not IF_EXIST %}
+interface {{ WAN_INT }}
+ description IfType[Access] L3BEnd[{{ SAR }}] L1Circuit[{{ LINK_ID }}] Rate[{{ SERVICE_BW_CONVERTER(SERVICE_BW,value="descr") }}]
+ bandwidth {{ SERVICE_BW_CONVERTER(SERVICE_BW_UL,value="kbit") }}
+ no cdp enable
+{% endif %}
+!
+interface {{ WAN_INT }}.{{ SUBVPN[subvpnID].WAN.0.VLAN }}
+{# MARK INT as used ...............................#}
+{% do IF_USED.append(WAN_INT) %}
+{% endif %}
+{% if ACTIVE_VPNS == [1] %}
+{% set subvpn_ser_bw = SERVICE_BW_UL %}
+{% else %}
+{% set subvpn_ser_bw = SUBVPN[subvpnID].BW %}
+{% endif %}
+ description IfType[Access] L3BEnd[{{ SAR }}] L1Circuit[{{ LINK_ID }}] Rate[{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}] VPN[{{ SUBVPN[subvpnID].NAME|upper }}]
+ bandwidth {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit") }}
+ no cdp enable
+{% if SUBVPN[subvpnID].NAME|upper != GRT_SUBVPN|upper %}
+ encapsulation dot1q {{ SUBVPN[subvpnID].WAN.0.VLAN }}
+ ip vrf forwarding {{ SUBVPN[subvpnID].NAME|upper }}
+{% set wanip = TRIM_SPACES(SUBVPN[subvpnID].WAN.0.IP) %}
+ ip address {{ wanip | ipaddr('address') }} {{ wanip | ipaddr('netmask')}}
+{% endif %}
+{% if NETFLOW.STATUS and (NETFLOW.VRF == 'ALL' or NETFLOW.VRF == SUBVPN[subvpnID].NAME) %}
+ ip flow monitor FLOW-IPv4-IN input
+ ip flow monitor FLOW-IPv4-OUT output
+{% endif %}
+{% if CPE_MODEL == 887 or CPE_MODEL == 886 or CPE_MODEL == '886VAJ' %}
+!
+interface ATM0.1
+ description IfType[Access] L3BEnd[{{ SAR }}] L1Circuit[{{ LINK_ID }}] Rate[{{SERVICE_BW}}] VPN[{{ SUBVPN[subvpnID].NAME }}]
+ bandwidth {{ SERVICE_BW_CONVERTER(SERVICE_BW_UL,value="kbit") }}
+{% endif %}
+{% if SUBVPN[subvpnID].WAN.0.IP | ipaddr('prefix') == 32 %}
+!
+interface Dialer1
+ description IfType[Access] L3BEnd[{{ SAR }}] L1Circuit[{{ LINK_ID }}] {% if CPE_MODEL == 887 or 886 %}Rate[{{SERVICE_BW}}]{%else%}Rate[{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}] {% endif %} VPN[{{ SUBVPN[subvpnID].NAME }}]
+ bandwidth {{ SERVICE_BW_CONVERTER(SERVICE_BW_UL,value="kbit") }}
+{% endif %}
+{% endif %}
+{% endfor %}
+!

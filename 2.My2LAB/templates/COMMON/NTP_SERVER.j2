@@ -1,0 +1,13 @@
+
+!!# NTP SERVER #!!
+
+ntp max-associations 10
+
+{% for subvpnID in SUBVPN %}
+{% for lanID in SUBVPN[subvpnID].LAN %}
+access-list 21 permit {{ SUBVPN[subvpnID].LAN[lanID].IP | ipaddr('network') }} {{ SUBVPN[subvpnID].LAN[lanID].IP | ipaddr('hostmask') }}
+{% endfor %}
+{% endfor %}
+
+ntp access-group serve 21
+ntp access-group peer 10

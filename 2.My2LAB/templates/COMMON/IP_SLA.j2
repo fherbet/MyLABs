@@ -1,0 +1,29 @@
+!IP SLA
+!
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].NAME == GRT_SUBVPN %}
+{% set ipslalist = [] %}
+{% for subvpn in DC_SLA_IP %}
+{% if subvpn == GRT_SUBVPN %}
+{% for item in DC_SLA_IP[subvpn] %}
+{% if DC_SLA_IP[subvpn][item].IP != COLT_LB.0.IP %}
+no ip sla {{10 + loop.index0}}
+ip sla {{10 + loop.index0}}
+ udp-jitter {{DC_SLA_IP[subvpn][item].IP | ipaddr('address')}} 65051 source-ip {{COLT_LB.0.IP | ipaddr('address')}}
+ tos 184
+ tag {{SITE_NAME_ALIAS}} to {{DC_SLA_IP[subvpn][item].DCNAME}}
+!
+ip sla schedule {{10 + loop.index0}} life forever start-time now
+!
+{% do ipslalist.append(10 + loop.index0) %}
+{% else %}
+!
+ip sla responder
+!
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+!
+{% endif %}
+{% endfor %}
