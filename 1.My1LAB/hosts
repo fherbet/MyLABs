@@ -1,0 +1,12 @@
+Switch_IOS ansible_host=192.168.1.249 dev_os=ios
+Router-vIOS ansible_host=192.168.1.250 dev_os=ios
+Arista-vEOS ansible_host=192.168.1.251 dev_os=eos
+Router-IOSXRv ansible_host=192.168.1.253 dev_os=iosxr
+# ansible_user=osainstall ansible_ssh_pass=0sainstall ansible_ssh_user=osainstall
+JunOS-vMX ansible_host=192.168.1.252 dev_os=junos
+
+[all:vars]
+ansible_user=osainstall
+ansible_ssh_user=osainstall
+ansible_ssh_pass=0sainstall
+#ansible_ssh_common_args= "-o KexAlgorithms=diffie-hellman-group1-sha1"
