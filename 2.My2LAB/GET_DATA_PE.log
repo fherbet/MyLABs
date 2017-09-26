@@ -1,0 +1,304 @@
+fangio@AspireV15:~/Documents/NETWORK/MyLABs/2.My2LAB$ ansible-playbook GET_DATA_PE.yml -l CPE1,CPE2
+
+PLAY [get data pe] *************************************************************
+
+TASK [MGMT / show ip bgp vpnv4 vrf oss-new-mplsmgmt 10.255.1.11/32 | i Originator] ***
+skipping: [CPE1]
+
+TASK [Display 'show ip bgp vpnv4 vrf oss-new-mplsmgmt on MGMT'] ****************
+skipping: [CPE1]
+
+TASK [extract values from sh ip bgp | i Originator] ****************************
+skipping: [CPE1]
+
+TASK [MGMT / show ip bgp 10.255.1.11/32  | i  from] ****************************
+ok: [CPE1]
+
+TASK [Display 'show ip bgp  on MGMT'] ******************************************
+ok: [CPE1] => {
+    "config": {
+        "changed": false,
+        "stdout": [
+            "    10.253.1.2 (metric 20) from 10.255.1.1 (10.255.1.1)"
+        ],
+        "stdout_lines": [
+            [
+                "    10.253.1.2 (metric 20) from 10.255.1.1 (10.255.1.1)"
+            ]
+        ],
+        "warnings": []
+    }
+}
+
+TASK [extract values from sh ip bgp  | i  from] ********************************
+ok: [CPE1] => (item=    10.253.1.2 (metric 20) from 10.255.1.1 (10.255.1.1))
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": [
+        "10.255.1.1"
+    ]
+}
+
+TASK [search MGMT_LB_PE reverse DNS] *******************************************
+ok: [CPE1] => (item=10.255.1.1)
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": "Reverse DNS for [u'10.255.1.1'] is lo0-PE1."
+}
+
+TASK [remove lo0- from from reverse] *******************************************
+ok: [CPE1] => (item=lo0-PE1.)
+
+TASK [remove . from from SAR_NAME] *********************************************
+ok: [CPE1] => (item=PE1.)
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": "after |replace Reverse DNS for [u'10.255.1.1'] is PE1"
+}
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": "10.255.1.11 is advertised by PE1"
+}
+
+TASK [set fact SAR_OS for SAR OS] **********************************************
+ok: [CPE1]
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": "PE1 OS is : iosxr"
+}
+
+TASK [lineinfile] **************************************************************
+ok: [CPE1]
+
+TASK [sh run formal interface | remotewanip] ***********************************
+ok: [CPE1]
+
+TASK [print shiosxr] ***********************************************************
+ok: [CPE1] => {
+    "shiosxr": {
+        "changed": false,
+        "stdout": [
+            "\ninterface GigabitEthernet0/0/0/1.15 ipv4 address 10.253.1.1 255.255.255.252"
+        ],
+        "stdout_lines": [
+            [
+                "",
+                "interface GigabitEthernet0/0/0/1.15 ipv4 address 10.253.1.1 255.255.255.252"
+            ]
+        ],
+        "warnings": []
+    }
+}
+
+TASK [extract interfaces from shiosxr] *****************************************
+ok: [CPE1] => (item=
+interface GigabitEthernet0/0/0/1.15 ipv4 address 10.253.1.1 255.255.255.252)
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": [
+        "GigabitEthernet0/0/0/1.15"
+    ]
+}
+
+TASK [extract PE_INT and PE_VLANID] ********************************************
+ok: [CPE1] => (item=GigabitEthernet0/0/0/1.15)
+
+TASK [debug] *******************************************************************
+ok: [CPE1] => {
+    "msg": "PE_INT is GigabitEthernet0/0/0/1 and PE_VLANID is 15"
+}
+
+TASK [set fact for SAR_INT] ****************************************************
+ok: [CPE1]
+
+TASK [lineinfile] **************************************************************
+ok: [CPE1]
+
+TASK [set fact for PE_VLAN] ****************************************************
+ok: [CPE1]
+
+TASK [lineinfile] **************************************************************
+changed: [CPE1]
+
+PLAY RECAP *********************************************************************
+CPE1                       : ok=23   changed=1    unreachable=0    failed=0
+
+==================================================================================
+==================================================================================
+==================================================================================
+==================================================================================
+==================================================================================
+
+
+PLAY [get data pe] *************************************************************
+
+TASK [MGMT / show ip bgp vpnv4 vrf oss-new-mplsmgmt 10.255.1.12/32 | i Originator] ***
+skipping: [CPE2]
+
+TASK [Display 'show ip bgp vpnv4 vrf oss-new-mplsmgmt on MGMT'] ****************
+skipping: [CPE2]
+
+TASK [extract values from sh ip bgp | i Originator] ****************************
+skipping: [CPE2]
+
+TASK [MGMT / show ip bgp 10.255.1.12/32  | i  from] ****************************
+ok: [CPE2]
+
+TASK [Display 'show ip bgp  on MGMT'] ******************************************
+ok: [CPE2] => {
+    "config": {
+        "changed": false,
+        "stdout": [
+            "    10.253.2.2 (metric 20) from 10.255.1.2 (10.255.1.2)"
+        ],
+        "stdout_lines": [
+            [
+                "    10.253.2.2 (metric 20) from 10.255.1.2 (10.255.1.2)"
+            ]
+        ],
+        "warnings": []
+    }
+}
+
+TASK [extract values from sh ip bgp  | i  from] ********************************
+ok: [CPE2] => (item=    10.253.2.2 (metric 20) from 10.255.1.2 (10.255.1.2))
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": [
+        "10.255.1.2"
+    ]
+}
+
+TASK [search MGMT_LB_PE reverse DNS] *******************************************
+ok: [CPE2] => (item=10.255.1.2)
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": "Reverse DNS for [u'10.255.1.2'] is lo0-PE2."
+}
+
+TASK [remove lo0- from from reverse] *******************************************
+ok: [CPE2] => (item=lo0-PE2.)
+
+TASK [remove . from from SAR_NAME] *********************************************
+ok: [CPE2] => (item=PE2.)
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": "after |replace Reverse DNS for [u'10.255.1.2'] is PE2"
+}
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": "10.255.1.12 is advertised by PE2"
+}
+
+TASK [set fact SAR_OS for SAR OS] **********************************************
+ok: [CPE2]
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": "PE2 OS is : iosxr"
+}
+
+TASK [lineinfile] **************************************************************
+--- before: host_vars/CPE2.yml (content)
++++ after: host_vars/CPE2.yml (content)
+@@ -24,7 +24,7 @@
+ LINK_ID: MAD/MAD/IA-194202
+ ACCESS_BW: 6 Mbps
+ SERVICE_BW: 2 Mbps
+-SAR:
++SAR: PE2
+ SAR_INT: 0
+ GRT_SUBVPN: SPAIN
+ GLOBAL_ROUTING_OPTION: ROUTING_EU
+
+changed: [CPE2]
+
+TASK [sh run formal interface | remotewanip] ***********************************
+ok: [CPE2]
+
+TASK [print shiosxr] ***********************************************************
+ok: [CPE2] => {
+    "shiosxr": {
+        "changed": false,
+        "stdout": [
+            "\ninterface GigabitEthernet0/0/0/1.25 ipv4 address 10.253.2.1 255.255.255.252"
+        ],
+        "stdout_lines": [
+            [
+                "",
+                "interface GigabitEthernet0/0/0/1.25 ipv4 address 10.253.2.1 255.255.255.252"
+            ]
+        ],
+        "warnings": []
+    }
+}
+
+TASK [extract interfaces from shiosxr] *****************************************
+ok: [CPE2] => (item=
+interface GigabitEthernet0/0/0/1.25 ipv4 address 10.253.2.1 255.255.255.252)
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": [
+        "GigabitEthernet0/0/0/1.25"
+    ]
+}
+
+TASK [extract PE_INT and PE_VLANID] ********************************************
+ok: [CPE2] => (item=GigabitEthernet0/0/0/1.25)
+
+
+TASK [debug] *******************************************************************
+ok: [CPE2] => {
+    "msg": "PE_INT is GigabitEthernet0/0/0/1 and PE_VLANID is 25"
+}
+
+TASK [set fact for SAR_INT] ****************************************************
+ok: [CPE2]
+
+TASK [lineinfile] **************************************************************
+--- before: host_vars/CPE2.yml (content)
++++ after: host_vars/CPE2.yml (content)
+@@ -25,7 +25,7 @@
+ ACCESS_BW: 6 Mbps
+ SERVICE_BW: 2 Mbps
+ SAR: PE2
+-SAR_INT: 0
++SAR_INT: GigabitEthernet0/0/0/1
+ GRT_SUBVPN: SPAIN
+ GLOBAL_ROUTING_OPTION: ROUTING_EU
+ SUBVPN:
+
+changed: [CPE2]
+
+TASK [set fact for PE_VLAN] ****************************************************
+ok: [CPE2]
+
+TASK [lineinfile] **************************************************************
+--- before: host_vars/CPE2.yml (content)
++++ after: host_vars/CPE2.yml (content)
+@@ -33,7 +33,7 @@
+         NAME: SPAIN
+         STATUS: Yes
+         BW: 2 Mbps
+-        PE_VLAN: 0
++        PE_VLAN: 25
+         QOS_PROFILE: 4M
+         WAN:
+             0:
+
+changed: [CPE2]
+
+PLAY RECAP *********************************************************************
+CPE1                       : ok=23   changed=0    unreachable=0    failed=0
+CPE2                       : ok=23   changed=3    unreachable=0    failed=0

@@ -20,6 +20,11 @@ details steps
 
 1. from LB address, detect on which PE/interface/vlan is connected CPEx (which model/vendor is PE) and update CPEx.yml
 
+      DONE > OK > ansible-playbook GET_DATA_PE.yml -l CPE1,CPE2 -D
+
+      [LOGS](GET_DATA_PE.log)
+
+
 2. generate basic config+final config (routing+QOS)+PE QOS/shaping
 
 3. push basic config using napalm
