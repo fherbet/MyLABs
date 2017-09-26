@@ -12,7 +12,7 @@ MPLS Backbone
 - static routes for CPEs' loopbacks provisionned in advance on PE in order to reach them from Net (ansible server)
 - BGP config towards CPEs provisionned in advance in CUST vrf
 
-== Goal is to automate configs of CPE1 adn CPE2 once field tech goes on site, tests links and installs CPEs
+== Goal is to automate configs of CPE1 and CPE2 once field tech goes on site, tests links and installs CPEs
 
 
 
