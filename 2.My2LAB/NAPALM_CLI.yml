@@ -1,0 +1,29 @@
+
+- name: NAPALM_CLI TEST
+  hosts: all
+  connection: local
+  gather_facts: no
+
+
+  tasks:
+  - napalm_cli:
+      hostname: "{{ ansible_host }}"
+      username: "osainstall"
+      password: "0sainstall"
+      dev_os: "{{dev_os}}"
+      args:
+          commands:
+              - show version
+              - show arp
+    register: napalmcli
+
+
+  - name: Create target directory
+    file: path=configs/{{ inventory_hostname }}/ state=absent mode=0755
+
+  - name: Create target directory
+    file: path=configs/{{ inventory_hostname }}/ state=directory mode=0755
+
+  - copy:
+      content: "{{ napalmcli  | to_nice_yaml }}"
+      dest: "configs/{{ inventory_hostname }}/{{ inventory_hostname }}_napalmcli.txt"

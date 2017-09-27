@@ -1,0 +1,40 @@
+---
+- name: IOS_CONFIG TEST
+  hosts: all
+  connection: local
+  gather_facts: no
+
+
+  tasks:
+
+
+  - napalm_install_config:
+     hostname={{ ansible_host }}
+     username=osainstall
+     password=0sainstall
+     dev_os={{dev_os}}
+     config_file=configs/{{ inventory_hostname }}/SNMP_LOCATION.conf
+     commit_changes=true
+     replace_config=false
+     get_diffs=True
+     diff_file=configs/{{ inventory_hostname }}/{{ inventory_hostname }}.diff
+     timeout=120
+    tags:
+    - install_config
+
+
+
+
+  - napalm_install_config:
+     hostname={{ ansible_host }}
+     username=osainstall
+     password=0sainstall
+     dev_os={{dev_os}}
+     config_file=templates/NO_SNMP_LOCATION.txt
+     commit_changes=true
+     replace_config=false
+     get_diffs=True
+     diff_file=configs/{{ inventory_hostname }}/{{ inventory_hostname }}.diff
+     timeout=120
+    tags:
+    - remove_config
