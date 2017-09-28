@@ -7,7 +7,7 @@
             "mac": "50:00:00:05:00:01"
         }, 
         {
-            "age": 31.0, 
+            "age": 114.0, 
             "interface": "GigabitEthernet0/1", 
             "ip": "10.254.1.2", 
             "mac": "50:00:00:03:00:01"
@@ -19,7 +19,7 @@
             "mac": "50:00:00:05:00:02"
         }, 
         {
-            "age": 31.0, 
+            "age": 114.0, 
             "interface": "GigabitEthernet0/2", 
             "ip": "10.254.2.2", 
             "mac": "50:00:00:04:00:01"
@@ -66,7 +66,7 @@
                     "local_as": 65500, 
                     "remote_as": 65500, 
                     "remote_id": "10.255.1.1", 
-                    "uptime": 38270
+                    "uptime": 21324
                 }, 
                 "10.255.1.2": {
                     "address_family": {
@@ -82,7 +82,7 @@
                     "local_as": 65500, 
                     "remote_as": 65500, 
                     "remote_id": "10.255.1.2", 
-                    "uptime": 38179
+                    "uptime": 21335
                 }
             }, 
             "router_id": "10.255.1.3"

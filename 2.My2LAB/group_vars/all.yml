@@ -131,6 +131,9 @@ IOSv:
 
 
 
+
+
+
 4451:
     INT:
         0: { INT: GigabitEthernet0/0/1, SWITCHED: False, PORT_TYPE: DUAL }

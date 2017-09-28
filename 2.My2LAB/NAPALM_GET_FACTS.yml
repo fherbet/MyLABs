@@ -11,11 +11,11 @@
         username: "osainstall"
         dev_os: "{{ dev_os }}"
         password: "0sainstall"
-        filter: ['interfaces','interfaces_ip','arp_table']
+        #filter: ['interfaces','interfaces_ip','arp_table']
         #filter: ['facts']
         #filter: ['arp_table']
         #filter: ['config']
-        #filter: ['bgp_neighbors']
+        filter: ['interfaces']
         #filter: ['facts','interfaces_ip','bgp_neighbors']
       register: napalm_facts
 
