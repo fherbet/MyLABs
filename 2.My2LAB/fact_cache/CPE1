@@ -1,7 +1,7 @@
 {
     "napalm_arp_table": [
         {
-            "age": 36.0, 
+            "age": 30.0, 
             "interface": "GigabitEthernet0/1.15", 
             "ip": "10.253.1.1", 
             "mac": "50:00:00:03:00:02"
