@@ -1,0 +1,15 @@
+fangio@AspireV15:~/Documents/NETWORK/MyLABs/1.My1LAB$ ansible-playbook NAPALM_CLI.yml -l CPE1
+
+PLAY [NAPALM_CLI TEST] *********************************************************
+
+TASK [napalm_cli] **************************************************************
+ok: [CPE1]
+
+TASK [Create target directory] *************************************************
+ok: [CPE1]
+
+TASK [copy] ********************************************************************
+changed: [CPE1]
+
+PLAY RECAP *********************************************************************
+CPE1                       : ok=3    changed=1    unreachable=0    failed=0
