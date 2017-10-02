@@ -129,11 +129,6 @@ IOSv:
         7: { INT: GigabitEthernet0/0/3, SWITCHED: True, PORT_TYPE: RJ45 }
     OS: IOS
 
-
-
-
-
-
 4451:
     INT:
         0: { INT: GigabitEthernet0/0/1, SWITCHED: False, PORT_TYPE: DUAL }

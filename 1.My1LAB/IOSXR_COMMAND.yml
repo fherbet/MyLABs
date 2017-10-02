@@ -19,4 +19,4 @@
     register: shiosxr
 
   - name: print shiosxr
-    debug: var=shiosxr
+    debug: var=shiosxr.stdout_lines

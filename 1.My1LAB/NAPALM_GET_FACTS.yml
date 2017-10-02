@@ -11,11 +11,15 @@
         username: "osainstall"
         dev_os: "{{ dev_os }}"
         password: "0sainstall"
-        filter: ['interfaces_ip']
+        #filter: ['interfaces','interfaces_ip','arp_table']
+        #filter: ['facts']
+        #filter: ['arp_table']
+        #filter: ['config']
+        filter: ['interfaces']
         #filter: ['facts','interfaces_ip','bgp_neighbors']
       register: napalm_facts
 
     - name: Facts
       debug:
-        msg: "{{ napalm_facts.ansible_facts}}"
+        msg: "{{ napalm_facts.ansible_facts }}"
       tags: [print_action]
