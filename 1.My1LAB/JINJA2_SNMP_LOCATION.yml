@@ -7,8 +7,6 @@
 
   tasks:
 
-  - name: Create target directory
-    file: path=configs/{{ inventory_hostname }}/ state=absent mode=0755
 
   - name: Create target directory
     file: path=configs/{{ inventory_hostname }}/ state=directory mode=0755

@@ -1,0 +1,52 @@
+{
+    "napalm_interfaces": {
+        "GigabitEthernet0/0": {
+            "description": "", 
+            "is_enabled": false, 
+            "is_up": false, 
+            "last_flapped": -1.0, 
+            "mac_address": "50:00:00:02:00:00", 
+            "speed": 1000
+        }, 
+        "GigabitEthernet0/1": {
+            "description": "", 
+            "is_enabled": true, 
+            "is_up": true, 
+            "last_flapped": -1.0, 
+            "mac_address": "50:00:00:02:00:01", 
+            "speed": 1000
+        }, 
+        "GigabitEthernet0/1.25": {
+            "description": "", 
+            "is_enabled": true, 
+            "is_up": true, 
+            "last_flapped": -1.0, 
+            "mac_address": "50:00:00:02:00:01", 
+            "speed": 1000
+        }, 
+        "GigabitEthernet0/2": {
+            "description": "", 
+            "is_enabled": false, 
+            "is_up": false, 
+            "last_flapped": -1.0, 
+            "mac_address": "50:00:00:02:00:02", 
+            "speed": 1000
+        }, 
+        "GigabitEthernet0/3": {
+            "description": "", 
+            "is_enabled": false, 
+            "is_up": false, 
+            "last_flapped": -1.0, 
+            "mac_address": "50:00:00:02:00:03", 
+            "speed": 1000
+        }, 
+        "Loopback0": {
+            "description": "", 
+            "is_enabled": true, 
+            "is_up": true, 
+            "last_flapped": -1.0, 
+            "mac_address": "", 
+            "speed": 8000
+        }
+    }
+}
