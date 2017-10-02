@@ -11,4 +11,4 @@ Diagram from EVE-NG
 
 ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route"
 
-[RAW COMMAND OUTPUT](https://github.com/fherbet/MyLABs/....)
+[RAW COMMAND OUTPUT](./LOGS/RAW_COMMAND.log)
