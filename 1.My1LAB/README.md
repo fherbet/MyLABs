@@ -24,5 +24,6 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route"
 
   * ansible-playbook [MULTIVENDOR_COMMAND_AND_SAVE_FILE.yml](MULTIVENDOR_COMMAND_AND_SAVE_FILE.yml)    >> [OUTPUT](./LOGS/MULTIVENDOR_COMMAND_AND_SAVE_FILE.log) / [MGMT](./configs/MGMT/MGMT_shrun.txt) / [CPE1](./configs/CPE1/CPE1_shrun.txt) / [CPE2](./configs/CPE2/CPE2_shrun.txt) / [PE1](./configs/PE1/PE1_shrun.txt) / [PE2](./configs/PE2/PE2_shrun.txt)
 
-  * ansible-playbook [NAPALM_CLI.yml](NAPALM_CLI.yml) -l CPE1  >> [OUTPUT](./LOGS/NAPALM_CLI.log) [CPE1](./configs/CPE1/CPE1_napalmcli.txt)
+  * ansible-playbook [NAPALM_CLI.yml](NAPALM_CLI.yml) -l CPE1  >> [OUTPUT](./LOGS/NAPALM_CLI.log) / [CPE1](./configs/CPE1/CPE1_napalmcli.txt)
+
    !!!!! QUESTION!!!!!!! how to render nicely NAPALM_CLI OUTPUT ????????????????
