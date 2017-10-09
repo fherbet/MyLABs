@@ -34,9 +34,9 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route"
   * ansible-playbook [JINJA2_SNMP_LOCATION.yml](JINJA2_SNMP_LOCATION.yml)    >> [OUTPUT](./LOGS/JINJA2_SNMP_LOCATION.log) / [CPE1](./configs/CPE1/SNMP_LOCATION.conf)
 
   . NAPALM_INSTALL_CONFIG
-  * ansible-playbook [NAPALM_CONFIG.yml](NAPALM_CONFIG.yml) -t install_config   >> [OUTPUT](..LOGS/NAPALM_INSTALL_CONFIG.log)
+  * ansible-playbook [NAPALM_CONFIG.yml](NAPALM_CONFIG.yml) -t install_config   >> [OUTPUT](.LOGS/NAPALM_INSTALL_CONFIG.log)
 
-  * ansible-playbook [NAPALM_CONFIG.yml](NAPALM_CONFIG.yml) -t remove_config   >> [OUTPUT](..LOGS/NAPALM_REMOVE_CONFIG.log)
+  * ansible-playbook [NAPALM_CONFIG.yml](NAPALM_CONFIG.yml) -t remove_config   >> [OUTPUT](.LOGS/NAPALM_REMOVE_CONFIG.log)
 
   . NAPALM_GET_FACTS
-  * ansible-playbook [NAPALM_GET_FACTS.yml](NAPALM_GET_FACTS.yml) >> [OUTPUT](..LOGS/NAPALM_GET_FACTS.log)
+  * ansible-playbook [NAPALM_GET_FACTS.yml](NAPALM_GET_FACTS.yml) >> [OUTPUT](.LOGS/NAPALM_GET_FACTS.log)
