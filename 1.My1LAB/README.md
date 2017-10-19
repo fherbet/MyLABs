@@ -40,3 +40,6 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route"
 
   . NAPALM_GET_FACTS
   * ansible-playbook [NAPALM_GET_FACTS.yml](NAPALM_GET_FACTS.yml) >> [OUTPUT](./LOGS/NAPALM_GET_FACTS.log)
+
+  . NAPALM_CLI_TELNET + extract interface from sh ip int brief | i X.X.X.X
+  * ansible-playbook [NAPALM_CLI_TELNET.yml](NAPALM_CLI_TELNET.yml) -l MGMT -D >> [OUTPUT](./LOGS/NAPALM_CLI_TELNET.log)
