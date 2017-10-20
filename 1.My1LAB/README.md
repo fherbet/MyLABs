@@ -27,7 +27,7 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
   * ansible-playbook [NAPALM_CLI.yml](NAPALM_CLI.yml) -l CPE1  >> [OUTPUT](./LOGS/NAPALM_CLI.log) / [CPE1 UGLY](./configs/CPE1/CPE1_napalmcli_ugly.txt) / [CPE1 NICE](./configs/CPE1/CPE1_napalmcli_nice.txt)
 
-  >>  **QUESTION!!!!!!!** how to render nicely NAPALM_CLI OUTPUT  **NOW WORKING !!!!!!!!!!!!!!!! see updated logs below **
+  >>  **QUESTION!!!!!!!** how to render nicely NAPALM_CLI OUTPUT  **NOW WORKING !!!!!!!!!!!!!!!! see updated logs below**
 
    . JINJA2 template
   * ansible-playbook [JINJA2_SNMP_LOCATION.yml](JINJA2_SNMP_LOCATION.yml)    >> [OUTPUT](./LOGS/JINJA2_SNMP_LOCATION.log) / [CPE1](./configs/CPE1/SNMP_LOCATION.conf)
