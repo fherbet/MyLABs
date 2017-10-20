@@ -54,4 +54,6 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 ## DATA MODEL
 
-  . Simplified Data MODEL
+  . [Data MODEL used for customer](host_vars/CPE1.yml)
+  * 1st part with site common details (cct id, order number, MGMT LB , adress)
+  * 2nd part with SUBVPN information as i plan to support multi-vrf
