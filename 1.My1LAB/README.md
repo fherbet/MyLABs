@@ -13,7 +13,7 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 # [NetAutSol] Easy Wins (Week #2) Hands-on Exercises
 
-# 1st PLAYBOOKS
+## 1st PLAYBOOKS
 
   . Execute commands
   * ansible-playbook [IOS_COMMAND.yml](IOS_COMMAND.yml) -l MGMT,CPE1,CPE2       >> [OUTPUT](./LOGS/IOS_COMMAND.log)
