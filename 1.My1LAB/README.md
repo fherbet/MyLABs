@@ -7,13 +7,13 @@ Diagram from EVE-NG
 ![Diagram](MyLAB2.png)
 
 
-## **EXECUTE RAW COMMANDS**
+## EXECUTE RAW COMMANDS
 
 ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND OUTPUT](./LOGS/RAW_COMMAND.log)
 
 # [NetAutSol] Easy Wins (Week #2) Hands-on Exercises
 
-## **1st PLAYBOOKS**
+## 1st PLAYBOOKS
 
   . Execute commands
   * ansible-playbook [IOS_COMMAND.yml](IOS_COMMAND.yml) -l MGMT,CPE1,CPE2       >> [OUTPUT](./LOGS/IOS_COMMAND.log)
@@ -41,7 +41,7 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
   * ansible-playbook [NAPALM_GET_FACTS.yml](NAPALM_GET_FACTS.yml) >> [OUTPUT](./LOGS/NAPALM_GET_FACTS.log)
 
 
-## **PARSING DATA**
+## PARSING DATA
 
   . NAPALM_CLI_TELNET + extract interface from sh ip int brief | i X.X.X.X
   * ansible-playbook [NAPALM_CLI_TELNET.yml](NAPALM_CLI_TELNET.yml) -l MGMT -D >> [OUTPUT](./LOGS/NAPALM_CLI_TELNET.log)
