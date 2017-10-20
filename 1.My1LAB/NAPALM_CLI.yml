@@ -5,6 +5,10 @@
   gather_facts: no
 
 
+  vars:
+    TEMP1: []
+
+
   tasks:
   - napalm_cli:
       hostname: "{{ ansible_host }}"
@@ -25,4 +29,27 @@
 
   - copy:
       content: "{{ napalmcli }}"
-      dest: "configs/{{ inventory_hostname }}/{{ inventory_hostname }}_napalmcli.txt"
+      dest: "configs/{{ inventory_hostname }}/{{ inventory_hostname }}_napalmcli_ugly.txt"
+
+## now including NICE output Display
+
+  - name: set fact temp = napalmcli.results
+    set_fact:
+      TEMP1: "{{ item }}"
+    with_dict: "{{napalmcli.results}}"
+
+  - name: Display TEMP1.value
+    debug: var=TEMP1.value
+
+  - name: reorganize napalm cli output
+    set_fact:
+      TEMP1: "{{ item }}"
+    with_items: "{{TEMP1.value}}"
+
+
+  - name: print TEMP1
+    debug: var=TEMP1
+
+  - copy:
+      content: "{{ TEMP1 }}"
+      dest: "configs/{{ inventory_hostname }}/{{ inventory_hostname }}_napalmcli_nice.txt"
