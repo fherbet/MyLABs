@@ -1,5 +1,0 @@
-ansible all -i hosts -m raw -a "show arp"
-
-ansible-playbook NAPALM_GET_FACTS.yml -i hosts
-
-ansible-playbook IOSXR_COMMAND.yml -i hosts -l Router-IOSXRv
