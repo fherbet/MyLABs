@@ -6,6 +6,7 @@ PE2 ansible_host=10.255.1.2 dev_os=iosxr
 [CUST1]
 CPE1 ansible_host=10.255.1.11 dev_os=ios
 CPE2 ansible_host=10.255.1.12 dev_os=ios
+CUST_DC1 ansible_host=10.255.1.13 dev_os=ios
 
 #JunOS-vMX ansible_host=10.255.1.4 dev_os=junos
 

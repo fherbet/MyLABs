@@ -48,3 +48,10 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
   . IOS_COMMAND_AND_REGEXP + extract interface(s) from sh ip int brief (| i X.X.X.X)
   * ansible-playbook [IOS_COMMAND_AND_REGEXP.yml](IOS_COMMAND_AND_REGEXP.yml) -l MGMT -D >> [OUTPUT](./LOGS/IOS_COMMAND_AND_REGEXP.log)
+
+
+# [NetAutSol] Data Model (Week #3) Hands-on Exercises
+
+## DATA MODEL
+
+  . Simplified Data MODEL
