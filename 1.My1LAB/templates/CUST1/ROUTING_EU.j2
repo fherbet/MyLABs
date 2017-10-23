@@ -34,7 +34,6 @@ route-map REDISTRIBUTE-CONNECTED permit 20
 ip prefix-list WWW seq 5 permit 10.50.50.0/24
 ip prefix-list WWW seq 10 permit 0.0.0.0/0
 !
-ip prefix-list NAT seq 5 permit 10.{{LAN_2ND_OCTET[COUNTRY].NAT}}.0.0/16 le 32
 !
 !
 {% if RELATED_ORDER %}
@@ -50,7 +49,7 @@ route-map FROM-SAR deny 11
  match ip address prefix-list REMOTE_LB
 !
 {% if ROLE == 'CE1' %}
-ip community-list 1 permit {{ ORDER[0] }}{{ ORDER[1] }}{{ ORDER[2] }}{{ ORDER[3] }}{{ ORDER[4] }}:{{ ORDER[5] }}{{ ORDER[6] }}{{ ORDER[7] }}{{ ORDER[8] }}
+ip community-list 1 permit 12345:6789
 !
 route-map FROM-SAR permit 20
  match ip address prefix-list WWW
@@ -61,7 +60,7 @@ route-map FROM-SAR permit 30
  set community 65505:1
 !
 {% elif ROLE == 'CE2' %}
-ip community-list 1 permit {{ RELATED_ORDER[0] }}{{ RELATED_ORDER[1] }}{{ RELATED_ORDER[2] }}{{ RELATED_ORDER[3] }}{{ RELATED_ORDER[4] }}:{{ RELATED_ORDER[5] }}{{ RELATED_ORDER[6] }}{{ RELATED_ORDER[7] }}{{ RELATED_ORDER[8] }}
+ip community-list 1 permit 12345:6790
 !
 route-map FROM-SAR permit 20
  match ip address prefix-list WWW
@@ -83,17 +82,17 @@ route-map TO-SAR deny 6
 route-map TO-SAR permit 10
  match ip address prefix-list NAT
 {% if ROLE == 'CE1' %}
- set community {{ ORDER[0] }}{{ ORDER[1] }}{{ ORDER[2] }}{{ ORDER[3] }}{{ ORDER[4] }}:{{ ORDER[5] }}{{ ORDER[6] }}{{ ORDER[7] }}{{ ORDER[8] }} additive
+ set community 12345:6789 additive
  set as-path prepend 65505
 {% elif ROLE == 'CE2' %}
- set community {{ RELATED_ORDER[0] }}{{ RELATED_ORDER[1] }}{{ RELATED_ORDER[2] }}{{ RELATED_ORDER[3] }}{{ RELATED_ORDER[4] }}:{{ RELATED_ORDER[5] }}{{ RELATED_ORDER[6] }}{{ RELATED_ORDER[7] }}{{ RELATED_ORDER[8] }} additive
+ set community 12345:6790 additive
 {% endif %}
 !
 route-map TO-SAR permit 20
 {% if ROLE == 'CE1' %}
- set community {{ ORDER[0] }}{{ ORDER[1] }}{{ ORDER[2] }}{{ ORDER[3] }}{{ ORDER[4] }}:{{ ORDER[5] }}{{ ORDER[6] }}{{ ORDER[7] }}{{ ORDER[8] }} additive
+ set community 12345:6789 additive
 {% elif ROLE == 'CE2' %}
- set community {{ RELATED_ORDER[0] }}{{ RELATED_ORDER[1] }}{{ RELATED_ORDER[2] }}{{ RELATED_ORDER[3] }}{{ RELATED_ORDER[4] }}:{{ RELATED_ORDER[5] }}{{ RELATED_ORDER[6] }}{{ RELATED_ORDER[7] }}{{ RELATED_ORDER[8] }} additive
+ set community 12345:6790 additive
  set as-path prepend 65505
 {% endif %}
 !

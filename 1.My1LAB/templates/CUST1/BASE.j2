@@ -54,7 +54,6 @@
 !ACTIVE_VPNS :{{ACTIVE_VPNS}}
 
 
-{% include "templates/COMMON/BANNER.j2" %}
 
 {% include "templates/COMMON/LAN.j2" %}
 
@@ -62,23 +61,23 @@
 {% include "templates/COMMON/B2B.j2" %}
 {% endif %}
 
-
 {% include "templates/COMMON/WAN.j2" %}
 
-{% if GLOBAL_ROUTING_OPTION == 'ROUTING_SPAIN' %}
+
+
+
+{% include "SNMP.j2" %}
+{% include "QOS.j2" with context %}
+
 {% include "ROUTING_EU.j2" %}
-{% elif GLOBAL_ROUTING_OPTION == 'ROUTING_EU' %}
-{% include "ROUTING_EU.j2" %}
-{% endif %}
+{#
 
 {% if COUNTRY != 'FRANCE' %}
 {% include "NAT_EU.j2" %}
 {% endif %}
 
 
-{% include "SNMP.j2" %}
 
-{% include "QOS.j2" with context %}
-
+#}
 
 end
