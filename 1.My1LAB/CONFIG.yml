@@ -43,17 +43,8 @@
     - final
     - allinone
 
-  - name: Create PE Qos/Shaping for AXA only
-    template: src=templates/AXA/QOS_PE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
-    when: CUST_NAME == "AXA"
-    tags:
-    - final
-    - allinone
-    - configpe
-
   - name: Create PE Qos/Shaping
     template: src=templates/COMMON/QOS_PE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
-    when: CUST_NAME != "AXA"
     tags:
     - final
     - allinone
@@ -69,7 +60,7 @@
      config_file=templates/COMMON/SSH.conf
      commit_changes=true
      replace_config=false
-     optional_args="transport=telnet,secret=osainstall"
+     optional_args="transport=telnet"
     ignore_errors: True
     tags:
     - allinone
