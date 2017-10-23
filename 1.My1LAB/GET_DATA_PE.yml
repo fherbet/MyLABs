@@ -70,22 +70,52 @@
       debug: var=config
       when: PUBLIC_MGMT == false
 
+#
+#    - name: extract values from sh ip bgp  | i  from
+#      set_fact:
+#        MGMT_LB_PE: "{{[item.split(' ')[8]]}}"
+#      with_items: "{{config.stdout_lines}}"
+#      when: PUBLIC_MGMT == false
+#      ignore_errors: True
+#
+#    - debug: msg="{{MGMT_LB_PE}}"
+
+####TEST
     - name: extract values from sh ip bgp  | i  from
       set_fact:
-        MGMT_LB_PE: "{{[item.split(' ')[8]]}}"
-      with_items: "{{config.stdout_lines}}"
+        #MGMT_LB_PE2: "{{item | map('regex_findall','from')  | map('join') | list }}"
+        MGMT_LB_PE: "{{config.stdout_lines[0] | map('regex_findall','\\(\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}\\)$') | map('join') | list}}"
       when: PUBLIC_MGMT == false
       ignore_errors: True
 
     - debug: msg="{{MGMT_LB_PE}}"
 
+    - name: strip (
+      set_fact:
+        #MGMT_LB_PE2: "{{item | map('regex_findall','from')  | map('join') | list }}"
+        MGMT_LB_PE: "{{MGMT_LB_PE | map('regex_replace','\\(','') | list}}"
+      when: PUBLIC_MGMT == false
+      ignore_errors: True
+
+    - debug: msg="{{MGMT_LB_PE}}"
+
+    - name: strip )
+      set_fact:
+        #MGMT_LB_PE2: "{{item | map('regex_findall','from')  | map('join') | list }}"
+        MGMT_LB_PE: "{{MGMT_LB_PE | map('regex_replace','\\)','') | list}}"
+      when: PUBLIC_MGMT == false
+      ignore_errors: True
+
+    - debug: msg="{{MGMT_LB_PE}}"
+
+####
 
     - name: search MGMT_LB_PE reverse DNS
       set_fact:
         REVERSE_DNS : "{{ lookup('dig', MGMT_LB_PE[0] + '/PTR') }}"
       with_items: "{{MGMT_LB_PE}}"
 
-    - debug: msg="Reverse DNS for {{MGMT_LB_PE}} is {{ REVERSE_DNS }}"
+    - debug: msg="Reverse DNS for {{MGMT_LB_PE[0]}} is {{ REVERSE_DNS }}"
 
     - name: remove lo0- from from reverse
       set_fact:
@@ -144,10 +174,10 @@
 ##IOS
 #    - name: sh ip int brie | i remotewanip / telnet / napalm_cli
     - napalm_cli:
-        hostname: "{{ SAR_NAME }}"
+        hostname: "lo0-{{SAR_NAME}}"
         username: "osainstall"
         password: "0sainstall"
-        dev_os: "ios"
+        dev_os: "{{dev_os}}"
         optional_args: "transport=telnet"
         args:
             commands:
@@ -203,19 +233,6 @@
         regexp: 'SAR_INT:.*'
         line: 'SAR_INT: {{PE_INT[0]}}'
       when: SAR_OS == "junos" or SAR_OS == "iosxr" or SAR_OS == "ios"
-
-
-    - name: set fact for PE_VLAN
-      set_fact:
-        PE_VLAN: "{{PE_VLANID[0]}}"
-      when: SAR_OS == "junos" or SAR_OS == "iosxr" or SAR_OS == "ios"
-
-    - lineinfile:
-        name: host_vars/{{inventory_hostname}}.yml
-        regexp: '        PE_VLAN:.*'
-        line: '        PE_VLAN: {{PE_VLAN}}'
-      when: SAR_OS == "junos" or SAR_OS == "iosxr" or SAR_OS == "ios"
-
 
 
 

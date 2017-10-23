@@ -1,0 +1,61 @@
+{% from 'templates/COMMON/LAN_INT_MACRO.j2' import L3LAN_INT_MACRO with context %}
+!ROUTING STANDARD
+ip bgp-community new-format
+!
+access-list 30 permit {{COLT_LB.0.IP | ipaddr('address')}}
+!
+route-map {{ CPE_AS }}-TAGGED-STATIC permit 10
+ match tag {{ CPE_AS }}
+!
+route-map REDISTRIBUTE-CONNECTED permit 10
+ match ip address 30
+ set community 8220:40001
+!
+route-map REDISTRIBUTE-CONNECTED permit 20
+!
+{% if ROLE == 'CE2' %}
+route-map BACKUP_PREPEND permit 10
+ set as-path prepend {{ CPE_AS }}
+{% endif %}
+!
+router bgp {{ CPE_AS }}
+ bgp log-neighbor-changes
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].STATUS %}
+{% if SUBVPN[subvpnID].NAME != GRT_SUBVPN %}
+ address-family ipv4 vrf {{ SUBVPN[subvpnID].NAME }}
+{% endif %}
+ redistribute connected route-map REDISTRIBUTE-CONNECTED
+ redistribute static route-map {{ CPE_AS }}-TAGGED-STATIC
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} remote-as {{ COLT_AS }}
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} description {{ SAR }}
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} timers {{CPE_BGP.TIMERS.KEEPALIVE}} {{CPE_BGP.TIMERS.HOLDTIME}}
+{% if BFD.STATUS %}
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} fall-over bfd
+{% endif %}
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} next-hop-self
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} send-community
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} allowas-in
+{% if ROLE == 'CE2' %}
+ neighbor {{ SUBVPN[subvpnID].WAN.0.IP | ipaddr('1') | ipaddr('address') }} route-map BACKUP_PREPEND out
+{% endif %}
+{% if SUBVPN[subvpnID].NAME != GRT_SUBVPN %}
+ exit-address-family
+{% endif %}
+!
+{% endif %}
+{% endfor %}
+!
+{% if RELATED_ORDER %}
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].STATUS %}
+{% if SUBVPN[subvpnID].NAME == GRT_SUBVPN %}
+ ip route {{ hostvars[RELATED_ORDER].COLT_LB.0.IP | ipaddr('address') }} 255.255.255.255 {{ L3LAN_INT_MACRO(subvpnID,0) }} {{ hostvars[RELATED_ORDER].SUBVPN[subvpnID].LAN.0.IP | ipaddr('address') }}
+{% endif %}
+!
+{% endif %}
+{% endfor %}
+
+
+
+{% endif %}

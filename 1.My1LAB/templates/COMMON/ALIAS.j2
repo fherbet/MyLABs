@@ -1,0 +1,1 @@
+alias {{CUST_NAME}}_{{COUNTRY}}_{{SITE_NAME_ALIAS | regex_replace(' ', '_') }}_{{ORDER}}='ssh {{ COLT_LB.0.IP | ipaddr('address') }}'

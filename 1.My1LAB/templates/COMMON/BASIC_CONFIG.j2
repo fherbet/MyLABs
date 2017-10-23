@@ -1,0 +1,147 @@
+{% set newstring = [] %}
+{% for item in COLT_HOSTNAME %}
+{% if loop.index0 == 9 %}
+{% break %}
+{% else  %}
+{% do newstring.append(item) %}
+{% endif %}
+{% endfor %}
+{% set COLT_HOSTNAME = newstring|join %}
+!
+{% set WAN_IP = [] %}
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].STATUS and SUBVPN[subvpnID].NAME|upper == GRT_SUBVPN|upper %}
+{% do WAN_IP.append(SUBVPN[subvpnID].WAN.0.IP) %}
+{% endif %}
+{% endfor %}
+!
+!ip cef
+!
+!
+archive
+ path flash:archive
+ write-memory
+!
+interface Loopback0
+ description IfType[Management]
+ ip addr {{ COLT_LB.0.IP | ipaddr('address') }} 255.255.255.255
+!
+interface loopback 999
+{% if SR %}
+ description ConfigVersion:1.25 Bespoke Ref Nr {{ SR }}
+{% else %}
+ description ConfigVersion:1.25
+{% endif %}
+ shut
+!
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+service password-encryption
+!
+logging buffered 32000 debugging
+!
+ip routing
+no ip rcmd domain-lookup
+ip rcmd rsh-enable
+no ip finger
+no ip http server
+no ip http secure-server
+!
+ip domain name {{ SAR[-3] }}{{ SAR[-2] }}{{ SAR[-1] }}.ipc.colt.net
+no ip domain lookup
+!
+ip tftp source-interface Loopback0
+ip ssh source-interface Loopback0
+!
+!
+logging source-interface Loopback0
+logging trap debugging
+logging facility local6
+!
+ip classless
+!
+snmp-server location [ColtCab] / {{STREET | upper }}, {{CITY | upper}}, {{COUNTRY | upper}}
+!
+
+!
+snmp-server trap-source Loopback0
+snmp-server contact inoc@xxxx.net
+snmp-server ifindex persist
+!
+ip sla responder
+!
+snmp ifmib ifalias long
+!
+!
+!
+ntp clock-period 17207933
+ntp source loopback 0
+!
+{% if PUBLIC_MGMT %}
+{% if WAN_IP[0] | ipaddr('prefix') == 32 %}
+ip route 111.111.95.0 255.255.255.192 Dialer1
+ip route 111.111.94.0 255.255.255.192 Dialer1
+{% else %}
+ip route 111.111.95.0 255.255.255.192 {{ WAN_IP[0] | ipaddr('1') | ipaddr('address')}}
+ip route 111.111.94.0 255.255.255.192 {{ WAN_IP[0] | ipaddr('1') | ipaddr('address')}}
+{% endif %}
+no ip route 192.168.33.0 255.255.255.0
+no ip route 0.0.0.0 0.0.0.0
+
+!
+
+!
+no access-list 10
+{% if WAN_IP[0] | ipaddr('prefix') == 32 %}
+access-list 10 permit {{ERX[GRT_SUBVPN][SAR].LB}}
+{% else %}
+access-list 10 permit {{ WAN_IP[0] | ipaddr('1') | ipaddr('address')}}
+{% endif %}
+access-list 10 permit 111.111.95.0 0.0.0.63
+access-list 10 permit 111.111.94.0 0.0.0.63
+!
+no access-list 110
+access-list 110 deny   ip any 111.111.95.0 0.0.0.63
+access-list 110 deny   ip any 111.111.94.0 0.0.0.63
+access-list 110 permit ip any any
+
+snmp-server host 111.111.95.23 traps version 3 priv colt-nms
+snmp-server host 111.111.95.29 traps version 3 priv colt-nms
+snmp-server host 111.111.95.35 traps version 3 priv colt-nms
+!
+ntp server 111.111.95.51 prefer
+ntp server 111.111.95.46
+ntp server 111.111.94.8
+!
+{% else %}
+{% if WAN_IP[0] | ipaddr('prefix') == 32 %}
+ip route 192.168.33.0 255.255.255.0 Dialer1
+{% else %}
+ip route 192.168.33.0 255.255.255.0 {{ WAN_IP[0] | ipaddr('1') | ipaddr('address')}}
+{% endif %}
+no ip route 111.111.94.0 255.255.255.192
+no ip route 111.111.95.0 255.255.255.192
+no ip route 0.0.0.0 0.0.0.0
+!
+no access-list 10
+{{WAN_IP[0] | ipaddr('prefix')}}
+{% if WAN_IP[0] | ipaddr('prefix') == 32 %}
+access-list 10 permit {{ERX[GRT_SUBVPN][SAR].LB}}
+{% else %}
+access-list 10 permit {{ WAN_IP[0] | ipaddr('1') | ipaddr('address')}}
+{% endif %}
+access-list 10 permit 192.168.33.0 0.0.0.255
+!
+no access-list 110
+access-list 110 deny   ip any 192.168.33.0 0.0.0.255
+access-list 110 permit ip any any
+!
+{% endif %}
+!
+line vty 0 4
+ access-class 10 in
+ exec-timeout 60 0
+ transport input ssh
+!
+end

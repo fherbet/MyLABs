@@ -1,0 +1,25 @@
+{# MACRO to give L3 LAN interface #}
+{% macro L3LAN_INT_MACRO(subvpnid,lanid) %}
+{% set IF_SW = [] %}
+{% if SUBVPN[subvpnid].LAN[lanid].INT == "0" or not SUBVPN[subvpnid].LAN[lanid].INT %}
+{% set LAN_INT = vars[CPE_MODEL].INT.1.INT %}
+{% else %}
+{% set LAN_INT = SUBVPN[subvpnid].LAN[lanid].INT %}
+{% endif %}
+{% for ifID in vars[CPE_MODEL].INT %}
+{% if vars[CPE_MODEL].INT[ifID].INT == LAN_INT %}
+{% do IF_SW.append(vars[CPE_MODEL].INT[ifID].SWITCHED) %}
+{% endif %}
+{% endfor %}
+{% if IF_SW == [True] and not SUBVPN[subvpnid].LAN[lanid].VLAN %}{# LAN UNTAGGED + SWITCHED #}vlan1{{subvpnid}}{{lanid}}{% elif IF_SW == [False] and not SUBVPN[subvpnid].LAN[lanid].VLAN %}{# LAN UNTAGGED + ROUTED #}{{LAN_INT}}{% elif IF_SW == [True] and SUBVPN[subvpnid].LAN[lanid].VLAN %}{# LAN DOT1Q + SWITCHED #}vlan{{ SUBVPN[subvpnid].LAN[lanid].VLAN }}{% elif IF_SW == [False] and SUBVPN[subvpnid].LAN[lanid].VLAN %}{# LAN DOT1Q + ROUTED #}{{ LAN_INT }}.{{ SUBVPN[subvpnid].LAN[lanid].VLAN }}{% endif %}{% endmacro %}
+
+
+{# MACRO to give L3 B2B interface #}
+{% macro L3B2B_INT_MACRO(subvpnid,b2bid) %}
+{% set IF_SW = [] %}
+{% for ifID in vars[CPE_MODEL].INT %}
+{% if vars[CPE_MODEL].INT[ifID].INT == SUBVPN[subvpnid].B2B[b2bid].INT %}
+{% do IF_SW.append(vars[CPE_MODEL].INT[ifID].SWITCHED) %}
+{% endif %}
+{% endfor %}
+{% if IF_SW == [True] and not SUBVPN[subvpnid].B2B[b2bid].VLAN %}{# LAN UNTAGGED + SWITCHED #}vlan3{{subvpnid}}{{b2bid}}{% elif IF_SW == [False] and not SUBVPN[subvpnid].B2B[b2bid].VLAN %}{# LAN UNTAGGED + ROUTED #}{{SUBVPN[subvpnid].B2B[b2bid].INT}}{% elif IF_SW == [True] and SUBVPN[subvpnid].B2B[b2bid].VLAN %}{# LAN DOT1Q + SWITCHED #}vlan{{ SUBVPN[subvpnid].B2B[b2bid].VLAN }}{% elif IF_SW == [False] and SUBVPN[subvpnid].B2B[b2bid].VLAN %}{# LAN DOT1Q + ROUTED #}{{ SUBVPN[subvpnid].B2B[b2bid].INT }}.{{ SUBVPN[subvpnid].B2B[b2bid].VLAN }}{% endif %}{% endmacro %}

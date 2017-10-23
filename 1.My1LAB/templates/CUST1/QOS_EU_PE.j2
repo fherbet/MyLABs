@@ -1,0 +1,393 @@
+{% from 'templates/COMMON/BW_CONVERTER_MACRO.j2' import SERVICE_BW_CONVERTER with context %}
+{% set QOS = [] %}
+{% set ACTIVE_VPNS = [] %}
+{% set live_vpns = 0 %}
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].QOS_PROFILE and SUBVPN[subvpnID].STATUS %}
+{% do QOS.append(True) %}
+{% endif %}
+{% endfor %}
+{% for subvpnID in SUBVPN %}
+{% set live_vpns = live_vpns+1 %}
+{#live_vpns : {{live_vpns}}#}
+  {% if loop.last %}
+    {% do ACTIVE_VPNS.append(live_vpns) %}
+  {% endif %}
+{% endfor %}
+{#!ACTIVE_VPNS :{{ACTIVE_VPNS}}#}
+{#CHECK PE OS#}
+{% set PE_OS = [] %}
+{% for os in PE %}
+{% for pe_name in PE[os] %}
+{% if SAR == pe_name %}
+{% do PE_OS.append(os) %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+{% if QOS and CONTENTION == 'False'%}
+{###!!!!!!!!!!!!!!!!QOS PE!!!!!!!!!!!!!!!!!!!!!!!
+##!#}
+{% set PROF_USED = [] %}
+{% for subvpnID in SUBVPN %}
+{% if SUBVPN[subvpnID].QOS_PROFILE and SUBVPN[subvpnID].STATUS %}
+{% if ACTIVE_VPNS == [1] %}
+{% set subvpn_ser_bw = SERVICE_BW_DL %}
+{% set PE_VLAN = SAR_VLAN_FACING_CPE_GRT %}
+{% else %}
+{% set subvpn_ser_bw = SUBVPN[subvpnID].BW %}
+{% set PE_VLAN = SUBVPN[subvpnID].PE_VLAN %}
+{% endif %}
+{###!
+##!!!!!!! CONFIG FOR {{SAR}}
+#}
+{% if PE_OS[0] == 'JUNOS'%}
+{% for item in QOS_PARAM %}
+{% if QOS_PARAM[item].NAME|capitalize == SUBVPN[subvpnID].QOS_PROFILE|capitalize %}
+{% if not SUBVPN[subvpnID].QOS_PROFILE|capitalize in PROF_USED %}
+
+{% if QOS_PARAM[item].PR.PERCENT != 0 %}
+class-of-service {
+  schedulers {
+    "{{QOS_PARAM[item].PR.PERCENT}}%-Premium-sch" {
+      transmit-rate {
+        percent {{QOS_PARAM[item].PR.PERCENT}};
+        rate-limit;
+      }
+      buffer-size temporal 250;
+      priority high;
+    }
+  }
+  scheduler-maps {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map {
+      forwarding-class Premium scheduler "{{QOS_PARAM[item].PR.PERCENT}}%-Premium-sch";
+    }
+  }
+}
+{% endif %}
+{% if QOS_PARAM[item].B1.PERCENT != 0 %}
+class-of-service {
+  schedulers {
+    "{{QOS_PARAM[item].B1.PERCENT}}%-Business1-sch" {
+      transmit-rate percent {{QOS_PARAM[item].B1.PERCENT}};
+      buffer-size percent {{QOS_PARAM[item].B1.PERCENT}};
+      priority low;
+      {% if QOS_PARAM[item].B1.WRED == 'yes' %}
+      drop-profile-map loss-priority medium-low protocol any drop-profile Cpe-Business1-Prof;
+      {% endif %}
+    }
+  }
+  scheduler-maps {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map {
+      forwarding-class Business1 scheduler "{{QOS_PARAM[item].B1.PERCENT}}%-Business1-sch";
+    }
+  }
+}
+{% endif %}
+
+{% if QOS_PARAM[item].B2.PERCENT != 0 %}
+class-of-service {
+  schedulers {
+    "{{QOS_PARAM[item].B2.PERCENT}}%-Business2-sch" {
+      transmit-rate percent {{QOS_PARAM[item].B2.PERCENT}};
+      buffer-size percent {{QOS_PARAM[item].B2.PERCENT}};
+      priority low;
+      {% if QOS_PARAM[item].B2.WRED == 'yes' %}
+      drop-profile-map loss-priority medium-low protocol any drop-profile Cpe-Business2-Prof;
+      {% endif %}
+    }
+  }
+  scheduler-maps {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map {
+      forwarding-class Business2 scheduler "{{QOS_PARAM[item].B2.PERCENT}}%-Business2-sch";
+    }
+  }
+}
+{% endif %}
+
+{% if QOS_PARAM[item].B3.PERCENT != 0 %}
+class-of-service {
+  schedulers {
+    "{{QOS_PARAM[item].B3.PERCENT}}%-Business3-sch" {
+      transmit-rate percent {{QOS_PARAM[item].B3.PERCENT}};
+      buffer-size percent {{QOS_PARAM[item].B3.PERCENT}};
+      priority low;
+      {% if QOS_PARAM[item].B3.WRED == 'yes' %}
+      drop-profile-map loss-priority medium-low protocol any drop-profile Cpe-Business3-Prof;
+      {% endif %}
+    }
+  }
+  scheduler-maps {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map {
+      forwarding-class Business3 scheduler "{{QOS_PARAM[item].B3.PERCENT}}%-Business3-sch";
+    }
+  }
+}
+{% endif %}
+
+{% if QOS_PARAM[item].Def.PERCENT != 0 %}
+class-of-service {
+  schedulers {
+    "{{QOS_PARAM[item].Def.PERCENT}}%-Default-sch" {
+      transmit-rate percent {{QOS_PARAM[item].Def.PERCENT}};
+      buffer-size percent {{QOS_PARAM[item].Def.PERCENT}};
+      priority low;
+      {% if QOS_PARAM[item].Def.WRED == 'yes' %}
+      drop-profile-map loss-priority medium-low protocol any drop-profile Cpe-Default-Prof;
+      {% endif %}
+    }
+  }
+  scheduler-maps {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map {
+      forwarding-class Default scheduler "{{QOS_PARAM[item].Def.PERCENT}}%-Default-sch";
+    }
+  }
+}
+{% endif %}
+class-of-service {
+  schedulers {
+    "5%-RM-sch" {
+      transmit-rate percent 5;
+      buffer-size percent 5;
+      priority low;
+    }
+  }
+  scheduler-maps {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map {
+      forwarding-class Routing-Management scheduler "5%-RM-sch";
+    }
+  }
+}
+{% endif %}
+{% do PROF_USED.append(SUBVPN[subvpnID].QOS_PROFILE|capitalize) %}
+
+class-of-service {
+  traffic-control-profiles {
+    {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-tcp {
+        scheduler-map {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-sch-map;
+        shaping-rate {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="bit") }};
+    }
+  }
+}
+
+
+{% endif %}
+{% endfor %}
+interfaces {
+  {{SAR_INT}} {
+    {% if PE_VLAN != "0" %}
+    unit {{PE_VLAN}} {
+    {% endif %}
+      family inet {
+        filter {
+          input SAR_QOS_FROM_MANAGED_VPN;
+        }
+      }
+    }
+  }
+}
+
+class-of-service {
+  interfaces {
+    {{SAR_INT}} {
+      {% if PE_VLAN != "0" %}
+      unit {{PE_VLAN}} {
+      {% endif %}
+        output-traffic-control-profile {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-tcp;
+      }
+    }
+  }
+}
+
+{% elif PE_OS[0] == 'IOSXR'%}
+
+{% for item in QOS_PARAM %}
+{% if QOS_PARAM[item].NAME|capitalize == SUBVPN[subvpnID].QOS_PROFILE|capitalize %}
+
+{% if not SUBVPN[subvpnID].QOS_PROFILE|capitalize in PROF_USED %}
+!
+policy-map {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE
+{% if QOS_PARAM[item].PR.PERCENT != 0 %}
+ class Premium-To-CPE
+  priority
+  police rate percent {{QOS_PARAM[item].PR.PERCENT}}
+{% endif %}
+{% if QOS_PARAM[item].B1.PERCENT != 0 %}
+ class Business1-To-CPE
+  bandwidth percent {{QOS_PARAM[item].B1.PERCENT}}
+{% endif %}
+{% if QOS_PARAM[item].B2.PERCENT != 0 %}
+ class Business2-To-CPE
+  bandwidth percent {{QOS_PARAM[item].B2.PERCENT}}
+{% endif %}
+{% if QOS_PARAM[item].B3.PERCENT != 0 %}
+ class Business3-To-CPE
+  bandwidth percent {{QOS_PARAM[item].B3.PERCENT}}
+{% endif %}
+{% if QOS_PARAM[item].Def.PERCENT != 0 %}
+ class class-default
+  bandwidth percent {{QOS_PARAM[item].Def.PERCENT}}
+{% endif %}
+ class Routing-Management-To-CPE
+  bandwidth percent 5
+end-policy-map
+!
+{% endif %}
+{% do PROF_USED.append(SUBVPN[subvpnID].QOS_PROFILE|capitalize) %}
+!
+policy-map {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}
+ class class-default
+  shape average {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="bit") }}
+   service-policy {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE
+end-policy-map
+!
+{% endif %}
+{% endfor %}
+!
+interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}
+{% endif %}
+ bandwidth {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit") }}
+ no service-policy output
+ service-policy output {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}
+ no service-policy input
+ service-policy input SAR_QOS_FROM_MANAGED_VPN
+!
+{% elif PE_OS[0] == 'ERX'%}
+
+{% for item in QOS_PARAM %}
+{% if QOS_PARAM[item].NAME|capitalize == SUBVPN[subvpnID].QOS_PROFILE|capitalize %}
+
+Uni Ingress Policy= SAR_QOS_FROM_MANAGED_VPN
+{% if SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit") < 4000 %}
+Uni Qos Profile Name= cust-ipvpn-lowspeed
+{% else %}
+Uni Qos Profile Name= cust-ipvpn-highspeed
+{% endif %}
+
+access_rate= {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit") }}
+{% if QOS_PARAM[item].PR.PERCENT != 0 %}
+max_voice_bw_dn= {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit")*QOS_PARAM[item].PR.PERCENT/100 }}
+{% endif %}
+{% if QOS_PARAM[item].B1.PERCENT != 0 %}
+business_weight= {{QOS_PARAM[item].B1.PERCENT*4080/100}}
+{% endif %}
+{% if QOS_PARAM[item].B2.PERCENT != 0 %}
+business2_weight= {{QOS_PARAM[item].B2.PERCENT*4080/100}}
+{% endif %}
+{% if QOS_PARAM[item].B3.PERCENT != 0 %}
+business3_weight= {{QOS_PARAM[item].B3.PERCENT*4080/100}}
+{% endif %}
+{% if QOS_PARAM[item].Def.PERCENT != 0 %}
+best_effort_weight= {{QOS_PARAM[item].Def.PERCENT*4080/100}}
+{% endif %}
+Routing_Management_weight= 204
+
+{% endif %}
+{% endfor %}
+
+{% elif PE_OS[0] == 'IOS'%}
+{% for item in QOS_PARAM %}
+{% if QOS_PARAM[item].NAME|capitalize == SUBVPN[subvpnID].QOS_PROFILE|capitalize %}
+{% if not SUBVPN[subvpnID].QOS_PROFILE|capitalize in PROF_USED %}
+!
+policy-map {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE
+{% if QOS_PARAM[item].PR.PERCENT != 0 %}
+ class Premium-Class-To-CPE
+  priority
+  police cir percent {{QOS_PARAM[item].PR.PERCENT}}
+{% endif %}
+{% if QOS_PARAM[item].B1.PERCENT != 0 %}
+ class Business1-Class-To-CPE
+  bandwidth percent {{QOS_PARAM[item].B1.PERCENT}}
+  random-detect discard-class-based
+{% endif %}
+{% if QOS_PARAM[item].B2.PERCENT != 0 %}
+ class Business2-Class-To-CPE
+  bandwidth percent {{QOS_PARAM[item].B2.PERCENT}}
+  random-detect discard-class-based
+{% endif %}
+{% if QOS_PARAM[item].B3.PERCENT != 0 %}
+ class Business3-Class-To-CPE
+  bandwidth percent {{QOS_PARAM[item].B3.PERCENT}}
+  random-detect discard-class-based
+{% endif %}
+{% if QOS_PARAM[item].Def.PERCENT != 0 %}
+ class Default-To-CPE
+  bandwidth percent {{QOS_PARAM[item].Def.PERCENT}}
+  random-detect discard-class-based
+{% endif %}
+ class Routing-Management-To-CPE
+  bandwidth percent 5
+  random-detect discard-class-based
+!
+{% endif %}
+{% do PROF_USED.append(SUBVPN[subvpnID].QOS_PROFILE|capitalize) %}
+!
+policy-map {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}
+ class class-default
+  shape average {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="bit") }}
+   service-policy {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE
+!
+!
+!
+{% endif %}
+{% endfor %}
+!
+interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}
+{% endif %}
+
+ bandwidth {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit") }}
+ service-policy output {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}
+ service-policy input SAR_QOS_FROM_MANAGED_VPN
+!
+{% endif %}
+{% endif %}
+{% endfor %}
+{% else %}
+!!! IF NOT QOS > SHAPING
+{% for subvpnID in SUBVPN %}
+{% if ACTIVE_VPNS == [1] %}
+{% set subvpn_ser_bw = SERVICE_BW_DL %}
+{% else %}
+{% set subvpn_ser_bw = SUBVPN[subvpnID].BW %}
+{% endif %}
+!
+{% if PE_OS[0] == 'JUNOS'%}
+## to be changed to indented view ##
+set class-of-service traffic-control-profiles {{SERVICE_ID}}-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-tcp  scheduler-map VPN-Default-95%-sch-map
+set class-of-service traffic-control-profiles {{SERVICE_ID}}-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-tcp  shaping-rate {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="bit") }}
+!
+set class-of-service interfaces {{SAR_INT}}{% if PE_VLAN %} unit {{PE_VLAN}}{% endif %} output-traffic-control-profile {{SERVICE_ID}}-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-tcp
+set interfaces {{SAR_INT}}{% if PE_VLAN %} unit {{PE_VLAN}}{% endif %} family inet filter input Filter-VPN-Default
+!
+{% elif PE_OS[0] == 'IOSXR'%}
+!
+policy-map {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-shaping
+ class class-default
+  shape average {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="bit") }}
+ !
+ end-policy-map
+!
+interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}{% endif %}
+ no service-policy output
+ service-policy output {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-shaping
+ no service-policy input
+ service-policy input VPN-Default
+!
+{% elif PE_OS[0] == 'IOS'%}
+!
+policy-map {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-shaping
+  class class-default
+   shape average {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="bit") }}
+!
+interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}{% endif %}
+ service-policy output {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-shaping
+ service-policy input VPN-Default
+!
+{% elif PE_OS[0] == 'ERX'%}
+nothing to do
+{% endif %}
+
+
+{% endfor %}
+{% endif %}

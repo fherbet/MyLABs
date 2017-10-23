@@ -57,3 +57,7 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
   . [Data MODEL used for customer](host_vars/CPE1.yml)
   * 1st part with site common details (cct id, order number, MGMT LB , adress)
   * 2nd part with SUBVPN information as i plan to support multi-vrf
+
+
+## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts (+lineinfile module to store these in hostvars yml file for future use)
+  . ansible-playbook [GET_DATA_PE.yml](GET_DATA_PE.yml) -l CPE1 -D >> [OUTPUT](./LOGS/GET_DATA_PE.log)
