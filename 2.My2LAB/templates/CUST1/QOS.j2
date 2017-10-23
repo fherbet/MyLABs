@@ -1,6 +1,0 @@
-!SERVICE_BW_DL > {{SERVICE_BW_DL}}
-!SERVICE_BW_UL > {{SERVICE_BW_UL}}
-!CONTENTION > {{CONTENTION}}
-{% if COUNTRY != 'FRANCE' %}
-{% include "QOS_EU_CPE.j2" with context %}
-{% endif %}
