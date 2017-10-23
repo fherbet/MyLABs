@@ -62,13 +62,11 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 ## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts (+lineinfile module to store these in hostvars yml file for future use)
   . ansible-playbook [GET_DATA_PE.yml](GET_DATA_PE.yml) -l CPE1 -D >> [OUTPUT](./LOGS/GET_DATA_PE.log)
 
-
-## GENERATE BASIC_CONFIG
+## GENERATE BASIC_CONFIG
 
   . ansible-playbook [CONFIG.yml](CONFIG.yml#L34) -l CPE1 -t basic -D >>  [OUTPUT](./LOGS/CONFIG_BASIC.log)
   * [BASIC_CONFIG.j2](./templates/COMMON/BASIC_CONFIG.j2)
 
-
-## GENERATE FINAL_CONFIG
+## GENERATE FINAL_CONFIG
 
   . ansible-playbook [CONFIG.yml](CONFIG.yml#L40) -l CPE1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
