@@ -70,4 +70,4 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 ## GENERATE FINAL_CONFIG
 
   . ansible-playbook [CONFIG.yml](CONFIG.yml#L40) -l CPE1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
-  * [BASE.j2](./templates/CUSST1/BASE.j2)
+  * [BASE.j2](./templates/CUST1/BASE.j2)
