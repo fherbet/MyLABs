@@ -96,9 +96,9 @@
   - name: Configure Basic Config  via ssh / tacacs / napalm
     napalm_install_config:
      hostname={{ COLT_LB.0.IP | ipaddr('address') }}
-     username=sd_prov_cpe
+     username=osainstall
      dev_os=ios
-     password=Aut0C0nf1g78
+     password=0sainstall
      config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.conf
      commit_changes=true
      replace_config=false
@@ -111,9 +111,9 @@
   - name: Configure Final Config  via ssh / tacacs / napalm
     napalm_install_config:
      hostname={{ COLT_LB.0.IP | ipaddr('address') }}
-     username=sd_prov_cpe
+     username=osainstall
      dev_os=ios
-     password=Aut0C0nf1g78
+     password=0sainstall
      config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.conf
      commit_changes=true
      replace_config=false
@@ -129,8 +129,8 @@
     ios_config:
       #provider: osainstall
       host: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: sd_prov_cpe
-      password: Aut0C0nf1g78
+      username: osainstall
+      password: 0sainstall
       transport: cli
       save: no
       src: templates/COMMON/NO_TACACS.txt
@@ -142,9 +142,9 @@
   - name: Configure Qos/Shaping on PE
     napalm_install_config:
      hostname={{ hostvars[ORDER].SAR }}
-     username=sd_prov_cpe
+     username=osainstall
      dev_os={{ hostvars[SAR].os }}
-     password=Aut0C0nf1g78
+     password=0sainstall
      config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
      commit_changes=True
      replace_config=false
@@ -163,8 +163,8 @@
       commands:
         - clear ip bgp * soft
       host: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: sd_prov_cpe
-      password: Aut0C0nf1g78
+      username: osainstall
+      password: 0sainstall
       transport: cli
     tags:
     - check
@@ -174,9 +174,9 @@
   - name: CHECK / Napalm Get Facts from Device
     napalm_get_facts:
       hostname: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: "sd_prov_cpe"
+      username: "osainstall"
       dev_os: "ios"
-      password: "Aut0C0nf1g78"
+      password: "0sainstall"
       filter: ['facts','interfaces_ip','bgp_neighbors']
     register: napalm_facts
     tags:
@@ -196,9 +196,9 @@
   - name: CHECK / Ping Remote Test IP(s)
     napalm_ping:
       hostname: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: "sd_prov_cpe"
+      username: "osainstall"
       dev_os: "ios"
-      password: "Aut0C0nf1g78"
+      password: "0sainstall"
       source: "{{ COLT_LB.0.IP | ipaddr('address') }}"
       destination: "{{ item }}"
       count: 5
@@ -219,9 +219,9 @@
   - name: CHECK / Ping Remote Test IP(s) from source {{ SUBVPN.0.LAN.0.IP }} > {{ SUBVPN.0.LAN.0.IP | regex_replace(' ') }}
     napalm_ping:
       hostname: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: "sd_prov_cpe"
+      username: "osainstall"
       dev_os: "ios"
-      password: "Aut0C0nf1g78"
+      password: "0sainstall"
       source: "{{ SUBVPN.0.LAN.0.IP | regex_replace(' ') | ipaddr('address') }}"
       destination: "{{ item }}"
       count: 5
@@ -243,8 +243,8 @@
     ios_command:
       commands: sh ip na tr
       host: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: sd_prov_cpe
-      password: Aut0C0nf1g78
+      username: osainstall
+      password: 0sainstall
       transport: cli
     register: shipnatr
     tags:
@@ -269,10 +269,10 @@
     - ipcfg
     - iptst
 
-  - name: Send Email after IPCFG is completed
+  - name: Send Email after CPE config is completed
     mail:
       host: localhost
-      from: ansible@colt.net
+      from: me@home.net
       #to: msimonpietri@colt.net
       to: '{{EMAIL_DEST_IPCFG[COUNTRY]}}'
       subject: '{{ CUST_NAME }} {{COUNTRY}} {{SITE_NAME_ALIAS}} {{ORDER}} {{ COLT_LB.0.IP|ipaddr("address") }} >>>> IPCFG DONE on {{ timestamp.stdout }}'
@@ -297,10 +297,10 @@
     tags:
     - ipcfg
 
-  - name: Send Email after IPTST is completed
+  - name: Send Email after Service ACTIVATION is completed
     mail:
       host: localhost
-      from: ansible@colt.net
+      from: me@home.net
       to: '{{EMAIL_DEST_IPTST[COUNTRY]}}'
       subject: '{{ CUST_NAME }} {{COUNTRY}} {{SITE_NAME_ALIAS}} {{ORDER}} {{ SERVICE_BW }} >>>> SERVICE ACTIVATION DONE'
       body: |
