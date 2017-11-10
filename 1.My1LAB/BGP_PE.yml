@@ -1,0 +1,18 @@
+---
+- name: BGP PE
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: include BACKBONE.yml
+    include_vars:
+      file: group_vars/BACKBONE.yml
+
+  - name: generate PE BGP CONFIG for IOSXR PE
+    template: src=templates/COMMON/BGP_PE_IOSXR.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
+    when: hostvars[SAR].dev_os == "iosxr"
+
+  - name: generate PE BGP CONFIG for IOS PE
+    template: src=templates/COMMON/BGP_PE_IOS.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
+    when: hostvars[SAR].dev_os == "ios"

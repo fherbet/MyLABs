@@ -1,0 +1,5 @@
+BGP:
+    AS: 65500
+    TIMERS:
+        KEEPALIVE: 10
+        HOLDTIME: 30

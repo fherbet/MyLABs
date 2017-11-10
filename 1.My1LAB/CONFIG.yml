@@ -6,6 +6,8 @@
   - allinone
   - configpe
 
+
+
 - name: IPVPN_FABRIC CONFIG PLAYBOOK
   hosts: all
   connection: local
@@ -310,3 +312,9 @@
 
     tags:
     - iptst
+
+
+
+- include: BGP_PE.yml
+  tags:
+  - bgppe
