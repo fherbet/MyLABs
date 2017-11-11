@@ -62,7 +62,8 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 # [NetAutSol] Deploy Network Services (Week #4) Hands-on Exercises
 
 
-## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts (+lineinfile module to store these in hostvars yml file for future use)
+## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts from MGMT LB
+  (+lineinfile module to store these in hostvars yml file for future use)
   . ansible-playbook [GET_DATA_PE.yml](GET_DATA_PE.yml) -l CPE1 -D >> [OUTPUT](./LOGS/GET_DATA_PE.log)
 
 
