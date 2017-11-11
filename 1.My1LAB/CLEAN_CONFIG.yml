@@ -1,0 +1,15 @@
+---
+
+- name: CLEAN CONFIG FOLDER
+  hosts: all
+  connection: local
+  gather_facts: no
+
+
+  tasks:
+
+########JINJA2 TEMPLATES CREATION
+  - name: Delete target directory
+    file: path=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/ state=absent
+    tags:
+    - clearfolder

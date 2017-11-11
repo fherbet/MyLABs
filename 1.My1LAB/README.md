@@ -62,10 +62,12 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 # [NetAutSol] Deploy Network Services (Week #4) Hands-on Exercises
 
 
-## BUILDING PEs BGP SESSIONS to CPE1
-
 ## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts (+lineinfile module to store these in hostvars yml file for future use)
   . ansible-playbook [GET_DATA_PE.yml](GET_DATA_PE.yml) -l CPE1 -D >> [OUTPUT](./LOGS/GET_DATA_PE.log)
+
+
+## BUILDING PEs BGP SESSIONS to CPE1
+  . ansible-playbook [BGP_PE.yml](BGP_PE.yml) -l CUST1 -D >> [OUTPUT](./LOGS/BGP_PE.log)
 
 ## GENERATE BASIC_CONFIG
 

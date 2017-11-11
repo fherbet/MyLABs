@@ -2,6 +2,6 @@ router bgp {{BGP.AS}}
   neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} remote-as {{CPE_AS}}
   neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} timers {{CPE_BGP.TIMERS.KEEPALIVE}} {{CPE_BGP.TIMERS.HOLDTIME}}
   neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} description {{inventory_hostname}}
-  neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} update-source GigabitEthernet0/3.1014
+{# neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} update-source {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}{% endif %}#}
   neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} send-community
   neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}} as-override

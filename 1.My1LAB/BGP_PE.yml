@@ -9,6 +9,10 @@
     include_vars:
       file: group_vars/BACKBONE.yml
 
+
+  - name: Create target directory
+    file: path=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/ state=directory mode=0755
+
   - name: generate PE BGP CONFIG for IOSXR PE
     template: src=templates/COMMON/BGP_PE_IOSXR.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
     when: hostvars[SAR].dev_os == "iosxr"

@@ -34,7 +34,7 @@ SUBVPN:
         NAME: TEST
         STATUS: Yes
         BW: 4 Mbps
-        PE_VLAN:
+        PE_VLAN: 
         QOS_PROFILE: 4M
         WAN:
             0:

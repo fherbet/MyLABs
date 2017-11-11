@@ -1,0 +1,92 @@
+ansible-playbook BGP_PE.yml -l CUST1 -D
+
+PLAY [BGP PE] ******************************************************************
+
+TASK [include BACKBONE.yml] ****************************************************
+ok: [CPE1]
+ok: [CPE2]
+ok: [CUST_DC1]
+
+TASK [Create target directory] *************************************************
+--- before
++++ after
+@@ -1,5 +1,5 @@
+ {
+-    "mode": "0775",
++    "mode": "0755",
+     "path": "configs/CUST1/DC1-CUST_DC1/",
+-    "state": "absent"
++    "state": "directory"
+ }
+changed: [CUST_DC1]
+--- before
++++ after
+@@ -1,5 +1,5 @@
+ {
+-    "mode": "0775",
++    "mode": "0755",
+     "path": "configs/CUST1/SITE1-SECONDARY-CPE2/",
+-    "state": "absent"
++    "state": "directory"
+ }
+changed: [CPE2]
+--- before
++++ after
+@@ -1,5 +1,5 @@
+ {
+-    "mode": "0775",
++    "mode": "0755",
+     "path": "configs/CUST1/SITE1-PRIMARY-CPE1/",
+-    "state": "absent"
++    "state": "directory"
+ }
+changed: [CPE1]
+
+TASK [generate PE BGP CONFIG for IOSXR PE] *************************************
+skipping: [CUST_DC1]
+--- before
++++ after: dynamically generated
+@@ -0,0 +1,8 @@
++router bgp 65500
++  neighbor 10.253.1.2
++    timers 10 30
++    remote-as 65505
++      address-family ipv4 unicast
++        route-policy PERMIT-ALL in
++        route-policy PERMIT-ALL out
++
+
+changed: [CPE1]
+--- before
++++ after: dynamically generated
+@@ -0,0 +1,8 @@
++router bgp 65500
++  neighbor 10.253.2.2
++    timers 10 30
++    remote-as 65505
++      address-family ipv4 unicast
++        route-policy PERMIT-ALL in
++        route-policy PERMIT-ALL out
++
+
+changed: [CPE2]
+
+TASK [generate PE BGP CONFIG for IOS PE] ***************************************
+skipping: [CPE1]
+skipping: [CPE2]
+--- before
++++ after: dynamically generated
+@@ -0,0 +1,6 @@
++router bgp 65500
++  neighbor 10.253.3.2 remote-as 65505
++  neighbor 10.253.3.2 timers 10 30
++  neighbor 10.253.3.2 description CUST_DC1
++  neighbor 10.253.3.2 send-community
++  neighbor 10.253.3.2 as-override
+
+changed: [CUST_DC1]
+
+PLAY RECAP *********************************************************************
+CPE1                       : ok=3    changed=2    unreachable=0    failed=0
+CPE2                       : ok=3    changed=2    unreachable=0    failed=0
+CUST_DC1                   : ok=3    changed=2    unreachable=0    failed=0
