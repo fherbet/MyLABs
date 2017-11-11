@@ -68,15 +68,15 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
   . ansible-playbook [GET_DATA_PE.yml](GET_DATA_PE.yml) -l CPE1 -D >> [OUTPUT](./LOGS/GET_DATA_PE.log)
 
 
-## BUILDING PEs BGP SESSIONS to CPE1
+## BUILDING PEs BGP SESSIONS CONFIG towards CUST1 Devices
   . ansible-playbook [BGP_PE.yml](BGP_PE.yml) -l CUST1 -D >> [OUTPUT](./LOGS/BGP_PE.log)
 
-## GENERATE BASIC_CONFIG
+## GENERATE BASIC_CONFIG for CUST1 Devices
 
   . ansible-playbook [CONFIG.yml](CONFIG.yml#L34) -l CPE1 -t basic -D >>  [OUTPUT](./LOGS/CONFIG_BASIC.log)
   * [BASIC_CONFIG.j2](./templates/COMMON/BASIC_CONFIG.j2)
 
-## GENERATE FINAL_CONFIG
+## GENERATE FINAL_CONFIG for CUST1 Devices
 
   . ansible-playbook [CONFIG.yml](CONFIG.yml#L40) -l CPE1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
   * [BASE.j2](./templates/CUST1/BASE.j2)
