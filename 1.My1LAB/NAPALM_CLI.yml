@@ -52,4 +52,5 @@
 
   - copy:
       content: "{{ TEMP1 }}"
-      dest: "configs/{{ inventory_hostname }}/{{ inventory_hostname }}_napalmcli_nice.txt"
+      #dest: "configs/{{ inventory_hostname }}/{{ inventory_hostname }}_napalmcli_nice.txt"
+      dest: "configs/{{ inventory_hostname }}/boot.cfg"

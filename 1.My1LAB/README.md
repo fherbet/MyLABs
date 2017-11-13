@@ -69,9 +69,18 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 
 ## BUILDING PEs BGP SESSIONS CONFIG towards CUST1 Devices
-  . ansible-playbook [BGP_PE.yml](BGP_PE.yml) -l CUST1 -D >> [OUTPUT](./LOGS/BGP_PE.log)
+  . ansible-playbook [BGP_PE.yml](BGP_PE.yml) -l CUST1 -t configpe -D >> [OUTPUT](./LOGS/BGP_PE.log)
   * [BGP_PE_IOS.j2](./templates/COMMON/BGP_PE_IOS.j2)
   * [BGP_PE_IOSXR.j2](./templates/COMMON/BGP_PE_IOSXR.j2)
+
+## DEPLOY PEs BGP SESSIONS CONFIG towards CUST1 Devices
+  . ansible-playbook [BGP_PE.yml](BGP_PE.yml#L31) -l CUST1 -t deploy  >> [OUTPUT](./LOGS/DEPLOY_BGP_PE.log)
+
+  * [PE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-PE-BGP.diff)
+  * [PE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-PE-BGP.diff)
+  * [MGMT_Diff](./configs/CUST1/DC1-CUST_DC1/DC1-CUST_DC1-PE-BGP.diff)
+
+
 
 ## GENERATE BASIC_CONFIG for CUST1 Devices
 

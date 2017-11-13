@@ -15,7 +15,7 @@
         #filter: ['facts']
         #filter: ['arp_table']
         #filter: ['config']
-        filter: ['config','interfaces']
+        filter: ['config']
         #filter: ['facts','interfaces_ip','bgp_neighbors']
       register: napalm_facts
 
