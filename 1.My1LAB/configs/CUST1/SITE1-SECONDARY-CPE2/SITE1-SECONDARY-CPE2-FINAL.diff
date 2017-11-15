@@ -175,7 +175,7 @@
 +route-map TO-SAR permit 20
 + set community 12345:6790 additive
 + set as-path prepend 65505
-+ip prefix-list COLT-IP seq 5 permit 192.168.33.0 le 32
++ip prefix-list COLT-IP seq 5 permit 192.168.33.0/24 le 32
 +ip prefix-list COLT-IP seq 40 permit 212.74.74.96/32
 +route-map DENY-MGMT deny 10
 + match ip address prefix-list COLT-IP
