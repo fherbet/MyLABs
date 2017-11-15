@@ -84,10 +84,15 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 ## GENERATE BASIC_CONFIG for CUST1 Devices
 
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L34) -l CPE1 -t basic -D >>  [OUTPUT](./LOGS/CONFIG_BASIC.log)
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L34) -l CUST1 -t basic -D >>  [OUTPUT](./LOGS/CONFIG_BASIC.log)
   * [BASIC_CONFIG.j2](./templates/COMMON/BASIC_CONFIG.j2)
 
 ## GENERATE FINAL_CONFIG for CUST1 Devices
 
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L40) -l CPE1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L40) -l CUST1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
   * [BASE.j2](./templates/CUST1/BASE.j2)
+
+
+
+## DEPLOY BASIC_CONFIG for CUST1 Devices
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L33) -l CUST1 -t deploybasic >>  [OUTPUT](./LOGS/DEPLOYBASIC.log)

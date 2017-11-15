@@ -125,7 +125,6 @@ no ip route 111.111.95.0 255.255.255.192
 no ip route 0.0.0.0 0.0.0.0
 !
 no access-list 10
-{{WAN_IP[0] | ipaddr('prefix')}}
 {% if WAN_IP[0] | ipaddr('prefix') == 32 %}
 access-list 10 permit {{ERX[GRT_SUBVPN][SAR].LB}}
 {% else %}
