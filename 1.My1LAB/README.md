@@ -96,3 +96,16 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 ## DEPLOY BASIC_CONFIG for CUST1 Devices
   . ansible-playbook [CONFIG.yml](CONFIG.yml#L33) -l CUST1 -t deploybasic >>  [OUTPUT](./LOGS/DEPLOYBASIC.log)
+
+  * [CPE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-BASIC.diff)
+  * [CPE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-BASIC.diff)
+  * [CUST_DC1_Diff](./configs/CUST1/DC1-CUST_DC1/DC1-CUST_DC1-BASIC.diff)
+
+
+
+## DEPLOY FINAL_CONFIG for CUST1 Devices
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L33) -l CUST1 -t deployfinal >>  [OUTPUT](./LOGS/DEPLOYFINAL.log)
+
+  * [CPE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-FINAL.diff)
+  * [CPE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-FINAL.diff)
+  * [CUST_DC1_Diff](./configs/CUST1/DC1-CUST_DC1/DC1-CUST_DC1-FINAL.diff)
