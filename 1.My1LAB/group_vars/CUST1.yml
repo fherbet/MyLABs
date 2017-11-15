@@ -42,7 +42,7 @@ TEST_IP:
           - 10.255.1.3
           - 8.8.8.8
         TEST:
-          - 172.31.246.254
+          - 10.223.0.254
           - 8.8.8.8
 
 ERX:
@@ -80,7 +80,7 @@ QOS_PARAM:
             WRED: yes
             QUEUELIMIT:
     1:
-        NAME: 6M
+        NAME: 4M
         PR:
             PERCENT: 0
         B1:

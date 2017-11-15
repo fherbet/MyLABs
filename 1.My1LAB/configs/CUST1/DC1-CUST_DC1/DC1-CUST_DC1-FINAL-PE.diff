@@ -1,0 +1,2 @@
++interface GigabitEthernet0/3.1
++ service-policy output IPC01987-Profile8m-QOS-TO-CPE-8M

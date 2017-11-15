@@ -84,13 +84,19 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 ## GENERATE BASIC_CONFIG for CUST1 Devices
 
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L34) -l CUST1 -t basic -D >>  [OUTPUT](./LOGS/CONFIG_BASIC.log)
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L16) -l CUST1 -t basic -D >>  [OUTPUT](./LOGS/CONFIG_BASIC.log)
   * [BASIC_CONFIG.j2](./templates/COMMON/BASIC_CONFIG.j2)
 
 ## GENERATE FINAL_CONFIG for CUST1 Devices
 
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L40) -l CUST1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L22) -l CUST1 -t final -D >>  [OUTPUT](./LOGS/CONFIG_FINAL.log)
   * [BASE.j2](./templates/CUST1/BASE.j2)
+
+
+## GENERATE FINAL_CONFIG (QOS/SHAPING) for PEs that connects CUST1 Devices
+
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L27) -l CUST1 -t configpe -D >>  [OUTPUT](./LOGS/CONFIG_FINALPE.log)
+  * [QOS_PE.j2](./templates/COMMON/QOS_PE.j2)
 
 
 
@@ -103,8 +109,8 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 
 
-## DEPLOY FINAL_CONFIG for CUST1 Devices
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L49) -l CUST1 -t deployfinal >>  [OUTPUT](./LOGS/DEPLOYFINAL.log)
+## DEPLOY FINAL_CONFIG for PE that connects CUST1 Devices
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L49) -l CUST1 -t deployfinalpe >>  [OUTPUT](./LOGS/DEPLOYFINALPE.log)
 
   * [CPE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-FINAL.diff)
   * [CPE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-FINAL.diff)

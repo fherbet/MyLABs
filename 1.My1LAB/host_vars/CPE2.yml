@@ -23,7 +23,7 @@ PROVIDER: TELEFONICA
 PROVIDER_PRODUCT: SpeedAcceSS bridge 4MB
 LINK_ID: MAD/MAD/IA-194202
 ACCESS_BW: 6 Mbps
-SERVICE_BW: 2 Mbps
+SERVICE_BW: 4 Mbps
 SAR: PE2
 SAR_INT: GigabitEthernet0/0/0/1
 SAR_VLAN_FACING_CPE_GRT: 25
@@ -33,7 +33,7 @@ SUBVPN:
     0:
         NAME: TEST
         STATUS: Yes
-        BW: 2 Mbps
+        BW: 4 Mbps
         PE_VLAN:
         QOS_PROFILE: 4M
         WAN:

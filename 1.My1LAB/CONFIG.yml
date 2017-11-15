@@ -32,7 +32,7 @@
 ############DEPLOY CONFIGS on PE/CPE
 ########PUSH BASIC CONFIG
 
-  - name: Configure Basic Config  via ssh / tacacs / napalm
+  - name: Configure Basic Config  via ssh / napalm
     napalm_install_config:
      hostname={{ COLT_LB.0.IP | ipaddr('address') }}
      username=osainstall
@@ -47,7 +47,7 @@
     - deploybasic
 
 ########PUSH FINAL CONFIG
-  - name: Configure Final Config  via ssh / tacacs / napalm
+  - name: Configure Final Config  via ssh / napalm
     napalm_install_config:
      hostname={{ COLT_LB.0.IP | ipaddr('address') }}
      username=osainstall
@@ -65,16 +65,14 @@
 ########PUSH CONFIG PE
   - name: Configure Qos/Shaping on PE
     napalm_install_config:
-     hostname={{ hostvars[ORDER].SAR }}
+     hostname=lo0-{{ hostvars[ORDER].SAR }}
      username=osainstall
-     dev_os={{ hostvars[SAR].os }}
+     dev_os={{ hostvars[SAR].dev_os }}
      password=0sainstall
      config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
      commit_changes=True
      replace_config=false
      get_diffs=True
      diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.diff
-     timeout=120
-    when: SAR_OS == "junos" or SAR_OS == "iosxr"
     tags:
     - deployfinalpe

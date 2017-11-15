@@ -359,7 +359,7 @@ interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}
  no service-policy output
  service-policy output {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}
  no service-policy input
- service-policy input SAR_QOS_FROM_MANAGED_VPN
+
 !
 {% elif PE_OS[0] == 'ERX'%}
 
@@ -447,8 +447,9 @@ interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}
 
  bandwidth {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="kbit") }}
  service-policy output {{SERVICE_ID}}-Profile{{SUBVPN[subvpnID].QOS_PROFILE|capitalize}}-QOS-TO-CPE-{{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}
- service-policy input SAR_QOS_FROM_MANAGED_VPN
+
 !
+end
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -534,6 +535,7 @@ interface {{SAR_INT}}{% if PE_VLAN %}.{{PE_VLAN}}{% endif %}
  service-policy output {{ SERVICE_BW_CONVERTER(subvpn_ser_bw,value="descr") }}-shaping
  service-policy input VPN-Default
 !
+end
 {% elif PE_OS[0] == 'ERX'%}
 nothing to do
 {% endif %}
