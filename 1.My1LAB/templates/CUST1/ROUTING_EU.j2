@@ -31,12 +31,10 @@ route-map REDISTRIBUTE-CONNECTED permit 10
 !
 route-map REDISTRIBUTE-CONNECTED permit 20
 !
-ip prefix-list WWW seq 5 permit 10.50.50.0/24
-ip prefix-list WWW seq 10 permit 0.0.0.0/0
-!
 !
 !
 {% if RELATED_ORDER %}
+ip prefix-list WWW seq 5 permit 8.8.8.8/32
 ip prefix-list B2B seq 5 permit 10.255.80.16/30
 ip prefix-list REMOTE_LB seq 5 permit {{ hostvars[RELATED_ORDER].COLT_LB.0.IP | ipaddr('address') }}/32
 !
@@ -97,11 +95,8 @@ route-map TO-SAR permit 20
 {% endif %}
 !
 !
-ip prefix-list COLT-IP seq 5 permit 212.74.94.0/26 le 32
-ip prefix-list COLT-IP seq 10 permit 212.74.95.0/26 le 32
-ip prefix-list COLT-IP seq 15 permit 10.255.0.0/16 le 32
+ip prefix-list COLT-IP seq 5 permit 192.168.33.0/24 le 32
 ip prefix-list COLT-IP seq 40 permit 212.74.74.96/32
-ip prefix-list COLT-IP seq 45 permit 100.96.0.0/19 ge 32
 !
 route-map DENY-MGMT deny 10
  match ip address prefix-list COLT-IP

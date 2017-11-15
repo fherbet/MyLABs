@@ -150,8 +150,7 @@
 + match ip address 30
 + set community 8220:40001
 +route-map REDISTRIBUTE-CONNECTED permit 20
-+ip prefix-list WWW seq 5 permit 10.50.50.0/24
-+ip prefix-list WWW seq 10 permit 0.0.0.0/0
++ip prefix-list WWW seq 5 permit 8.8.8.8/32
 +ip prefix-list B2B seq 5 permit 10.255.80.16/30
 +ip prefix-list REMOTE_LB seq 5 permit 10.255.1.11/32
 +ip community-list 9 permit 65505:1
@@ -176,11 +175,8 @@
 +route-map TO-SAR permit 20
 + set community 12345:6790 additive
 + set as-path prepend 65505
-+ip prefix-list COLT-IP seq 5 permit 212.74.94.0/26 le 32
-+ip prefix-list COLT-IP seq 10 permit 212.74.95.0/26 le 32
-+ip prefix-list COLT-IP seq 15 permit 10.255.0.0/16 le 32
++ip prefix-list COLT-IP seq 5 permit 192.168.33.0 le 32
 +ip prefix-list COLT-IP seq 40 permit 212.74.74.96/32
-+ip prefix-list COLT-IP seq 45 permit 100.96.0.0/19 ge 32
 +route-map DENY-MGMT deny 10
 + match ip address prefix-list COLT-IP
 +route-map DENY-MGMT permit 20
@@ -212,3 +208,20 @@
 + 1 permit 10.255.1.11
 -no ip route 212.74.94.0 255.255.255.192 10.255.18.37
 -no ip route 212.74.95.0 255.255.255.192 10.255.18.37
++ip nat translation timeout never
++ip nat pool CUST1-TEST 10.123.1.1 10.123.1.254 netmask 255.255.255.0 type match-host
++ip nat inside source route-map NAT-WWW-TEST pool CUST1-TEST reversible
++route-map NAT-WWW-TEST permit 10
++ match ip address 101
+-no access-list 101
++access-list 101 permit ip 10.223.1.0 0.0.0.255 8.8.8.8 0.0.0.0
++access-list 101 deny ip 10.223.1.0 0.0.0.255 10.223.0.0 0.0.0.255
++access-list 101 deny ip 10.255.0.0 0.0.255.255 any
++access-list 101 permit ip 10.223.1.0 0.0.0.255 any
++interface GigabitEthernet0/0
++ ip nat inside
++interface GigabitEthernet0/2.3
++ ip nat inside
++ip route 10.123.1.0 255.255.255.0 GigabitEthernet0/0 tag 65505
++interface GigabitEthernet0/1.25
++ ip nat outside

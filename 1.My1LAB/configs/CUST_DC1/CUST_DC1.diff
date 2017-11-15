@@ -1,1 +1,140 @@
+interface GigabitEthernet0/0
+ +no ip address
+ +shutdown
+-class-map match-any IPC01987-Business-1-Class
+ -match access-group name IPC01987-Business-1-Classify
+-class-map match-any IPC01987-Business-2-Class
+ -match access-group name IPC01987-Business-2-Classify
+-class-map match-any IPC01987-Business-3-Class
+ -match access-group name IPC01987-Business-3-Classify
+-class-map match-any Management-Routing-Class
+ -match access-group name Management-Routing-Classify
+interface GigabitEthernet0/0
+ -description IfType[Customer:Branch] Customer[CUST1] SID[IPC01987] Site[CUST_DC1] VPN[TEST] Cust-Ref[DC1]
+ -ip address 10.223.0.254 255.255.255.0
+ -ip access-group 110 in
+ -no cdp enable
+interface GigabitEthernet0/1
+ -description IfType[Access] L3BEnd[MGMT] L1Circuit[LON/LON/IA-191111] Rate[4M] VPN[TEST]
+ -bandwidth 4000
+ -no cdp enable
+-router bgp 65505
+ -bgp log-neighbor-changes
+ -redistribute connected route-map REDISTRIBUTE-CONNECTED
+ -redistribute static route-map 65505-TAGGED-STATIC
+ -neighbor 10.253.3.1 remote-as 65500
+ -neighbor 10.253.3.1 description MGMT
+ -neighbor 10.253.3.1 timers 10 30
+ -neighbor 10.253.3.1 next-hop-self
+ -neighbor 10.253.3.1 send-community
+ -neighbor 10.253.3.1 allowas-in
+-ip bgp-community new-format
 -ip scp server enable
+-ip access-list extended IPC01987-Business-1-Classify
+ -permit ip 172.16.50.0 0.0.0.255 any
+ -permit ip any 172.16.50.0 0.0.0.255
+ -permit ip 10.60.50.0 0.0.0.255 any
+ -permit ip any 10.60.50.0 0.0.0.255
+ -permit ip 172.16.60.0 0.0.0.255 any
+ -permit ip any 172.16.60.0 0.0.0.255
+ -permit ip 172.16.150.0 0.0.0.255 any
+ -permit ip any 172.16.150.0 0.0.0.255
+ -permit ip 172.16.151.0 0.0.0.255 any
+ -permit ip any 172.16.151.0 0.0.0.255
+ -permit ip 172.16.152.0 0.0.0.255 any
+ -permit ip any 172.16.152.0 0.0.0.255
+ -permit ip 172.16.153.0 0.0.0.255 any
+ -permit ip any 172.16.153.0 0.0.0.255
+ -permit ip 172.16.154.0 0.0.0.255 any
+ -permit ip any 172.16.154.0 0.0.0.255
+ -permit ip 172.16.155.0 0.0.0.255 any
+ -permit ip any 172.16.155.0 0.0.0.255
+ -permit ip 172.16.156.0 0.0.0.255 any
+ -permit ip any 172.16.156.0 0.0.0.255
+ -permit ip 172.16.157.0 0.0.0.255 any
+ -permit ip any 172.16.157.0 0.0.0.255
+ -permit ip 172.16.158.0 0.0.0.255 any
+ -permit ip any 172.16.158.0 0.0.0.255
+ -permit ip 172.16.159.0 0.0.0.255 any
+ -permit ip any 172.16.159.0 0.0.0.255
+-ip access-list extended IPC01987-Business-2-Classify
+ -permit tcp any any eq 2598
+ -permit tcp any eq 2598 any
+ -permit tcp any any eq 1494
+ -permit tcp any eq 1494 any
+ -permit tcp any any eq domain
+ -permit tcp any eq domain any
+ -permit tcp any any eq 88
+ -permit tcp any eq 88 any
+ -permit tcp any any eq 139
+ -permit tcp any eq 139 any
+ -permit tcp any any eq 135
+ -permit tcp any eq 135 any
+ -permit tcp any any eq 137
+ -permit tcp any eq 137 any
+ -permit tcp any any eq 161
+ -permit tcp any eq 161 any
+ -permit tcp any any eq 389
+ -permit tcp any eq 389 any
+ -permit tcp any any eq 5900
+ -permit tcp any eq 5900 any
+ -permit tcp any any eq 22
+ -permit tcp any eq 22 any
+ -permit tcp any any eq telnet
+ -permit tcp any eq telnet any
+ -permit tcp any any eq 123
+ -permit tcp any eq 123 any
+ -permit tcp any any eq 3268
+ -permit tcp any eq 3268 any
+ -permit tcp any any eq 27000
+ -permit tcp any eq 27000 any
+ -permit tcp any any eq 57652
+ -permit tcp any eq 57652 any
+ -permit tcp any any eq 7279
+ -permit tcp any eq 7279 any
+ -permit tcp any any eq 1688
+ -permit tcp any eq 1688 any
+ -permit tcp any any eq 59707
+ -permit tcp any eq 59707 any
+ -permit udp any any eq domain
+ -permit udp any eq domain any
+ -permit udp any any eq 88
+ -permit udp any eq 88 any
+ -permit udp any any eq ntp
+ -permit udp any eq ntp any
+ -permit udp any any eq netbios-ns
+ -permit udp any eq netbios-ns any
+ -permit udp any any eq netbios-ss
+ -permit udp any eq netbios-ss any
+ -permit udp any any eq 389
+ -permit udp any eq 389 any
+ -permit udp any any eq 5000
+ -permit udp any eq 5000 any
+ -permit tcp any host 172.16.0.114 eq www
+ -permit tcp host 172.16.0.114 eq www any
+-ip access-list extended Management-Routing-Classify
+ -permit ip any 212.74.95.0 0.0.0.63
+ -permit ip any 212.74.94.0 0.0.0.63
+ -permit ip 212.74.95.0 0.0.0.63 any
+ -permit ip 212.74.94.0 0.0.0.63 any
+ -permit tcp any any eq bgp
+ -permit udp any eq rip any eq rip
+-route-map 65505-TAGGED-STATIC permit 10
+ -match tag 65505
+-route-map REDISTRIBUTE-CONNECTED permit 10
+ -match ip address 30
+ -set community 8220:40001
+-route-map REDISTRIBUTE-CONNECTED permit 20
+-snmp-server view cutdown system included
+-snmp-server view cutdown interfaces included
+-snmp-server community ZzZzZzZzZzZ view cutdown RO 20
+-access-list 20 permit 172.16.3.153
+-access-list 20 permit 172.16.143.10
+-access-list 20 permit 172.18.3.53
+-access-list 20 permit 172.18.3.52
+-access-list 20 permit 172.18.3.54
+-access-list 20 permit 172.18.3.51
+-access-list 20 permit 172.18.3.50
+-access-list 20 permit 172.16.0.91
+-access-list 20 permit 192.168.0.145
+-access-list 30 permit 10.255.1.13
