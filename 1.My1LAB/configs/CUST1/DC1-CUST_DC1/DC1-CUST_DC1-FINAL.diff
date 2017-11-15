@@ -1,0 +1,26 @@
++int GigabitEthernet0/0
++ speed auto
++ duplex auto
++ description IfType[Customer:Branch] Customer[CUST1] SID[IPC01987] Site[CUST_DC1] VPN[TEST] Cust-Ref[DC1]
++ ip address 10.223.0.254 255.255.255.0
+- no cdp enable
+- no shutdown
++ ip access-group 110 in
++snmp-server view cutdown ciscoEnvMonMIB included
+-no policy-map default-qos
++class-map match-any IPC01987-Business-1-Class
++  match access-group name IPC01987-Business-1-Classify
++class-map match-any IPC01987-Business-2-Class
++  match access-group name IPC01987-Business-2-Classify
++class-map match-any IPC01987-Business-3-Class
++  match access-group name IPC01987-Business-3-Classify
++class-map match-any Management-Routing-Class
++  match access-group name Management-Routing-Classify
++interface GigabitEthernet0/1
+- no service-policy output main
++ service-policy output IPC01987-Profile4M-Queue-4M
++router bgp 65505
+- no neighbor 10.255.80.17
+- no neighbor 10.255.80.18
+-no ip route 212.74.94.0 255.255.255.192 10.255.18.37
+-no ip route 212.74.95.0 255.255.255.192 10.255.18.37

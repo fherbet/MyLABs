@@ -34,6 +34,7 @@
 {% endfor %}
 {% if not IF_EXIST %}
 default int {{ SUBVPN[subvpnID].B2B.0.INT }}
+int {{ SUBVPN[subvpnID].B2B.0.INT }}
 no shut
 int {{ SUBVPN[subvpnID].B2B.0.INT }}
  description IfType[B2B] L3BEnd[{{hostvars[RELATED_ORDER].COLT_HOSTNAME}}]
@@ -62,6 +63,7 @@ interface vlan{{ SUBVPN[subvpnID].B2B.0.VLAN }}
 {% endfor %}
 {% if not IF_EXIST %}
 default int {{ SUBVPN[subvpnID].B2B.0.INT }}
+int {{ SUBVPN[subvpnID].B2B.0.INT }}
 no shut
 int {{ SUBVPN[subvpnID].B2B.0.INT }}
  description IfType[B2B] L3BEnd[{{hostvars[RELATED_ORDER].COLT_HOSTNAME}}]

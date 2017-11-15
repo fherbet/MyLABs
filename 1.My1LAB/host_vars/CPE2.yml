@@ -48,7 +48,7 @@ SUBVPN:
                 MEDIA: RJ45
                 SPEED: auto
                 DUPLEX: auto
-                IP: 10.223.1.252 / 255.255.255.0
+                IP: 10.223.1.253 / 255.255.255.0
                 IP_HELPER:
                 VIP:
                     0:
