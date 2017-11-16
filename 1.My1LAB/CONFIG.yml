@@ -27,7 +27,7 @@
   - name: Create PE Qos/Shaping
     template: src=templates/COMMON/QOS_PE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
     tags:
-    - configpe
+    - finalpe
 
 ############DEPLOY CONFIGS on PE/CPE
 ########PUSH BASIC CONFIG

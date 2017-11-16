@@ -1,0 +1,13 @@
+ansible-playbook CONFIG.yml -l CUST1 -t deployfinalpe
+
+PLAY [IPVPN_FABRIC CONFIG PLAYBOOK] ********************************************
+
+TASK [Configure Qos/Shaping on PE] *********************************************
+changed: [CPE2]
+changed: [CPE1]
+changed: [CUST_DC1]
+
+PLAY RECAP *********************************************************************
+CPE1                       : ok=1    changed=1    unreachable=0    failed=0
+CPE2                       : ok=1    changed=1    unreachable=0    failed=0
+CUST_DC1                   : ok=1    changed=1    unreachable=0    failed=0 

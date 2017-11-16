@@ -7,8 +7,8 @@
 - no shutdown
 + ip access-group 110 in
 +interface GigabitEthernet0/1
-+ description IfType[Access] L3BEnd[MGMT] L1Circuit[LON/LON/IA-191111] Rate[4M] VPN[TEST]
-+ bandwidth 4000
++ description IfType[Access] L3BEnd[MGMT] L1Circuit[LON/LON/IA-191111] Rate[8M] VPN[TEST]
++ bandwidth 8000
 - no cdp enable
 +snmp-server view cutdown system included
 +snmp-server view cutdown interfaces included
@@ -121,9 +121,25 @@
 +  match access-group name IPC01987-Business-3-Classify
 +class-map match-any Management-Routing-Class
 +  match access-group name Management-Routing-Classify
++policy-map IPC01987-Profile8M-Queue
++ class IPC01987-Business-1-Class
++  bandwidth percent 20
++  set ip dscp af31
++ class IPC01987-Business-2-Class
++  bandwidth percent 45
++  set ip dscp af21
++ class Management-Routing-Class
++  bandwidth percent 4
++  set ip dscp af41
++class class-default
++  bandwidth percent 30
++policy-map IPC01987-Profile8M-Queue-8M
++ class class-default
++  shape average 8000000
++  service-policy IPC01987-Profile8M-Queue
 +interface GigabitEthernet0/1
 - no service-policy output main
-+ service-policy output IPC01987-Profile4M-Queue-4M
++ service-policy output IPC01987-Profile8M-Queue-8M
 +ip bgp-community new-format
 +access-list 30 permit 10.255.1.13
 +route-map 65505-TAGGED-STATIC permit 10

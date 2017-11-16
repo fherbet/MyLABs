@@ -1,3 +1,12 @@
+-  !
+-  class-map Management-Class
+-  !
+-  policy-map IPC01987-Profile4m-QOS-TO-CPE
+-  policy-map IPC01987-Profile4m-QOS-TO-CPE-4M
+-  interface GigabitEthernet0/0/0/1.25
+-   bandwidth 4000
+-   service-policy output IPC01987-Profile4m-QOS-TO-CPE-4M
+-  !
 -  router bgp 65500
 -   neighbor 10.253.2.2
 -    remote-as 65505

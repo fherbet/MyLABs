@@ -1,6 +1,52 @@
+-policy-map IPC01987-Profile8m-QOS-TO-CPE
+ -class Business1-Class-To-CPE
+  -bandwidth percent 20
+  -random-detect discard-class-based
+ -class Business2-Class-To-CPE
+  -bandwidth percent 45
+  -random-detect discard-class-based
+ -class Default-To-CPE
+  -bandwidth percent 30
+  -random-detect discard-class-based
+ -class Routing-Management-To-CPE
+  -bandwidth percent 5
+  -random-detect discard-class-based
+-policy-map IPC01987-Profile8m-QOS-TO-CPE-8M
+ -class class-default
+  -shape average 8000000
+   -service-policy IPC01987-Profile8m-QOS-TO-CPE
+interface GigabitEthernet0/3.1
+ -bandwidth 8000
 router bgp 65500
  -neighbor 10.253.3.2 remote-as 65505
  -neighbor 10.253.3.2 description CUST_DC1
  -neighbor 10.253.3.2 timers 10 30
  -neighbor 10.253.3.2 send-community
  -neighbor 10.253.3.2 as-override
+-banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+-banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+-banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C

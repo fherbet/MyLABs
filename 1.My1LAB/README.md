@@ -95,7 +95,7 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 ## GENERATE FINAL_CONFIG (QOS/SHAPING) for PEs that connects CUST1 Devices
 
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L27) -l CUST1 -t configpe -D >>  [OUTPUT](./LOGS/CONFIG_FINALPE.log)
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L27) -l CUST1 -t finalpe -D >>  [OUTPUT](./LOGS/CONFIG_FINALPE.log)
   * [QOS_PE.j2](./templates/COMMON/QOS_PE.j2)
 
 
@@ -109,9 +109,17 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
 
 
 
-## DEPLOY FINAL_CONFIG for PE that connects CUST1 Devices
-  . ansible-playbook [CONFIG.yml](CONFIG.yml#L49) -l CUST1 -t deployfinalpe >>  [OUTPUT](./LOGS/DEPLOYFINALPE.log)
+## DEPLOY FINAL_CONFIG for  CUST1 Devices
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L49) -l CUST1 -t deployfinal >>  [OUTPUT](./LOGS/DEPLOYFINAL.log)
 
   * [CPE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-FINAL.diff)
   * [CPE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-FINAL.diff)
   * [CUST_DC1_Diff](./configs/CUST1/DC1-CUST_DC1/DC1-CUST_DC1-FINAL.diff)
+
+
+## DEPLOY FINAL_CONFIG for PE that connects CUST1 Devices
+  . ansible-playbook [CONFIG.yml](CONFIG.yml#L49) -l CUST1 -t deployfinalpe >>  [OUTPUT](./LOGS/DEPLOYFINALPE.log)
+
+  * [PE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-FINAL-PE.diff)
+  * [PE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-FINAL-PE.diff)
+  * [MGMT_Diff](./configs/CUST1/DC1-CUST_DC1/DC1-CUST_DC1-FINAL-PE.diff)

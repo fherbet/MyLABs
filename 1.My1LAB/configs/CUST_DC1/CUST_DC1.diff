@@ -29,7 +29,6 @@ interface GigabitEthernet0/1
  -neighbor 10.253.3.1 send-community
  -neighbor 10.253.3.1 allowas-in
 -ip bgp-community new-format
--ip scp server enable
 -ip access-list extended IPC01987-Business-1-Classify
  -permit ip 172.16.50.0 0.0.0.255 any
  -permit ip any 172.16.50.0 0.0.0.255
@@ -128,6 +127,7 @@ interface GigabitEthernet0/1
 -snmp-server view cutdown system included
 -snmp-server view cutdown interfaces included
 -snmp-server community ZzZzZzZzZzZ view cutdown RO 20
+-snmp-server chassis-id
 -access-list 20 permit 172.16.3.153
 -access-list 20 permit 172.16.143.10
 -access-list 20 permit 172.18.3.53
@@ -138,3 +138,30 @@ interface GigabitEthernet0/1
 -access-list 20 permit 172.16.0.91
 -access-list 20 permit 192.168.0.145
 -access-list 30 permit 10.255.1.13
+-banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+-banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+-banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C

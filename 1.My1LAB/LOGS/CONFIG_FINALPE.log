@@ -1,45 +1,8 @@
-ansible-playbook CONFIG.yml -l CUST1 -t configpe -D
+ansible-playbook CONFIG.yml -l CUST1 -t finalpe -D
 
 PLAY [IPVPN_FABRIC CONFIG PLAYBOOK] ********************************************
 
 TASK [Create PE Qos/Shaping] ***************************************************
---- before
-+++ after: dynamically generated
-@@ -0,0 +1,32 @@
-+
-+
-+!
-+policy-map IPC01987-Profile8m-QOS-TO-CPE
-+ class Business1-Class-To-CPE
-+  bandwidth percent 20
-+  random-detect discard-class-based
-+ class Business2-Class-To-CPE
-+  bandwidth percent 45
-+  random-detect discard-class-based
-+ class Default-To-CPE
-+  bandwidth percent 30
-+  random-detect discard-class-based
-+ class Routing-Management-To-CPE
-+  bandwidth percent 5
-+  random-detect discard-class-based
-+!
-+!
-+policy-map IPC01987-Profile8m-QOS-TO-CPE-8M
-+ class class-default
-+  shape average 8000000
-+   service-policy IPC01987-Profile8m-QOS-TO-CPE
-+!
-+!
-+!
-+!
-+interface GigabitEthernet0/3.1
-+
-+ bandwidth 8000
-+ service-policy output IPC01987-Profile8m-QOS-TO-CPE-8M
-+ service-policy input SAR_QOS_FROM_MANAGED_VPN
-+!
-
-changed: [CUST_DC1]
 --- before
 +++ after: dynamically generated
 @@ -0,0 +1,31 @@
@@ -72,10 +35,48 @@ changed: [CUST_DC1]
 + no service-policy output
 + service-policy output IPC01987-Profile4m-QOS-TO-CPE-4M
 + no service-policy input
-+ service-policy input SAR_QOS_FROM_MANAGED_VPN
++
 +!
 
 changed: [CPE2]
+--- before
++++ after: dynamically generated
+@@ -0,0 +1,33 @@
++
++
++!
++policy-map IPC01987-Profile8m-QOS-TO-CPE
++ class Business1-Class-To-CPE
++  bandwidth percent 20
++  random-detect discard-class-based
++ class Business2-Class-To-CPE
++  bandwidth percent 45
++  random-detect discard-class-based
++ class Default-To-CPE
++  bandwidth percent 30
++  random-detect discard-class-based
++ class Routing-Management-To-CPE
++  bandwidth percent 5
++  random-detect discard-class-based
++!
++!
++policy-map IPC01987-Profile8m-QOS-TO-CPE-8M
++ class class-default
++  shape average 8000000
++   service-policy IPC01987-Profile8m-QOS-TO-CPE
++!
++!
++!
++!
++interface GigabitEthernet0/3.1
++
++ bandwidth 8000
++ service-policy output IPC01987-Profile8m-QOS-TO-CPE-8M
++
++!
++end
+
+changed: [CUST_DC1]
 --- before
 +++ after: dynamically generated
 @@ -0,0 +1,31 @@
@@ -108,7 +109,7 @@ changed: [CPE2]
 + no service-policy output
 + service-policy output IPC01987-Profile4m-QOS-TO-CPE-4M
 + no service-policy input
-+ service-policy input SAR_QOS_FROM_MANAGED_VPN
++
 +!
 
 changed: [CPE1]
