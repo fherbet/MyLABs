@@ -123,3 +123,7 @@ ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route" >> [RAW COMMAND
   * [PE1_Diff](./configs/CUST1/SITE1-PRIMARY-CPE1/SITE1-PRIMARY-CPE1-FINAL-PE.diff)
   * [PE2_Diff](./configs/CUST1/SITE1-SECONDARY-CPE2/SITE1-SECONDARY-CPE2-FINAL-PE.diff)
   * [MGMT_Diff](./configs/CUST1/DC1-CUST_DC1/DC1-CUST_DC1-FINAL-PE.diff)
+
+
+## SANITY CHECKS
+  . ansible-playbook [VERIFY.yml](VERIFY.yml) -l CUST1 >>  [OUTPUT](./LOGS/VERIFY.log)

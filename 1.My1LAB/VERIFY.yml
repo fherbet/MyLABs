@@ -20,7 +20,6 @@
       password: 0sainstall
       transport: cli
     tags:
-    - check
     - checkpostSA
     - allinone
 
@@ -33,39 +32,15 @@
       filter: ['facts','interfaces_ip','bgp_neighbors']
     register: napalm_facts
     tags:
-    - check
     - checkpostSA
     - allinone
 
   - name: CHECK / Print BGP details
     debug:
-     msg: "{{ napalm_facts.ansible_facts.bgp_neighbors.global.peers }}"
+     msg: "{{ napalm_facts.ansible_facts.napalm_bgp_neighbors.global.peers }}"
     tags:
     - check
     - checkpostSA
-    - allinone
-
-
-  - name: CHECK / Ping Remote Test IP(s)
-    napalm_ping:
-      hostname: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      username: "osainstall"
-      dev_os: "ios"
-      password: "0sainstall"
-      source: "{{ COLT_LB.0.IP | ipaddr('address') }}"
-      destination: "{{ item }}"
-      count: 5
-    with_items: "{{ TEST_IP[SUBVPN.0.NAME] }}"
-    register: pingtest
-    tags:
-    - check
-    - allinone
-
-  - name: CHECK / Print PINGTEST
-    debug:
-     msg: "{{ pingtest.results | map(attribute='results') | list  }}"
-    tags:
-    - check
     - allinone
 
 ########CHECK PING WITH LAN SOURCE
@@ -110,71 +85,3 @@
     tags:
     - checkpostSA
     - shipnatr
-
-
-
-########EMAILS
-
-  - name: Get Timestamp
-    command: date +%Y%m%d-%H%M%S
-    register: timestamp
-    tags:
-    - ipcfg
-    - iptst
-
-  - name: Send Email after CPE config is completed
-    mail:
-      host: localhost
-      from: me@home.net
-      #to: msimonpietri@colt.net
-      to: '{{EMAIL_DEST_IPCFG[COUNTRY]}}'
-      subject: '{{ CUST_NAME }} {{COUNTRY}} {{SITE_NAME_ALIAS}} {{ORDER}} {{ COLT_LB.0.IP|ipaddr("address") }} >>>> IPCFG DONE on {{ timestamp.stdout }}'
-      body: |
-        {{ CUST_NAME }} {{SITE_NAME_ALIAS}} {{ORDER}} has been successfully configured on {{ timestamp.stdout }}
-
-        link id : {{ LINK_ID }}
-        lb : {{ COLT_LB.0.IP|ipaddr("address") }}
-        wan : {{ SUBVPN.0.WAN.0.IP }}
-        bandwidth : {{ SERVICE_BW }}
-        host : {{ hostvars[ORDER].facts.hostname }}
-        model : {{ hostvars[ORDER].facts.model }}
-        s/n : {{ hostvars[ORDER].facts.serial_number }}
-        ios : {{ hostvars[ORDER].facts.os_version }}
-
-        BGP peers:
-        {{ hostvars[ORDER].bgp_neighbors.global.peers|to_nice_json }}
-
-        IP interfaces :
-        {{ hostvars[ORDER].interfaces_ip|to_nice_json }}
-
-    tags:
-    - ipcfg
-
-  - name: Send Email after Service ACTIVATION is completed
-    mail:
-      host: localhost
-      from: me@home.net
-      to: '{{EMAIL_DEST_IPTST[COUNTRY]}}'
-      subject: '{{ CUST_NAME }} {{COUNTRY}} {{SITE_NAME_ALIAS}} {{ORDER}} {{ SERVICE_BW }} >>>> SERVICE ACTIVATION DONE'
-      body: |
-        {{ CUST_NAME }} {{SITE_NAME_ALIAS}} {{ORDER}} has been successfully activated on {{ timestamp.stdout }}
-
-        host : {{ hostvars[ORDER].facts.hostname }}
-        model : {{ hostvars[ORDER].facts.model }}
-        link id : {{ LINK_ID }}
-        lb : {{ COLT_LB.0.IP|ipaddr("address") }}
-        wan : {{ SUBVPN.0.WAN.0.IP }}
-        bandwidth : {{ SERVICE_BW }}
-
-
-        IP interfaces :
-        {{ hostvars[ORDER].interfaces_ip|to_nice_json }}
-
-    tags:
-    - iptst
-
-
-
-- include: BGP_PE.yml
-  tags:
-  - bgppe
