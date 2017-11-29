@@ -1,0 +1,22 @@
+---
+- name: IPVPN_FABRIC ALL IN ONE PLAYBOOK
+  hosts: all
+  connection: local
+  gather_facts: false
+
+- import_playbook: GET_DATA_PE.yml
+  tags:
+  - getdatape
+
+- import_playbook: BGP_PE.yml
+  tags:
+  - bgppe
+
+- import_playbook: CONFIG.yml
+  tags:
+  - config
+
+
+- import_playbook: VERIFY.yml
+  tags:
+  - verify

@@ -1,5 +1,5 @@
 ---
-- name: get data pe
+- name: GET DATA PE
   hosts: all
   connection: local
   gather_facts: no
