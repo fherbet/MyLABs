@@ -1,8 +1,26 @@
++service timestamps debug datetime msec
++service timestamps log datetime msec
++no service password-encryption
++enable password 0sainstall
++ip domain name mylab
++username osainstall privilege 15 password 0 0sainstall
 interface GigabitEthernet0/0
  +no ip address
  +shutdown
 interface GigabitEthernet0/2
  +shutdown
++ip route 0.0.0.0 0.0.0.0 10.253.2.1
+line vty 0 4
+ +exec-timeout 720 0
+ +transport input all
+-service timestamps debug datetime msec localtime
+-service timestamps log datetime msec localtime
+-service password-encryption
+-logging buffered 32000
+-enable password 7 1447010A050A393F25243F
+-ip domain name PE2.ipc.colt.net
+-username osainstall privilege 15 password 7 005400070D5518120E2D40
+-ip rcmd rsh-enable
 -class-map match-any IPC01987-Business-1-Class
  -match access-group name IPC01987-Business-1-Classify
 -class-map match-any IPC01987-Business-2-Class
@@ -11,6 +29,30 @@ interface GigabitEthernet0/2
  -match access-group name IPC01987-Business-3-Classify
 -class-map match-any Management-Routing-Class
  -match access-group name Management-Routing-Classify
+-policy-map IPC01987-Profile4M-Queue
+ -class IPC01987-Business-1-Class
+  -bandwidth percent 25
+  -set ip dscp af31
+ -class IPC01987-Business-2-Class
+  -bandwidth percent 40
+  -set ip dscp af21
+ -class Management-Routing-Class
+  -bandwidth percent 4
+  -set ip dscp af41
+ -class class-default
+  -bandwidth percent 30
+  -set ip dscp default
+  -random-detect
+-policy-map IPC01987-Profile4M-Queue-4M
+ -class class-default
+  -shape average 4000000
+   -service-policy IPC01987-Profile4M-Queue
+interface Loopback0
+ -description IfType[Management]
+-interface Loopback999
+ -description ConfigVersion:1.25 Bespoke Ref Nr SR_123456
+ -no ip address
+ -shutdown
 interface GigabitEthernet0/0
  -description IfType[Customer:Branch] Customer[CUST1] SID[IPC01987] Site[CPE2] VPN[TEST] Cust-Ref[SITE1-SECONDARY]
  -ip address 10.223.1.253 255.255.255.0
@@ -20,15 +62,16 @@ interface GigabitEthernet0/0
  -vrrp 1 ip 10.223.1.254
  -no cdp enable
 interface GigabitEthernet0/1
- -description IfType[Access] L3BEnd[PE2] L1Circuit[MAD/MAD/IA-194202] Rate[2M]
- -bandwidth 2000
+ -description IfType[Access] L3BEnd[PE2] L1Circuit[MAD/MAD/IA-194202] Rate[4M]
+ -bandwidth 4000
  -no cdp enable
 interface GigabitEthernet0/1.25
- -description IfType[Access] L3BEnd[PE2] L1Circuit[MAD/MAD/IA-194202] Rate[2M] VPN[TEST]
- -bandwidth 2000
+ -description IfType[Access] L3BEnd[PE2] L1Circuit[MAD/MAD/IA-194202] Rate[4M] VPN[TEST]
+ -bandwidth 4000
  -ip nat outside
  -ip virtual-reassembly in
  -no cdp enable
+ -service-policy output IPC01987-Profile4M-Queue-4M
 interface GigabitEthernet0/2
  -description IfType[B2B] L3BEnd[CPE1]
 -interface GigabitEthernet0/2.3
@@ -59,12 +102,14 @@ interface GigabitEthernet0/2
 -ip bgp-community new-format
 -ip community-list 1 permit 12345:6790
 -ip community-list 9 permit 65505:1
+-ip tftp source-interface Loopback0
 -ip nat translation timeout never
 -ip nat pool CUST1-TEST 10.123.1.1 10.123.1.254 netmask 255.255.255.0 type match-host
 -ip nat inside source route-map NAT-WWW-TEST pool CUST1-TEST reversible
 -ip route 10.123.1.0 255.255.255.0 GigabitEthernet0/0 tag 65505
 -ip route 10.255.1.11 255.255.255.255 GigabitEthernet0/2.3 10.255.80.17
 -ip route 10.255.1.11 255.255.255.255 GigabitEthernet0/0 10.223.1.252 250
+-ip route 192.168.33.0 255.255.255.0 10.253.2.1
 -ip ssh source-interface Loopback0
 -ip access-list extended IPC01987-Business-1-Classify
  -permit ip 172.16.50.0 0.0.0.255 any
@@ -160,6 +205,10 @@ interface GigabitEthernet0/2
 -ip prefix-list COLT-IP seq 40 permit 212.74.74.96/32
 -ip prefix-list REMOTE_LB seq 5 permit 10.255.1.11/32
 -ip prefix-list WWW seq 5 permit 8.8.8.8/32
+-ip sla responder
+-logging trap debugging
+-logging facility local6
+-logging source-interface Loopback0
 -route-map NAT-WWW-TEST permit 10
  -match ip address 101
 -route-map DENY-MGMT deny 10
@@ -194,8 +243,15 @@ interface GigabitEthernet0/2
 -snmp-server view cutdown system included
 -snmp-server view cutdown interfaces included
 -snmp-server community ZzZzZzZzZzZ view cutdown RO 20
+-snmp-server ifindex persist
+-snmp-server trap-source Loopback0
+-snmp-server location [ColtCab] / PLAYA, BARCELONA, SPAIN
+-snmp-server contact inoc@xxxx.net
 -snmp-server chassis-id
+-snmp ifmib ifalias long
+-access-list 10 permit 10.253.2.1
 -access-list 10 permit 10.255.1.11
+-access-list 10 permit 192.168.33.0 0.0.0.255
 -access-list 20 permit 172.16.3.153
 -access-list 20 permit 172.16.143.10
 -access-list 20 permit 172.18.3.53
@@ -210,6 +266,8 @@ interface GigabitEthernet0/2
 -access-list 101 deny ip 10.223.1.0 0.0.0.255 10.223.0.0 0.0.0.255
 -access-list 101 deny ip 10.255.0.0 0.0.255.255 any
 -access-list 101 permit ip 10.223.1.0 0.0.0.255 any
+-access-list 110 deny ip any 192.168.33.0 0.0.0.255
+-access-list 110 permit ip any any
 -banner exec ^C
 **************************************************************************
 * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
@@ -237,3 +295,8 @@ interface GigabitEthernet0/2
 * purposes is expressly prohibited except as otherwise authorized by     *
 * Cisco in writing.                                                      *
 **************************************************************************^C
+line vty 0 4
+ -access-class 10 in
+ -exec-timeout 60 0
+ -transport input ssh
+-ntp source Loopback0

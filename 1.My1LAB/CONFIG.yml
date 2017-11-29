@@ -2,7 +2,7 @@
 - name: IPVPN_FABRIC CONFIG PLAYBOOK
   hosts: all
   connection: local
-  gather_facts: no
+  gather_facts: false
 
 
   tasks:

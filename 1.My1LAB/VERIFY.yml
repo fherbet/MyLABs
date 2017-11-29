@@ -3,22 +3,18 @@
 - name: IPVPN_FABRIC VERIFY PLAYBOOK
   hosts: all
   connection: local
-  gather_facts: no
-
-
+  gather_facts: 'no'
 
   tasks:
-
-########CHECK
-
+  ######## CHECK
   - name: REFRESH BGP sessions
     ios_command:
       commands:
-        - clear ip bgp * soft
+      - clear ip bgp * soft
       host: "{{ COLT_LB.0.IP | ipaddr('address') }}"
       username: osainstall
       password: 0sainstall
-      transport: cli
+      #transport: cli
     tags:
     - checkpostSA
     - allinone
@@ -29,22 +25,22 @@
       username: "osainstall"
       dev_os: "ios"
       password: "0sainstall"
-      filter: ['facts','interfaces_ip','bgp_neighbors']
-    register: napalm_facts
+      filter: ['facts', 'interfaces_ip', 'bgp_neighbors']
+    register: getfacts
     tags:
     - checkpostSA
     - allinone
 
   - name: CHECK / Print BGP details
     debug:
-     msg: "{{ napalm_facts.ansible_facts.napalm_bgp_neighbors.global.peers }}"
+        msg: "{{ getfacts.ansible_facts.napalm_bgp_neighbors.global.peers }}"
     tags:
     - check
     - checkpostSA
     - allinone
 
-########CHECK PING WITH LAN SOURCE
-  - name: CHECK / Ping Remote Test IP(s) from source {{ SUBVPN.0.LAN.0.IP }} > {{ SUBVPN.0.LAN.0.IP | regex_replace(' ') }}
+  ######## CHECK PING WITH LAN SOURCE
+  - name: CHECK / Ping Remote Test IP(s) from source {{ SUBVPN.0.LAN.0.IP }}
     napalm_ping:
       hostname: "{{ COLT_LB.0.IP | ipaddr('address') }}"
       username: "osainstall"
@@ -61,19 +57,19 @@
 
   - name: CHECK / print PINGTEST from source {{ SUBVPN.0.LAN.0.IP }}
     debug:
-     msg: "{{ pingtest.results | map(attribute='results') | list  }}"
+      msg: "{{ pingtest.results | map(attribute='results') | list  }}"
     tags:
     - checkpostSA
 
 
-########CHECK NAT WITH SH IP NA TR
+  ######## CHECK NAT WITH SH IP NA TR
   - name: CHECK NAT / WITH SH IP NA TR
     ios_command:
       commands: sh ip na tr
       host: "{{ COLT_LB.0.IP | ipaddr('address') }}"
       username: osainstall
       password: 0sainstall
-      transport: cli
+      #transport: cli
     register: shipnatr
     tags:
     - checkpostSA
@@ -81,7 +77,7 @@
 
   - name: CHECK NAT / Print SH IP NA TR
     debug:
-     msg: "{{ shipnatr.stdout_lines }}"
+      msg: "{{ shipnatr.stdout_lines }}"
     tags:
     - checkpostSA
     - shipnatr

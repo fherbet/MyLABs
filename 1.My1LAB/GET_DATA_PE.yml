@@ -10,13 +10,13 @@
       host: lo0-MGMT
       username: osainstall
       password: 0sainstall
-      transport: cli
+      #transport: cli
 
     cliPE:
       host: "lo0-{{SAR_NAME}}"
       username: osainstall
       password: 0sainstall
-      transport: cli
+      #transport: cli
 
     TEMP1: []
     MGMT_LB_PE: []
