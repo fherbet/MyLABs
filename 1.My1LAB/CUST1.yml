@@ -1,0 +1,28 @@
+---
+- name: IPVPN_FABRIC ALL IN ONE PLAYBOOK
+  hosts: CUST1
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - include_role:
+      name: get_data_pe
+
+
+  - include_role:
+      name: verify
+    tags:
+    - verify
+
+# - import_playbook: BGP_PE.yml
+#   tags:
+#   - bgppe
+#
+# - import_playbook: CONFIG.yml
+#   tags:
+#   - config
+#
+#
+# - import_playbook: VERIFY.yml
+#   tags:
+# - verify
