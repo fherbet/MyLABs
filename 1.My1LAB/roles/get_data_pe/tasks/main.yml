@@ -11,7 +11,7 @@
 
 ## if PUBLIC_MGMT == True
 
-  - name: MGMT / show ip bgp vpnv4 vrf oss-new-mplsmgmt {{ COLT_LB.0.IP | ipaddr('address')}}/32 | i Originator
+  - name: PUBLIC MGMT / show ip bgp vpnv4 vrf oss-new-mplsmgmt {{ COLT_LB.0.IP | ipaddr('address')}}/32 | i Originator
     ios_command:
       commands: show ip bgp vpnv4 vrf oss-new-mplsmgmt {{ COLT_LB.0.IP | ipaddr('address')}}/32 | i Originator
       provider: "{{ cli }}"
@@ -32,9 +32,9 @@
 
 ## if PUBLIC_MGMT == False
 
-  - name: MGMT / show ip bgp {{ COLT_LB.0.IP | ipaddr('address')}}/32  | i  from
+  - name: MGMT / show ip bgp {{ COLT_LB.0.IP | ipaddr('address')}}/32 best  | i  from
     ios_command:
-      commands: show ip bgp {{ COLT_LB.0.IP | ipaddr('address')}}/32  | i  from
+      commands: show ip bgp {{ COLT_LB.0.IP | ipaddr('address')}}/32 best | i  from
       provider: "{{ cli }}"
     register: config
     when: PUBLIC_MGMT == false
@@ -151,7 +151,7 @@
       username: "osainstall"
       password: "0sainstall"
       dev_os: "{{dev_os}}"
-      optional_args: "transport=telnet"
+      #optional_args: "transport=telnet"
       args:
           commands:
               - "show ip int brie | i {{ SUBVPN.0.WAN.0.IP | ipaddr('1') | ipaddr('address')}}"
