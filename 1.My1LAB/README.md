@@ -10,4 +10,4 @@ Diagram from EVE-NG
 
 ## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts from MGMT LB
 
-  . ansible-playbook [CUST1_PLAY.yml](CUST1_PLAY.yml) -l CUST1 -D >> [OUTPUT](./LOGS/CUST1.log)
+  . ansible-playbook [CUST1_PLAY.yml](CUST1_PLAY.yml) -l CUST1 -D >> [OUTPUT](./LOGS/CUST1_PLAY.log)

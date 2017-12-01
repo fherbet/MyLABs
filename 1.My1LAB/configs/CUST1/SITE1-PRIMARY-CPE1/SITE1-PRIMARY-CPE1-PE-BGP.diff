@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -88,6 +88,14 @@
+   remote-as 65500
+   update-source Loopback0
+  !
++ neighbor 10.253.1.2
++  remote-as 65505
++  timers 10 30
++  address-family ipv4 unicast
++   route-policy PERMIT-ALL in
++   route-policy PERMIT-ALL out
++  !
++ !
+  neighbor 10.255.1.2
+   use neighbor-group PE
+   address-family ipv4 unicast

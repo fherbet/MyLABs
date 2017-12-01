@@ -6,7 +6,7 @@
 
   tasks:
   - name: ROLE GET DATA PE
-    include_role:
+    import_role:
       name: get_data_pe
     tags:
     - getdatape
@@ -17,18 +17,15 @@
     tags:
     - bgppe
 
+  - name: CONFIG
+    import_role:
+      name: config
+    tags:
+    - config
+
+
   - name: ROLE VERIFY
     import_role:
       name: verify
     tags:
     - verify
-
-# - import_playbook: BGP_PE.yml
-#   tags:
-#   - bgppe
-#
-# - import_playbook: CONFIG.yml
-#   tags:
-#   - config
-#
-#

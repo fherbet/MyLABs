@@ -1,78 +1,72 @@
 ---
-- name: IPVPN_FABRIC CONFIG PLAYBOOK
-  hosts: all
-  connection: local
-  gather_facts: false
 
-
-  tasks:
 ########CREATE CONFIG FOLDERS
-  - name: Create target directory
-    file: path=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/ state=directory mode=0755
-    tags:
-    - basic
+- name: Create target directory
+  file: path=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/ state=directory mode=0755
+  tags:
+  - basic
 
 ########JINJA2 TEMPLATES CREATION
-  - name: Create Basic Config
-    template: src=templates/COMMON/BASIC_CONFIG.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.conf
-    tags:
-    - basic
+- name: Create Basic Config
+  template: src=templates/COMMON/BASIC_CONFIG.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.conf
+  tags:
+  - basic
 
 
-  - name: Create Final Config
-    template: src=templates/{{ CUST_NAME }}/BASE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.conf
-    tags:
-    - final
+- name: Create Final Config
+  template: src=templates/{{ CUST_NAME }}/BASE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.conf
+  tags:
+  - final
 
-  - name: Create PE Qos/Shaping
-    template: src=templates/COMMON/QOS_PE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
-    tags:
-    - finalpe
+- name: Create PE Qos/Shaping
+  template: src=templates/COMMON/QOS_PE.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
+  tags:
+  - finalpe
 
 ############DEPLOY CONFIGS on PE/CPE
 ########PUSH BASIC CONFIG
 
-  - name: Configure Basic Config  via ssh / napalm
-    napalm_install_config:
-     hostname={{ COLT_LB.0.IP | ipaddr('address') }}
-     username=osainstall
-     dev_os=ios
-     password=0sainstall
-     config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.conf
-     commit_changes=true
-     replace_config=false
-     get_diffs=True
-     diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.diff
-    tags:
-    - deploybasic
+- name: Configure Basic Config  via ssh / napalm
+  napalm_install_config:
+   hostname={{ COLT_LB.0.IP | ipaddr('address') }}
+   username=osainstall
+   dev_os=ios
+   password=0sainstall
+   config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.conf
+   commit_changes=true
+   replace_config=false
+   get_diffs=True
+   diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-BASIC.diff
+  tags:
+  - deploybasic
 
 ########PUSH FINAL CONFIG
-  - name: Configure Final Config  via ssh / napalm
-    napalm_install_config:
-     hostname={{ COLT_LB.0.IP | ipaddr('address') }}
-     username=osainstall
-     dev_os=ios
-     password=0sainstall
-     config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.conf
-     commit_changes=true
-     replace_config=false
-     get_diffs=True
-     diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.diff
-    tags:
-    - deployfinal
+- name: Configure Final Config  via ssh / napalm
+  napalm_install_config:
+   hostname={{ COLT_LB.0.IP | ipaddr('address') }}
+   username=osainstall
+   dev_os=ios
+   password=0sainstall
+   config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.conf
+   commit_changes=true
+   replace_config=false
+   get_diffs=True
+   diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL.diff
+  tags:
+  - deployfinal
 
 
 ########PUSH CONFIG PE
-  - name: Configure Qos/Shaping on PE
-    napalm_install_config:
-     hostname=lo0-{{ hostvars[ORDER].SAR }}
-     username=osainstall
-     dev_os={{ hostvars[SAR].dev_os }}
-     password=0sainstall
-     config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
-     commit_changes=True
-     replace_config=false
-     get_diffs=True
-     diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.diff
-    tags:
-    - deployfinalpe
+- name: Configure Qos/Shaping on PE
+  napalm_install_config:
+   hostname=lo0-{{ hostvars[ORDER].SAR }}
+   username=osainstall
+   dev_os={{ hostvars[SAR].dev_os }}
+   password=0sainstall
+   config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.conf
+   commit_changes=True
+   replace_config=false
+   get_diffs=True
+   diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-FINAL-PE.diff
+  tags:
+  - deployfinalpe
