@@ -16,7 +16,7 @@
                     "local_as": 65505, 
                     "remote_as": 65500, 
                     "remote_id": "10.255.1.3", 
-                    "uptime": 17521
+                    "uptime": 17920
                 }
             }, 
             "router_id": "10.255.1.13"
@@ -37,7 +37,7 @@
         "model": "IOSv", 
         "os_version": "IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.6(2)T, RELEASE SOFTWARE (fc2)", 
         "serial_number": "9OBI27OPZSD1W1HXPPIZ3", 
-        "uptime": 33060, 
+        "uptime": 33420, 
         "vendor": "Cisco"
     }, 
     "napalm_fqdn": "CUST_DC1.GMT.ipc.colt.net", 
@@ -84,6 +84,6 @@
     "napalm_model": "IOSv", 
     "napalm_os_version": "IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.6(2)T, RELEASE SOFTWARE (fc2)", 
     "napalm_serial_number": "9OBI27OPZSD1W1HXPPIZ3", 
-    "napalm_uptime": 33060, 
+    "napalm_uptime": 33420, 
     "napalm_vendor": "Cisco"
 }

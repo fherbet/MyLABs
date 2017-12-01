@@ -1,45 +1,41 @@
 ---
-- name: BGP PE
-  hosts: all
-  connection: local
-  gather_facts: no
 
-  tasks:
-  - name: include BACKBONE.yml
-    include_vars:
-      file: group_vars/BACKBONE.yml
-    tags:
-    - configpe
 
-  - name: Create target directory
-    file: path=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/ state=directory mode=0755
-    tags:
-    - configpe
+- name: include BACKBONE.yml
+  include_vars:
+    file: group_vars/BACKBONE.yml
+  tags:
+  - configpe
 
-  - name: generate PE BGP CONFIG for IOSXR PE
-    template: src=templates/COMMON/BGP_PE_IOSXR.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
-    when: hostvars[SAR].dev_os == "iosxr"
-    tags:
-    - configpe
+- name: Create target directory
+  file: path=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/ state=directory mode=0755
+  tags:
+  - configpe
 
-  - name: generate PE BGP CONFIG for IOS PE
-    template: src=templates/COMMON/BGP_PE_IOS.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
-    when: hostvars[SAR].dev_os == "ios"
-    tags:
-    - configpe
+- name: generate PE BGP CONFIG for IOSXR PE
+  template: src=templates/COMMON/BGP_PE_IOSXR.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
+  when: hostvars[SAR].dev_os == "iosxr"
+  tags:
+  - configpe
+
+- name: generate PE BGP CONFIG for IOS PE
+  template: src=templates/COMMON/BGP_PE_IOS.j2 dest=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
+  when: hostvars[SAR].dev_os == "ios"
+  tags:
+  - configpe
 
 ########PUSH CONFIG PE
-  - name: Configure BGP Session on PE
-    napalm_install_config:
-     hostname=lo0-{{ hostvars[ORDER].SAR }}
-     username=osainstall
-     dev_os={{ hostvars[SAR].dev_os }}
-     password=0sainstall
-     config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
-     commit_changes=True
-     replace_config=false
-     get_diffs=True
-     diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.diff
-     timeout=120
-    tags:
-    - deploy
+- name: Configure BGP Session on PE
+  napalm_install_config:
+   hostname=lo0-{{ hostvars[ORDER].SAR }}
+   username=osainstall
+   dev_os={{ hostvars[SAR].dev_os }}
+   password=0sainstall
+   config_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.conf
+   commit_changes=True
+   replace_config=false
+   get_diffs=True
+   diff_file=configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-PE-BGP.diff
+   timeout=120
+  tags:
+  - deploy

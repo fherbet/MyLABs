@@ -5,12 +5,20 @@
   gather_facts: false
 
   tasks:
-  - include_role:
+  - name: ROLE GET DATA PE
+    include_role:
       name: get_data_pe
     tags:
     - getdatape
 
-  - include_role:
+  - name: ROLE BGP_PE
+    import_role:
+      name: bgp_pe
+    tags:
+    - bgppe
+
+  - name: ROLE VERIFY
+    import_role:
       name: verify
     tags:
     - verify
@@ -24,6 +32,3 @@
 #   - config
 #
 #
-# - import_playbook: VERIFY.yml
-#   tags:
-# - verify
