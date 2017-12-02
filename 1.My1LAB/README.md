@@ -8,6 +8,6 @@ Diagram from EVE-NG
 # [NetAutSol] Deploy Network Services (Week #4) Hands-on Exercises using Roles
 
 
-## DETECT PE / PE INTERFACE / PE INTERFACE VLAN and set Facts from MGMT LB
+## ALL IN ONE PLAY for CUST1 USING ROLES
 
   . ansible-playbook [CUST1_PLAY.yml](CUST1_PLAY.yml) -l CUST1 -D >> [OUTPUT](./LOGS/CUST1_PLAY.log)
