@@ -20,4 +20,4 @@ Diagram from EVE-NG
 # [NetAutSol] Logging and Testing (Week #5) Hands-on Exercises
 
 ## LOGGING using EXTRA VAR
-  . ansible-playbook CUST1_PLAY.yml -l CUST1 -D -t [checkpostSA](1.My1LAB/roles/verify/tasks/main.yml)  -e debug_output=True
+  . ansible-playbook CUST1_PLAY.yml -l CUST1 -D -t [checkpostSA](1.My1LAB/roles/verify/tasks/main.yml)  -e debug_output=True  >> [OUTPUT](./LOGS/DEBUG_OUTPUT.log)
