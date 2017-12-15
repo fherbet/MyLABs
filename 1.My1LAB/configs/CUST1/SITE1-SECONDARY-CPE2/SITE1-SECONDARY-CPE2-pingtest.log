@@ -1,0 +1,85 @@
+changed: false
+msg: All items completed
+results:
+-   _ansible_item_result: true
+    _ansible_no_log: false
+    _ansible_parsed: true
+    changed: false
+    failed: false
+    invocation:
+        module_args:
+            count: '5'
+            destination: 10.223.0.254
+            dev_os: ios
+            hostname: 10.255.1.12
+            optional_args: null
+            password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+            ping_timeout: null
+            provider: null
+            size: null
+            source: 10.223.1.253
+            timeout: 60
+            ttl: null
+            username: osainstall
+            vrf: null
+    item: 10.223.0.254
+    results:
+        success:
+            packet_loss: 0
+            probes_sent: 5
+            results:
+            -   ip_address: 10.223.0.254
+                rtt: 0.0
+            -   ip_address: 10.223.0.254
+                rtt: 0.0
+            -   ip_address: 10.223.0.254
+                rtt: 0.0
+            -   ip_address: 10.223.0.254
+                rtt: 0.0
+            -   ip_address: 10.223.0.254
+                rtt: 0.0
+            rtt_avg: 98.0
+            rtt_max: 427.0
+            rtt_min: 10.0
+            rtt_stddev: 0.0
+-   _ansible_item_result: true
+    _ansible_no_log: false
+    _ansible_parsed: true
+    changed: false
+    failed: false
+    invocation:
+        module_args:
+            count: '5'
+            destination: 8.8.8.8
+            dev_os: ios
+            hostname: 10.255.1.12
+            optional_args: null
+            password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+            ping_timeout: null
+            provider: null
+            size: null
+            source: 10.223.1.253
+            timeout: 60
+            ttl: null
+            username: osainstall
+            vrf: null
+    item: 8.8.8.8
+    results:
+        success:
+            packet_loss: 0
+            probes_sent: 5
+            results:
+            -   ip_address: 8.8.8.8
+                rtt: 0.0
+            -   ip_address: 8.8.8.8
+                rtt: 0.0
+            -   ip_address: 8.8.8.8
+                rtt: 0.0
+            -   ip_address: 8.8.8.8
+                rtt: 0.0
+            -   ip_address: 8.8.8.8
+                rtt: 0.0
+            rtt_avg: 14.0
+            rtt_max: 21.0
+            rtt_min: 8.0
+            rtt_stddev: 0.0

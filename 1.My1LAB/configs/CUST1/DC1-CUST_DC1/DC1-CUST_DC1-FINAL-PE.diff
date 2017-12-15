@@ -1,20 +1,2 @@
-+policy-map IPC01987-Profile8m-QOS-TO-CPE
-+ class Business1-Class-To-CPE
-+  bandwidth percent 20
-+  random-detect discard-class-based
-+ class Business2-Class-To-CPE
-+  bandwidth percent 45
-+  random-detect discard-class-based
-+ class Default-To-CPE
-+  bandwidth percent 30
-+  random-detect discard-class-based
-+ class Routing-Management-To-CPE
-+  bandwidth percent 5
-+  random-detect discard-class-based
-+policy-map IPC01987-Profile8m-QOS-TO-CPE-8M
-+ class class-default
-+  shape average 8000000
-+   service-policy IPC01987-Profile8m-QOS-TO-CPE
 +interface GigabitEthernet0/3.1
-+ bandwidth 8000
 + service-policy output IPC01987-Profile8m-QOS-TO-CPE-8M

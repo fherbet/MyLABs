@@ -1,0 +1,70 @@
+ansible_facts:
+    napalm_bgp_neighbors:
+        global:
+            peers:
+                10.253.3.1:
+                    address_family:
+                        ipv4:
+                            accepted_prefixes: 18
+                            received_prefixes: 18
+                            sent_prefixes: 4
+                    description: MGMT
+                    is_enabled: true
+                    is_up: true
+                    local_as: 65505
+                    remote_as: 65500
+                    remote_id: 10.255.1.3
+                    uptime: 6033
+            router_id: 10.255.1.13
+    napalm_facts:
+        fqdn: CUST_DC1.GMT.ipc.colt.net
+        hostname: CUST_DC1
+        interface_list:
+        - GigabitEthernet0/0
+        - GigabitEthernet0/1
+        - GigabitEthernet0/2
+        - GigabitEthernet0/3
+        - Loopback0
+        - Loopback99
+        - Loopback999
+        model: IOSv
+        os_version: IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.6(2)T, RELEASE
+            SOFTWARE (fc2)
+        serial_number: 9OBI27OPZSD1W1HXPPIZ3
+        uptime: 6060
+        vendor: Cisco
+    napalm_fqdn: CUST_DC1.GMT.ipc.colt.net
+    napalm_hostname: CUST_DC1
+    napalm_interface_list:
+    - GigabitEthernet0/0
+    - GigabitEthernet0/1
+    - GigabitEthernet0/2
+    - GigabitEthernet0/3
+    - Loopback0
+    - Loopback99
+    - Loopback999
+    napalm_interfaces_ip:
+        GigabitEthernet0/0:
+            ipv4:
+                10.223.0.254:
+                    prefix_length: 24
+        GigabitEthernet0/1:
+            ipv4:
+                10.253.3.2:
+                    prefix_length: 30
+        Loopback0:
+            ipv4:
+                10.255.1.13:
+                    prefix_length: 32
+        Loopback99:
+            ipv4:
+                8.8.8.8:
+                    prefix_length: 32
+    napalm_model: IOSv
+    napalm_os_version: IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.6(2)T, RELEASE
+        SOFTWARE (fc2)
+    napalm_serial_number: 9OBI27OPZSD1W1HXPPIZ3
+    napalm_uptime: 6060
+    napalm_vendor: Cisco
+changed: false
+failed: false

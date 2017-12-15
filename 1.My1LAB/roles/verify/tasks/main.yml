@@ -27,6 +27,16 @@
 - name: CHECK / Print BGP details
   debug:
       msg: "{{ getfacts.ansible_facts.napalm_bgp_neighbors.global.peers }}"
+  when: debug_output
+  tags:
+  - check
+  - checkpostSA
+  - allinone
+
+- local_action: >
+    copy content="{{getfacts|to_nice_yaml}}"
+         dest="configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-getfacts.log"
+  when: debug_output
   tags:
   - check
   - checkpostSA
@@ -47,10 +57,19 @@
   tags:
   - checkpostSA
 
+- local_action: >
+    copy content="{{pingtest|to_nice_yaml}}"
+         dest="configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-pingtest.log"
+  when: debug_output
+  tags:
+  - check
+  - checkpostSA
+  - allinone
 
 - name: CHECK / print PINGTEST from source {{ SUBVPN.0.LAN.0.IP }}
   debug:
     msg: "{{ pingtest.results | map(attribute='results') | list  }}"
+  when: debug_output
   tags:
   - checkpostSA
 
@@ -62,7 +81,6 @@
     host: "{{ COLT_LB.0.IP | ipaddr('address') }}"
     username: osainstall
     password: 0sainstall
-    #transport: cli
   register: shipnatr
   tags:
   - checkpostSA
@@ -71,6 +89,17 @@
 - name: CHECK NAT / Print SH IP NA TR
   debug:
     msg: "{{ shipnatr.stdout_lines }}"
+  when: debug_output
   tags:
   - checkpostSA
   - shipnatr
+
+
+- local_action: >
+    copy content="{{shipnatr.stdout_lines|to_nice_yaml}}"
+         dest="configs/{{ CUST_NAME }}/{{SITE_NAME_ALIAS}}-{{ORDER}}/{{SITE_NAME_ALIAS}}-{{ORDER}}-shipnatr.log"
+  when: debug_output
+  tags:
+  - check
+  - checkpostSA
+  - allinone

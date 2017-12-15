@@ -16,7 +16,7 @@
                     "local_as": 65505, 
                     "remote_as": 65500, 
                     "remote_id": "10.255.1.2", 
-                    "uptime": 49
+                    "uptime": 4081
                 }, 
                 "10.255.1.11": {
                     "address_family": {
@@ -32,7 +32,7 @@
                     "local_as": 65505, 
                     "remote_as": 65505, 
                     "remote_id": "10.255.1.11", 
-                    "uptime": 51
+                    "uptime": 5569
                 }
             }, 
             "router_id": "10.255.1.12"
@@ -55,7 +55,7 @@
         "model": "IOSv", 
         "os_version": "IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.6(2)T, RELEASE SOFTWARE (fc2)", 
         "serial_number": "9JQ6RAUQLWTZ38N21U7KA", 
-        "uptime": 33000, 
+        "uptime": 5640, 
         "vendor": "Cisco"
     }, 
     "napalm_fqdn": "CPE2.PE2.ipc.colt.net", 
@@ -104,6 +104,6 @@
     "napalm_model": "IOSv", 
     "napalm_os_version": "IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.6(2)T, RELEASE SOFTWARE (fc2)", 
     "napalm_serial_number": "9JQ6RAUQLWTZ38N21U7KA", 
-    "napalm_uptime": 33000, 
+    "napalm_uptime": 5640, 
     "napalm_vendor": "Cisco"
 }
