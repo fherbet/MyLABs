@@ -2,7 +2,7 @@
 - name: check that Napalm get hostname = hostname from Data model
   assert:
     that: "napalm_facts.hostname == '{{COLT_HOSTNAME}}'"
-    msg: "napalm_facts.hostname est different de {{COLT_HOSTNAME}}"
+    msg: "napalm_facts.hostname is different from {{COLT_HOSTNAME}}"
 
 
 - name: check that Number of received BGP prefixes is greater than 0 //////////////////

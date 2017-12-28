@@ -1,3 +1,24 @@
+if CPE has a wrong hostname
+
+ansible-playbook CUST1_PLAY.yml -l CPE1 -t validate -v
+Using /home/fangio/Documents/NETWORK/MyLABs/1.My1LAB/ansible.cfg as config file
+
+PLAY [IPVPN_FABRIC ALL IN ONE PLAYBOOK] *******************************************************************************************************************************************************************************************************
+
+TASK [validate_bgp : check that we get more than 0 BGP prefix] ********************************************************************************************************************************************************************************
+fatal: [CPE1]: FAILED! => changed=false
+  assertion: napalm_facts.hostname == 'CPE1'
+  evaluated_to: false
+  failed: true
+  msg: napalm_facts.hostname is different from CPE1
+
+PLAY RECAP ************************************************************************************************************************************************************************************************************************************
+CPE1                       : ok=0    changed=0    unreachable=0    failed=1
+
+
+
+
+
 with these CPE1's facts
 
 
@@ -206,4 +227,4 @@ ok: [CPE1] => (item={'key': u'10.253.1.1', 'value': {u'is_enabled': True, u'upti
   msg: All assertions passed
 
 PLAY RECAP ************************************************************************************************************************************************************************************************************************************
-CPE1                       : ok=2    changed=0    unreachable=0    failed=0 
+CPE1                       : ok=2    changed=0    unreachable=0    failed=0
