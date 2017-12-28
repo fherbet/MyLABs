@@ -7,7 +7,7 @@
 - name: Ensure that mandatory variables are defined
   assert:
     that: "{{item}} is string"
-    msg: "!!!!!!! MANDATORY VARIABLES NOT DEFINED !!!!!!!!!
+    msg: "!!!!!!! MANDATORY VARIABLE NOT DEFINED !!!!!!!!!
 
     "
   with_items:
