@@ -1,0 +1,209 @@
+with these CPE1's facts
+
+
+{
+    "napalm_bgp_neighbors": {
+        "global": {
+            "peers": {
+                "10.253.1.1": {
+                    "address_family": {
+                        "ipv4": {
+                            "accepted_prefixes": 0,<<<<<<<<<<<<<<<<<<<<
+                            "received_prefixes": 20,
+                            "sent_prefixes": 5
+                        }
+                    },
+                    "description": "PE1",
+                    "is_enabled": true,
+                    "is_up": true,
+                    "local_as": 65505,
+                    "remote_as": 65500,
+                    "remote_id": "10.255.1.1",
+                    "uptime": 4304
+                },
+                "10.255.1.12": {
+                    "address_family": {
+                        "ipv4": {
+                            "accepted_prefixes": 0,<<<<<<<<<<<<<<<<<<<<<<<<<<
+                            "received_prefixes": 6,
+                            "sent_prefixes": 18
+                        }
+                    },
+                    "description": "CPE2",
+                    "is_enabled": true,
+                    "is_up": true,
+                    "local_as": 65505,
+                    "remote_as": 65505,
+                    "remote_id": "10.255.1.12",
+                    "uptime": 5659
+                }
+            },
+            "router_id": "10.255.1.11"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+ansible-playbook CUST1_PLAY.yml -l CPE1 -t validate
+
+PLAY [IPVPN_FABRIC ALL IN ONE PLAYBOOK] *******************************************************************************************************************************************************************************************************
+
+TASK [validate_bgp : check that Napalm get hostname = hostname from Data model] ***************************************************************************************************************************************************************
+ok: [CPE1] => changed=false
+  failed: false
+  msg: All assertions passed
+
+TASK [validate_bgp : check that Number of received BGP prefixes is greater than 0 //////////////////] *****************************************************************************************************************************************
+failed: [CPE1] (item={'key': u'10.255.1.12', 'value': {u'is_enabled': True, u'uptime': 5659, u'remote_as': 65505, u'address_family': {u'ipv4': {u'sent_prefixes': 18, u'accepted_prefixes': 0, u'received_prefixes': 6}}, u'remote_id': u'10.255.1.12', u'local_as': 65505, u'is_up': True, u'description': u'CPE2'}}) => changed=false
+  assertion: 0 > 0
+  evaluated_to: false
+  failed: true
+  item:
+    key: 10.255.1.12
+    value:
+      address_family:
+        ipv4:
+          accepted_prefixes: 0
+          received_prefixes: 6
+          sent_prefixes: 18
+      description: CPE2
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 65505
+      remote_id: 10.255.1.12
+      uptime: 5659
+  msg: BGP Peer 10.255.1.12 accepted_prefixes is not greater than 0
+failed: [CPE1] (item={'key': u'10.253.1.1', 'value': {u'is_enabled': True, u'uptime': 4304, u'remote_as': 65500, u'address_family': {u'ipv4': {u'sent_prefixes': 5, u'accepted_prefixes': 0, u'received_prefixes': 20}}, u'remote_id': u'10.255.1.1', u'local_as': 65505, u'is_up': True, u'description': u'PE1'}}) => changed=false
+  assertion: 0 > 0
+  evaluated_to: false
+  failed: true
+  item:
+    key: 10.253.1.1
+    value:
+      address_family:
+        ipv4:
+          accepted_prefixes: 0
+          received_prefixes: 20
+          sent_prefixes: 5
+      description: PE1
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 65500
+      remote_id: 10.255.1.1
+      uptime: 4304
+  msg: BGP Peer 10.253.1.1 accepted_prefixes is not greater than 0
+
+
+
+#################################################################""
+
+
+
+
+With correct CPE1 facts
+
+"napalm_bgp_neighbors": {
+    "global": {
+        "peers": {
+            "10.253.1.1": {
+                "address_family": {
+                    "ipv4": {
+                        "accepted_prefixes": 20,
+                        "received_prefixes": 20,
+                        "sent_prefixes": 5
+                    }
+                },
+                "description": "PE1",
+                "is_enabled": true,
+                "is_up": true,
+                "local_as": 65505,
+                "remote_as": 65500,
+                "remote_id": "10.255.1.1",
+                "uptime": 4304
+            },
+            "10.255.1.12": {
+                "address_family": {
+                    "ipv4": {
+                        "accepted_prefixes": 6,
+                        "received_prefixes": 6,
+                        "sent_prefixes": 18
+                    }
+                },
+                "description": "CPE2",
+                "is_enabled": true,
+                "is_up": true,
+                "local_as": 65505,
+                "remote_as": 65505,
+                "remote_id": "10.255.1.12",
+                "uptime": 5659
+            }
+        },
+        "router_id": "10.255.1.11"
+    }
+},
+
+
+
+
+
+
+ansible-playbook CUST1_PLAY.yml -l CPE1 -t validate
+
+PLAY [IPVPN_FABRIC ALL IN ONE PLAYBOOK] *******************************************************************************************************************************************************************************************************
+
+TASK [validate_bgp : check that Napalm get hostname = hostname from Data model] ***************************************************************************************************************************************************************
+ok: [CPE1] => changed=false
+  failed: false
+  msg: All assertions passed
+
+TASK [validate_bgp : check that Number of received BGP prefixes is greater than 0 //////////////////] *****************************************************************************************************************************************
+ok: [CPE1] => (item={'key': u'10.255.1.12', 'value': {u'is_enabled': True, u'uptime': 5659, u'remote_as': 65505, u'address_family': {u'ipv4': {u'sent_prefixes': 18, u'accepted_prefixes': 6, u'received_prefixes': 6}}, u'remote_id': u'10.255.1.12', u'local_as': 65505, u'is_up': True, u'description': u'CPE2'}}) => changed=false
+  failed: false
+  item:
+    key: 10.255.1.12
+    value:
+      address_family:
+        ipv4:
+          accepted_prefixes: 6
+          received_prefixes: 6
+          sent_prefixes: 18
+      description: CPE2
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 65505
+      remote_id: 10.255.1.12
+      uptime: 5659
+  msg: All assertions passed
+ok: [CPE1] => (item={'key': u'10.253.1.1', 'value': {u'is_enabled': True, u'uptime': 4304, u'remote_as': 65500, u'address_family': {u'ipv4': {u'sent_prefixes': 5, u'accepted_prefixes': 20, u'received_prefixes': 20}}, u'remote_id': u'10.255.1.1', u'local_as': 65505, u'is_up': True, u'description': u'PE1'}}) => changed=false
+  failed: false
+  item:
+    key: 10.253.1.1
+    value:
+      address_family:
+        ipv4:
+          accepted_prefixes: 20
+          received_prefixes: 20
+          sent_prefixes: 5
+      description: PE1
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 65500
+      remote_id: 10.255.1.1
+      uptime: 4304
+  msg: All assertions passed
+
+PLAY RECAP ************************************************************************************************************************************************************************************************************************************
+CPE1                       : ok=2    changed=0    unreachable=0    failed=0 

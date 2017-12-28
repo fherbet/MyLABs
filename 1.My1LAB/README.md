@@ -21,3 +21,8 @@ Diagram from EVE-NG
 
 ## LOGGING using EXTRA VAR
   . ansible-playbook CUST1_PLAY.yml -l CUST1 -D -t [checkpostSA](1.My1LAB/roles/verify/tasks/main.yml)  -e debug_output=True  >> [OUTPUT](./LOGS/DEBUG_OUTPUT.log)
+
+
+
+## UNIT TEST
+  . ansible-playbook CUST1_PLAY.yml -l CUST1 -D -t [validate](1.My1LAB/roles/validate_bgp/tasks/main.yml) >> [OUTPUT](./LOGS/UNIT_TEST.log)
