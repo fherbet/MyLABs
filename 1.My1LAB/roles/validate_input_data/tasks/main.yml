@@ -7,7 +7,9 @@
 - name: Ensure that mandatory variables are defined
   assert:
     that: "{{item}} is string"
-    msg: "mandatory variables not defined"
+    msg: "!!!!!!! MANDATORY VARIABLES NOT DEFINED !!!!!!!!!
+
+    "
   with_items:
     - ORDER
     - COUNTRY

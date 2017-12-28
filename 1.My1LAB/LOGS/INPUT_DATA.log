@@ -44,7 +44,7 @@ failed: [CPE1] (item=SERVICE_BW) => changed=false
  evaluated_to: false
  failed: true
  item: SERVICE_BW
- msg: mandatory variables not defined
+ msg: !!!!!!! MANDATORY VARIABLES NOT DEFINED !!!!!!!!!
 ok: [CPE1] => (item=GRT_SUBVPN) => changed=false
  failed: false
  item: GRT_SUBVPN
