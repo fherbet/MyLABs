@@ -25,4 +25,4 @@ Diagram from EVE-NG
 
 
 ## UNIT TEST
-  . ansible-playbook CUST1_PLAY.yml -l CUST1 -D -t [validate](1.My1LAB/roles/validate_bgp/tasks/main.yml) >> [OUTPUT](./LOGS/UNIT_TEST.log)
+  . ansible-playbook CUST1_PLAY.yml -l CPE1 -D -t [validate](1.My1LAB/roles/validate_bgp/tasks/main.yml) >> [OUTPUT](./LOGS/UNIT_TEST.log)

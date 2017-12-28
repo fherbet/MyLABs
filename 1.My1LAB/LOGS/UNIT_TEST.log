@@ -5,7 +5,7 @@ Using /home/fangio/Documents/NETWORK/MyLABs/1.My1LAB/ansible.cfg as config file
 
 PLAY [IPVPN_FABRIC ALL IN ONE PLAYBOOK] *******************************************************************************************************************************************************************************************************
 
-TASK [validate_bgp : check that we get more than 0 BGP prefix] ********************************************************************************************************************************************************************************
+TASK [validate_bgp : check that Napalm get hostname = hostname from Data model] ********************************************************************************************************************************************************************************
 fatal: [CPE1]: FAILED! => changed=false
   assertion: napalm_facts.hostname == 'CPE1'
   evaluated_to: false

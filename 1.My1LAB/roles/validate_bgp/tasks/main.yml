@@ -5,7 +5,7 @@
     msg: "napalm_facts.hostname is different from {{COLT_HOSTNAME}}"
 
 
-- name: check that Number of received BGP prefixes is greater than 0 //////////////////
+- name: check that Number of received BGP prefixes is greater than 0
   assert:
     that: "{{ item.value.address_family.ipv4.accepted_prefixes}} > 0"
     msg: "BGP Peer {{item.key}} accepted_prefixes is not greater than 0"
