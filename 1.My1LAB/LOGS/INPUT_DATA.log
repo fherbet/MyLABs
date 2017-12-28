@@ -1,0 +1,51 @@
+
+
+
+
+
+ansible-playbook CUST1_PLAY.yml -l CPE1 -t validateinputdata
+
+PLAY [IPVPN_FABRIC ALL IN ONE PLAYBOOK] *******************************************************************************************************************************************************************************************************
+
+TASK [validate_input_data : command] **********************************************************************************************************************************************************************************************************
+ok: [CPE1]
+
+TASK [validate_input_data : Ensure that mandatory variables are defined] **********************************************************************************************************************************************************************
+ok: [CPE1] => (item=ORDER) => changed=false
+ failed: false
+ item: ORDER
+ msg: All assertions passed
+ok: [CPE1] => (item=COUNTRY) => changed=false
+ failed: false
+ item: COUNTRY
+ msg: All assertions passed
+ok: [CPE1] => (item=CITY) => changed=false
+ failed: false
+ item: CITY
+ msg: All assertions passed
+ok: [CPE1] => (item=STREET) => changed=false
+ failed: false
+ item: STREET
+ msg: All assertions passed
+ok: [CPE1] => (item=ROLE) => changed=false
+ failed: false
+ item: ROLE
+ msg: All assertions passed
+ok: [CPE1] => (item=LINK_ID) => changed=false
+ failed: false
+ item: LINK_ID
+ msg: All assertions passed
+ok: [CPE1] => (item=ACCESS_BW) => changed=false
+ failed: false
+ item: ACCESS_BW
+ msg: All assertions passed
+failed: [CPE1] (item=SERVICE_BW) => changed=false
+ assertion: SERVICE_BW is string
+ evaluated_to: false
+ failed: true
+ item: SERVICE_BW
+ msg: mandatory variables not defined
+ok: [CPE1] => (item=GRT_SUBVPN) => changed=false
+ failed: false
+ item: GRT_SUBVPN
+ msg: All assertions passed

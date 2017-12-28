@@ -5,6 +5,14 @@
   gather_facts: false
 
   tasks:
+
+
+  - name: ROLE VALIDATE INPUT DATA
+    import_role:
+      name: validate_input_data
+    tags:
+    - validateinputdata
+
   - name: ROLE GET DATA PE
     import_role:
       name: get_data_pe
@@ -22,7 +30,6 @@
       name: config
     tags:
     - config
-
 
   - name: ROLE VERIFY
     import_role:

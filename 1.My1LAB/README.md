@@ -26,3 +26,7 @@ Diagram from EVE-NG
 
 ## UNIT TEST
   . ansible-playbook CUST1_PLAY.yml -l CPE1 -D -t [validate](roles/validate_bgp/tasks/main.yml) >> [OUTPUT](./LOGS/UNIT_TEST.log)
+
+
+## INPUT DATA VALIDATION
+  . ansible-playbook CUST1_PLAY.yml -l CPE1 -D -t [validateinputdata](roles/validate_input_data/tasks/main.yml) >> [OUTPUT](./LOGS/INPUT_DATA.log)

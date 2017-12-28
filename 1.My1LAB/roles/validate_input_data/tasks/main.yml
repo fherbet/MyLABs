@@ -1,0 +1,20 @@
+---
+
+- shell: "yamllint -d relaxed . "
+  changed_when: False
+
+
+- name: Ensure that mandatory variables are defined
+  assert:
+    that: "{{item}} is string"
+    msg: "mandatory variables not defined"
+  with_items:
+    - ORDER
+    - COUNTRY
+    - CITY
+    - STREET
+    - ROLE
+    - LINK_ID
+    - ACCESS_BW
+    - SERVICE_BW
+    - GRT_SUBVPN
