@@ -1,0 +1,300 @@
+ansible-playbook PLAY_ORPEA.yml -l 170603638,170603640 -t allinone
+
+PLAY [ORPEA ALL IN ONE PLAYBOOK] ***************************************************************************************************************
+
+TASK [ALIAS : Get local username] **************************************************************************************************************
+changed: [170603638 -> localhost]
+
+TASK [ALIAS : Create target directory] *********************************************************************************************************
+ok: [170603638]
+
+TASK [ALIAS : Create alias for playbook customer] **********************************************************************************************
+ok: [170603638]
+
+TASK [ALIAS : Create alias for host when ldap username = tacacs username] **********************************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [ALIAS : Create alias for host when ldap username != tacacs username] *********************************************************************
+
+TASK [ALIAS : Create alias directory] **********************************************************************************************************
+ok: [170603638]
+
+TASK [ALIAS : Assemble aliases in one file] ****************************************************************************************************
+changed: [170603638]
+
+TASK [GET_DATA_PE : MG2.LON / show ip bgp vpnv4 vrf oss-new-mplsmgmt 100.96.21.14/32 | i Originator] *******************************************
+ok: [170603640]
+ok: [170603638]
+
+TASK [GET_DATA_PE : extract values from sh ip bgp vpnv4 vrf oss-new-mplsmgmt | i Originator] ***************************************************
+ok: [170603638] => (item=Originator: 212.74.91.81, Cluster list: 212.74.91.23,)
+ok: [170603640] => (item=Originator: 212.74.90.121, Cluster list: 212.74.91.23,)
+
+TASK [GET_DATA_PE : MG2.LON / show ip bgp vpnv4 vrf oss-mplsmgnt 100.96.21.14/32 | i Originator] ***********************************************
+
+TASK [GET_DATA_PE : extract values from sh ip bgp | i Originator] ******************************************************************************
+
+TASK [GET_DATA_PE : extract MGMT_LB_PE from Originator ":" X.X.X.X] ****************************************************************************
+ok: [170603638] => (item=Originator: 212.74.91.81)
+ok: [170603640] => (item=Originator: 212.74.90.121)
+
+TASK [GET_DATA_PE : search MGMT_LB_PE reverse DNS] *********************************************************************************************
+ok: [170603638] => (item=212.74.91.81)
+ok: [170603640] => (item=212.74.90.121)
+
+TASK [GET_DATA_PE : remove lo0- from from reverse] *********************************************************************************************
+ok: [170603638] => (item=lo0-Sar9.BER.router.colt.net.)
+ok: [170603640] => (item=lo0-dr1.ber.router.colt.net.)
+
+TASK [GET_DATA_PE : extract SAR_CITY and SAR_NUM from reverse] *********************************************************************************
+ok: [170603638] => (item=Sar9.BER.router.colt.net.)
+ok: [170603640] => (item=dr1.ber.router.colt.net.)
+
+TASK [GET_DATA_PE : build SAR from SAR_NUM and SAR_CITY] ***************************************************************************************
+ok: [170603638] => (item=SAR9)
+ok: [170603638] => (item=BER)
+ok: [170603640] => (item=DR1)
+ok: [170603640] => (item=BER)
+
+TASK [GET_DATA_PE : set fact SAR_OS for SAR OS] ************************************************************************************************
+ok: [170603638]
+ok: [170603640]
+
+TASK [GET_DATA_PE : SAR =SAR9.BER in hostvars.YML] *********************************************************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [GET_DATA_PE : sh run formal interface | remotewanip] *************************************************************************************
+
+TASK [GET_DATA_PE : extract interfaces from shiosxr] *******************************************************************************************
+
+TASK [GET_DATA_PE : sh ip int brie | i remotewanip / telnet / napalm_cli on IOS] ***************************************************************
+
+TASK [GET_DATA_PE : set fact temp = shios.results] *********************************************************************************************
+
+TASK [GET_DATA_PE : extract interfaces from shios] *********************************************************************************************
+
+TASK [GET_DATA_PE : show route 10.255.104.169/32 on JUNOS] *************************************************************************************
+ok: [170603638]
+
+TASK [GET_DATA_PE : set PE_SUBINT] *************************************************************************************************************
+ok: [170603638] => (item={'key': u'show route 10.255.104.169/32', 'value': u'\n\nOrch-8220-12669702.inet.0: 685 destinations, 2214 routes (685 active, 0 holddown, 0 hidden)\n+ = Active Route, - = Last Active, * = Both\n\n10.255.104.169/32  *[Local/0] 7w3d 03:53:59\n                      Local via xe-5/0/1.119\n'})
+
+TASK [GET_DATA_PE : set PE_SUBINT] *************************************************************************************************************
+ok: [170603638] => (item=                      Local via xe-5/0/1.119)
+
+TASK [GET_DATA_PE : set PE_SUBINT] *************************************************************************************************************
+ok: [170603638]
+
+TASK [GET_DATA_PE : extract PE_INT and PE_VLANID] **********************************************************************************************
+ok: [170603638] => (item=xe-5/0/1.119)
+
+TASK [GET_DATA_PE : set fact for SAR_INT] ******************************************************************************************************
+ok: [170603638]
+
+TASK [GET_DATA_PE : lineinfile] ****************************************************************************************************************
+changed: [170603638]
+
+TASK [GET_DATA_PE : set fact for SAR_VLAN_FACING_CPE_GRT] **************************************************************************************
+ok: [170603638]
+
+TASK [GET_DATA_PE : lineinfile] ****************************************************************************************************************
+changed: [170603638]
+
+TASK [GET_DATA_CPE_FACTS : Napalm Get Facts from Device / telnet / osainstall] *****************************************************************
+ok: [170603638]
+ok: [170603640]
+
+TASK [TEMPLATE__INIT : Create target directory] ************************************************************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE__INIT : Create .compiled directory] *********************************************************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE__INIT : Create .compiled_PE directory] ******************************************************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE_BASIC : Create Basic Config] ****************************************************************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE_ORPEA : BANNER.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/1_BANNER.ios] **********************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE_ORPEA : LAN.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/2_LAN.ios] ****************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE_ORPEA : B2B.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/3_B2B.ios] ****************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE_ORPEA : WAN.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/4_WAN.ios] ****************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE_ORPEA : ROUTING.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/5_ROUTING_EU.ios] *****************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE_ORPEA : NAT.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/6_NAT_EU.ios] *************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [TEMPLATE_ORPEA : SNMP.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/7_SNMP.ios] **************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE_ORPEA : QOS_CPE_MVRF.j2 > dest=configs/ORPEA/50067-PRI-170603638/.compiled/8_QOS_CPE_MVRF.ios] **********************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE_ORPEA : END.j2] *****************************************************************************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE_ORPEA : Assemble .compiled folder > dest=configs/ORPEA/50067-PRI-170603638/50067-PRI-170603638-FINAL.ios] ***********************
+changed: [170603640]
+changed: [170603638]
+
+TASK [TEMPLATE_PE_QOS : Create PE Qos/Shaping] *************************************************************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [DEPLOY : Configure SSH via telnet / osainstall / napalm] *********************************************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [DEPLOY : Configure Basic Config  via ssh / osainstall / ios_config module / no save] *****************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [DEPLOY : Configure Final Config  via ssh / tacacs / napalm] ******************************************************************************
+changed: [170603638]
+changed: [170603640]
+
+TASK [DEPLOY : Configure Qos/Shaping on IOS-XR JUNOS PE / SSH] *********************************************************************************
+changed: [170603638]
+
+TASK [DEPLOY : Configure Qos/Shaping on IOS PE / TELNET] ***************************************************************************************
+
+TASK [REFRESH_BGP_WAN : REFRESH BGP (IPv4 + VPNv4) sessions] ***********************************************************************************
+ok: [170603638]
+ok: [170603640]
+
+TASK [GET_BGP_CPE : Napalm Get Facts from Device / ssh / tacacs] *******************************************************************************
+ok: [170603638]
+ok: [170603640]
+
+TASK [GET_BGP_CPE : CHECK / Print BGP details] *************************************************************************************************
+ok: [170603638] => 
+  msg:
+    10.255.104.169:
+      address_family:
+        ipv4:
+          accepted_prefixes: 676
+          received_prefixes: 676
+          sent_prefixes: 2
+      description: SAR9.BER
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 8220
+      remote_id: 10.255.99.53
+      uptime: 82
+    100.96.21.4:
+      address_family:
+        ipv4:
+          accepted_prefixes: 2
+          received_prefixes: 2
+          sent_prefixes: 230
+      description: GER004337
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 65505
+      remote_id: 100.96.21.4
+      uptime: 84
+ok: [170603640] => 
+  msg:
+    10.255.105.153:
+      address_family:
+        ipv4:
+          accepted_prefixes: 676
+          received_prefixes: 676
+          sent_prefixes: 3
+      description: DR1.BER
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 8220
+      remote_id: 212.74.90.121
+      uptime: 90
+    100.96.21.14:
+      address_family:
+        ipv4:
+          accepted_prefixes: 230
+          received_prefixes: 230
+          sent_prefixes: 2
+      description: GER004409
+      is_enabled: true
+      is_up: true
+      local_as: 65505
+      remote_as: 65505
+      remote_id: 100.96.21.14
+      uptime: 86
+
+TASK [PING_TEST_IP : CHECK / Ping Remote Test IP(s)] *******************************************************************************************
+ok: [170603638] => (item=172.31.251.254)
+ok: [170603640] => (item=172.31.251.254)
+
+TASK [PING_TEST_IP : CHECK / Print PINGTEST] ***************************************************************************************************
+ok: [170603638] => 
+  msg:
+  - success:
+      packet_loss: 0
+      probes_sent: 5
+      results:
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      rtt_avg: 46.0
+      rtt_max: 48.0
+      rtt_min: 44.0
+      rtt_stddev: 0.0
+ok: [170603640] => 
+  msg:
+  - success:
+      packet_loss: 0
+      probes_sent: 5
+      results:
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      - ip_address: 172.31.251.254
+        rtt: 0.0
+      rtt_avg: 49.0
+      rtt_max: 52.0
+      rtt_min: 48.0
+      rtt_stddev: 0.0
+
+PLAY RECAP *************************************************************************************************************************************
+170603638                  : ok=49   changed=11   unreachable=0    failed=0   
+170603640                  : ok=34   changed=3    unreachable=0    failed=0   

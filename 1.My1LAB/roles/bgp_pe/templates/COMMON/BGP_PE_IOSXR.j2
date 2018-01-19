@@ -1,8 +1,0 @@
-router bgp {{BGP.AS}}
-  neighbor {{SUBVPN.0.WAN.0.IP | ipaddr('address')}}
-    timers {{CPE_BGP.TIMERS.KEEPALIVE}} {{CPE_BGP.TIMERS.HOLDTIME}}
-    remote-as {{CPE_AS}}
-      address-family ipv4 unicast
-        route-policy PERMIT-ALL in
-        route-policy PERMIT-ALL out
-        
