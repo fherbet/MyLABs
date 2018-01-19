@@ -191,70 +191,74 @@ TASK [GET_BGP_CPE : Napalm Get Facts from Device / ssh / tacacs] ***************
 ok: [170603638]
 ok: [170603640]
 
-TASK [GET_BGP_CPE : CHECK / Print BGP details] *************************************************************************************************
-ok: [170603638] => 
+TASK [GET_BGP_CPE : Napalm Get Facts from Device / ssh / tacacs] ***********************************************************
+ok: [170603638]
+ok: [170603640]
+
+TASK [GET_BGP_CPE : CHECK / Print BGP details] *****************************************************************************
+ok: [170603638] =>
   msg:
     10.255.104.169:
       address_family:
         ipv4:
-          accepted_prefixes: 676
-          received_prefixes: 676
-          sent_prefixes: 2
+          accepted_prefixes: 681
+          received_prefixes: 681
+          sent_prefixes: 4
       description: SAR9.BER
       is_enabled: true
       is_up: true
       local_as: 65505
       remote_as: 8220
       remote_id: 10.255.99.53
-      uptime: 82
+      uptime: 338400
     100.96.21.4:
       address_family:
         ipv4:
-          accepted_prefixes: 2
-          received_prefixes: 2
-          sent_prefixes: 230
+          accepted_prefixes: 4
+          received_prefixes: 4
+          sent_prefixes: 235
       description: GER004337
       is_enabled: true
       is_up: true
       local_as: 65505
       remote_as: 65505
       remote_id: 100.96.21.4
-      uptime: 84
-ok: [170603640] => 
+      uptime: 338400
+ok: [170603640] =>
   msg:
     10.255.105.153:
       address_family:
         ipv4:
-          accepted_prefixes: 676
-          received_prefixes: 676
-          sent_prefixes: 3
+          accepted_prefixes: 682
+          received_prefixes: 682
+          sent_prefixes: 5
       description: DR1.BER
       is_enabled: true
       is_up: true
       local_as: 65505
       remote_as: 8220
-      remote_id: 212.74.90.121
-      uptime: 90
+      remote_id: 212.74.85.106
+      uptime: 334800
     100.96.21.14:
       address_family:
         ipv4:
-          accepted_prefixes: 230
-          received_prefixes: 230
-          sent_prefixes: 2
+          accepted_prefixes: 235
+          received_prefixes: 235
+          sent_prefixes: 4
       description: GER004409
       is_enabled: true
       is_up: true
       local_as: 65505
       remote_as: 65505
       remote_id: 100.96.21.14
-      uptime: 86
+      uptime: 338400
 
-TASK [PING_TEST_IP : CHECK / Ping Remote Test IP(s)] *******************************************************************************************
+TASK [PING_TEST_IP : CHECK / Ping Remote Test IP(s)] ***********************************************************************
 ok: [170603638] => (item=172.31.251.254)
 ok: [170603640] => (item=172.31.251.254)
 
-TASK [PING_TEST_IP : CHECK / Print PINGTEST] ***************************************************************************************************
-ok: [170603638] => 
+TASK [PING_TEST_IP : CHECK / Print PINGTEST] *******************************************************************************
+ok: [170603638] =>
   msg:
   - success:
       packet_loss: 0
@@ -274,7 +278,7 @@ ok: [170603638] =>
       rtt_max: 48.0
       rtt_min: 44.0
       rtt_stddev: 0.0
-ok: [170603640] => 
+ok: [170603640] =>
   msg:
   - success:
       packet_loss: 0
@@ -290,11 +294,55 @@ ok: [170603640] =>
         rtt: 0.0
       - ip_address: 172.31.251.254
         rtt: 0.0
-      rtt_avg: 49.0
-      rtt_max: 52.0
-      rtt_min: 48.0
+      rtt_avg: 45.0
+      rtt_max: 48.0
+      rtt_min: 44.0
       rtt_stddev: 0.0
 
+TASK [GET_TIMESTAMP : Get Timestamp] ***************************************************************************************
+changed: [170603640]
+changed: [170603638]
+
+TASK [VERIFY : set fact REMOTEWANIP when L2TP] *****************************************************************************
+ok: [170603640]
+
+TASK [VERIFY : set fact REMOTEWANIP when /30] ******************************************************************************
+ok: [170603638]
+
+TASK [VERIFY : check that Number of received BGP prefixes is greater than 0] ***********************************************
+ok: [170603638] => changed=false
+  failed: false
+  msg: All assertions passed
+ok: [170603640] => changed=false
+  failed: false
+  msg: All assertions passed
+
+TASK [VERIFY : set pingtestlist] *******************************************************************************************
+ok: [170603638]
+ok: [170603640]
+
+TASK [VERIFY : CHECK / Print PINGTEST packet_loss] *************************************************************************
+ok: [170603638] =>
+  msg: '0'
+ok: [170603640] =>
+  msg: '0'
+
+TASK [VERIFY : check that TEST_IP 172.31.251.254 is reachable] *************************************************************
+ok: [170603638] => changed=false
+  failed: false
+  msg: All assertions passed
+ok: [170603640] => changed=false
+  failed: false
+  msg: All assertions passed
+
+TASK [VERIFY : include_tasks] **********************************************************************************************
+included: /home/fherbet/ANSIBLE/IPVPN_FABRIC/roles/EMAIL_IPCFG/tasks/main.yml for 170603638, 170603640
+
+TASK [VERIFY : Send Email after IPCFG is completed] ************************************************************************
+ok: [170603640]
+ok: [170603638]
+
+
 PLAY RECAP *************************************************************************************************************************************
-170603638                  : ok=49   changed=11   unreachable=0    failed=0   
-170603640                  : ok=34   changed=3    unreachable=0    failed=0   
+170603638                  : ok=49   changed=11   unreachable=0    failed=0
+170603640                  : ok=34   changed=3    unreachable=0    failed=0

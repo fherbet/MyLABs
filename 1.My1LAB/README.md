@@ -1,7 +1,6 @@
 # Putting It All Together
 
-My real life environment is an MPLS network where i'd like to automate Managed Cisco IOS CPEs config/validation for numerous customers that have either standard feature (just a connected LAN to be redistributed to MPLS WAN) tor more complex ones (MultiVrf, QOS, Netflow, IPsla)
-
+My real life environment is an MPLS network where i wanted to automate Managed Cisco IOS CPEs config/validation for numerous customers that have either standard feature (just a connected LAN to be redistributed to MPLS WAN) tor more complex ones (MultiVrf, QOS, Netflow, IPsla)
 
 
 ### Roles
@@ -50,9 +49,9 @@ Customer folder contains:
 ![Customer Templates](screens/Template_AXA.png)
 
 
+### Customer Playbook
 
-
-Customer Playbook are triggered via a cron job after LB is reachable using "allinone" tag and roles are called 1 after the other
+Customer Playbook is triggered via a cron job after LB is reachable using "allinone" tag and roles are called 1 after the other
 
 ![CUST PLAY](screens/PLAY_CUST.png)
 
@@ -72,3 +71,13 @@ and finally sanity checks are performed
 
 
 If all assertions pass, then confirmation email is sent to delivery team with bunch of details like napalm facts , list of ip interfaces, etc...
+
+
+FULL LOGs [Here](screens/REAL_LOGS_ANSIBLE) !!!!
+
+
+
+
+Thanks again Ivan for the guidance! not finished yet but promising !
+
+;-)
