@@ -58,22 +58,22 @@ Customer Playbook is triggered via a cron job after LB is reachable using "allin
 ![CUST PLAY2](screens/PLAY_CUST2.png)
 
 
-My template Roles will then colect data then create configs 1 by 1 and then assemble all bits of config in a file that will be pushed to CPE using napalm_install_config module in DEPLOY role
+My 'Template' Roles will then collect data then create configs 1 by 1 and then assemble all bits of config in a file that will be pushed to CPE using napalm_install_config module in DEPLOY role
 
 Same for PE configs
 
 
 and finally sanity checks are performed
-- is BGP received prefixes > 0
-- can we ping HUB site VIP
-- is vrrp instance master on primary and backup on sec?
+- is BGP received prefixes > 0 ?
+- can we ping HUB site VIP ?
+- is there packetloss ?
 - and so on
 
 
 If all assertions pass, then confirmation email is sent to delivery team with bunch of details like napalm facts , list of ip interfaces, etc...
 
 
-FULL LOGs [Here](screens/REAL_LOGS_ANSIBLE) !!!!
+FULL LOGs [Here](screens/REAL_LOGS_ANSIBLE) a couple of resilient CPEs !!!!
 
 
 
