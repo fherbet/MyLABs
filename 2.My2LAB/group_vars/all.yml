@@ -15,14 +15,7 @@ cli:
   host: "{{ ansible_host }}"
   username: fhe
   password: fhe
-  # authorize: yes
-  # auth_pass: fhe
 
-
-# cliXR:
-#   host: "{{ ansible_host }}"
-#   username: fhe
-#   password: fhe
 
 TEST_IPS:
   - 192.168.33.1
