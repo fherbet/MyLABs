@@ -1,0 +1,28 @@
+#jinja2:trim_blocks: True, lstrip_blocks: True
+
+!!# START CONFIG SNMP #!!
+
+{% if SNMP.RO_COMMUNITY %}
+!
+snmp-server view cutdown system included
+snmp-server view cutdown interfaces included
+!
+ip access-list standard ACL-20
+  {% for prefix in SNMP.ACL_20 %}
+    {% if prefix|ipaddr('prefix') != 32 %}
+  permit {{prefix|ipaddr('network')}} {{prefix|ipaddr('hostmask')}}
+    {% else %}
+  permit host {{prefix|ipaddr('address')}}
+    {% endif %}
+  {% endfor %}
+!
+snmp-server community {{SNMP.RO_COMMUNITY}} view cutdown ro ACL-20
+!
+  {% if SNMP.TRAPS_COMMUNITY %}
+    {% for host in SNMP.TRAPS_HOSTS %}
+snmp-server host {{host|ipaddr}} {{SNMP.TRAPS_COMMUNITY}}
+    {% endfor %}
+  {% endif %}
+{% endif %}
+!
+!!# END CONFIG SNMP #!!

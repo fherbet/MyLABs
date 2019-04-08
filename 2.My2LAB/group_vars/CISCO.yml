@@ -1,0 +1,9 @@
+---
+SNMP:
+  RO_COMMUNITY: c1sc0
+  ACL_20:
+    - 10.10.10.0/24
+    - 10.20.20.20
+  TRAPS_COMMUNITY: c1sc0
+  TRAPS_HOSTS:
+    - 10.20.20.20

@@ -1,0 +1,31 @@
+---
+COUNTRY: SPAIN
+CITY: BARCELONA
+STREET: PROVIDER NODE 1
+
+BGP_AS: 65500
+
+CPE_BGP:
+    TIMERS:
+        KEEPALIVE: 10
+        HOLDTIME: 30
+
+
+cli:
+  host: "{{ ansible_host }}"
+  username: fhe
+  password: fhe
+  authorize: yes
+  auth_pass: fhe
+
+cliXR:
+  host: "{{ ansible_host }}"
+  username: fhe
+  password: fhe
+
+TEST_IPS:
+  - 192.168.33.1
+  - 192.168.33.2
+  - 192.168.33.3
+  - 192.168.33.4
+  - 192.168.33.5

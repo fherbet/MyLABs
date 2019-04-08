@@ -1,0 +1,27 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: Create target directory
+    file:
+      path: configs/{{ inventory_hostname }}/mods/
+      state: directory
+      # owner: foo
+      # group: foo
+      # mode: 0644
+    tags: createfolder
+
+  - name: Delete target directory
+    file: path=configs/{{ inventory_hostname }}/mods/ state=absent
+    tags: rmfolder
+
+
+  # - file:
+  #     path: /etc/foo.conf
+  #     state: touch
+  #     mode: "u=rw,g=r,o=r"
+
+# https://docs.ansible.com/ansible/latest/modules/file_module.html#file-module

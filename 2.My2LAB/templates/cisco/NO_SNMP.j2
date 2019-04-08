@@ -1,0 +1,19 @@
+#jinja2:trim_blocks: True, lstrip_blocks: True
+
+!!# START CONFIG SNMP #!!
+
+{% if SNMP.RO_COMMUNITY %}
+!
+no snmp-server view cutdown
+!
+no access-list 20
+!
+no snmp-server community {{SNMP.RO_COMMUNITY}} view cutdown RO 20
+!
+  {% if SNMP.TRAPS_COMMUNITY %}
+    {% for host in SNMP.TRAPS_HOSTS %}
+no snmp-server host {{host|ipaddr}} {{SNMP.TRAPS_COMMUNITY}} snmp
+    {% endfor %}
+  {% endif %}
+{% endif %}
+!!# END CONFIG SNMP #!!

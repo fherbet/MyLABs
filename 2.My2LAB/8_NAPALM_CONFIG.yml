@@ -1,0 +1,7 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:

@@ -1,0 +1,42 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: IOS DEVICE sh ip int brie
+    ios_command:
+      commands: sh ip int brie
+      provider: "{{ cli }}"
+    register: shios
+    when: dev_os == "ios"
+
+  - name: print shios
+    debug:
+      msg: "{{shios.stdout_lines}}"
+    when: dev_os == "ios"
+
+  - name: EOS DEVICE sh ip int brie
+    eos_command:
+      commands: sh ip int brie
+      provider: "{{ cli }}"
+    register: sheos
+    when: dev_os == "eos"
+
+  - name: print sheos
+    debug:
+      msg: "{{sheos.stdout_lines}}"
+    when: dev_os == "eos"
+
+  - name: IOSXR DEVICE sh ip int brie
+    iosxr_command:
+      commands: sh ip int brie
+      provider: "{{ cliXR }}"
+    register: shiosxr
+    when: dev_os == "iosxr"
+
+  - name: print shiosxr
+    debug:
+      msg: "{{shiosxr.stdout_lines}}"
+    when: dev_os == "iosxr"

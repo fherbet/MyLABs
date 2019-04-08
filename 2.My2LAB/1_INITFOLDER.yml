@@ -1,0 +1,9 @@
+---
+- name: IPVPN_FABRIC ALL IN ONE PLAYBOOK
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: Create target directory
+    file: path=configs/{{ inventory_hostname }}/mods/ state=directory

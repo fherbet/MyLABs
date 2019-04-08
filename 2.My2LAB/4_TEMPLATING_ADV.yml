@@ -1,0 +1,49 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: generate SNMP CONFIG for IOS Device
+    template:
+      src: templates/cisco/SNMP.j2
+      dest: configs/{{ inventory_hostname }}/mods/SNMP.conf
+    when: dev_os == "ios"
+    tags: snmp
+
+  - name: generate SNMP CONFIG for IOSXR Device
+    template:
+      src: templates/cisco/SNMP_IOSXR.j2
+      dest: configs/{{ inventory_hostname }}/mods/SNMP.conf
+    when: dev_os == "iosxr"
+    tags: snmp
+
+  - name: generate SNMP CONFIG for EOS Device
+    template:
+      src: templates/arista/SNMP.j2
+      dest: configs/{{ inventory_hostname }}/mods/SNMP.conf
+    when: dev_os == "eos"
+    tags: snmp
+
+################################################
+  - name: generate NO SNMP CONFIG for IOS Device
+    template:
+      src: templates/cisco/NO_SNMP.j2
+      dest: configs/{{ inventory_hostname }}/mods/NO_SNMP.conf
+    when: dev_os == "ios"
+    tags: nosnmp
+
+  - name: generate NO SNMP CONFIG for IOSXR Device
+    template:
+      src: templates/cisco/NO_SNMP_IOSXR.j2
+      dest: configs/{{ inventory_hostname }}/mods/NO_SNMP.conf
+    when: dev_os == "iosxr"
+    tags: nosnmp
+
+  - name: generate NO SNMP CONFIG for EOS Device
+    template:
+      src: templates/arista/NO_SNMP.j2
+      dest: configs/{{ inventory_hostname }}/mods/NO_SNMP.conf
+    when: dev_os == "eos"
+    tags: nosnmp

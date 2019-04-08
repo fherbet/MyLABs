@@ -1,0 +1,25 @@
+---
+- name: CLEAN CONFIG FOLDER
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Delete target directory
+    file: path=configs/{{ inventory_hostname }}/mods/ state=absent
+    tags:
+    - clearfolder
+
+  - name: ROLLBACK on boot.cfg
+    napalm_install_config:
+      hostname={{ ansible_host }}
+      username=osainstall
+      dev_os={{dev_os}}
+      password=0sainstall
+      config_file=configs/{{ inventory_hostname }}_boot.cfg
+      commit_changes=True
+      replace_config=True
+      # get_diffs=True
+      # diff_file=configs/{{ inventory_hostname }}/{{ inventory_hostname }}.diff
+    tags:
+    - bootcfg

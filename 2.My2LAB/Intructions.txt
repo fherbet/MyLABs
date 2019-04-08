@@ -1,0 +1,24 @@
+ansible all -i hosts -l MGMT,CPE1,CPE2 -m raw -a "show ip route"
+
+ansible-playbook IOS_COMMAND.yml -l MGMT,CPE1,CPE2
+ansible-playbook IOSXR_COMMAND.yml -l PE1,PE2
+ansible-playbook MULTIVENDOR_COMMAND.yml
+
+
+ansible-playbook NAPALM_CLI.yml -D
+ansible-playbook NAPALM_GET_FACTS.yml
+
+
+ansible-playbook IOS_CONFIG.yml -l CPE1 -t snmp
+
+
+ansible-playbook JINJA2_SNMP_LOCATION.yml -l CPE1 -D
+
+ansible-playbook JINJA2_SNMP_LOCATION.yml -D
+
+
+ansible-playbook NAPALM_CONFIG.yml -l CPE1 -t install_config
+
+ansible-playbook NAPALM_CONFIG.yml -t install_config
+
+ansible-playbook NAPALM_CONFIG.yml -t remove_config

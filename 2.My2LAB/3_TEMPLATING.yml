@@ -1,0 +1,17 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: create SNMP location config
+    template:
+      src: templates/SNMP_LOCATION.j2
+      dest: configs/{{ inventory_hostname }}/mods/SNMP_LOCATION.conf
+
+#############
+  # - name: create SNMP location config removal
+  #   template:
+  #     src: templates/NO_SNMP_LOCATION.j2
+  #     dest: configs/{{ inventory_hostname }}/mods/NO_SNMP_LOCATION.conf
