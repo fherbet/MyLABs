@@ -83,7 +83,7 @@
     when: dev_os == "iosxr"
 
 #####DEBUG
-  - debug: msg="{{ PING_RESULTS }}"
+  # - debug: msg="{{ PING_RESULTS }}"
   # - debug: msg="{{ PING_RESULTS|type_debug }}"
   #
   # - debug: msg="{{ PING_RESULTS[0] }}"
@@ -93,15 +93,16 @@
   # - debug: msg="{{ PING_RESULTS[0][0] }}"
   # - debug: msg="{{ PING_RESULTS[0][0]|type_debug }}"
 
-  - debug: msg="{{ item }}"
-    loop: "{{ PING_RESULTS}}"
+  # - debug: msg="{{ item }}"
+  #   loop: "{{ PING_RESULTS}}"
 
   - name: TEST ASSERT
     assert:
       that:
-        - "'0% packet loss' in 'item.value"
-        # - "'Success rate is 100 percent' not in item"
-      msg: "PACKET LOSS HERE!!!! {{item}}"
+        - "', 0% packet loss' in item or 'Success rate is 100' in item"
+      msg: "PACKET LOSS HERE!!!!
+
+       {{item}}"
     loop: "{{ PING_RESULTS|flatten }}"
 
 
