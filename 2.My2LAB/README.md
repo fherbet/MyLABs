@@ -7,3 +7,11 @@ Diagram from EVE-NG
 ## ANSIBLE COMMANDS
 
 ...
+
+
+
+
+
+
+napalm-cli
+napalm --user fhe --password fhe --vendor eos 192.168.33.4 call get_facts

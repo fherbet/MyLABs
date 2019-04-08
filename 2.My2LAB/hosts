@@ -3,18 +3,11 @@ IOS
 IOSXR
 
 [IOS]
-Switch_vIOS_L2 ansible_host=192.168.33.2 dev_os=ios
-Router_vIOS ansible_host=192.168.33.3 dev_os=ios
+Switch_vIOS_L2
+Router_vIOS
 
 [IOSXR]
-Router_iosXRv ansible_host=192.168.33.5 dev_os=iosxr
-
-
+Router_iosXRv
 
 [ARISTA]
-Router-vEOS ansible_host=192.168.33.4 dev_os=eos
-
-[all:vars]
-ansible_user=fhe
-ansible_ssh_user=fhe
-ansible_ssh_pass=fhe
+Router-vEOS

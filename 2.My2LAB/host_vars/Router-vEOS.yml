@@ -2,3 +2,5 @@
 ORDER: '222222'
 NAME_ALIAS: ROUTER-ARISTA
 LOCATION: 1st FLOOR / ROOM 1
+ansible_host: 192.168.33.4
+dev_os: eos

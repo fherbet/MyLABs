@@ -5,3 +5,42 @@
   gather_facts: false
 
   tasks:
+  - name: DEPLOY SNMP CONFIG
+    napalm_install_config:
+      hostname: "{{ ansible_host }}"
+      provider: "{{cli}}"
+      dev_os: "{{ dev_os }}"
+      config_file: "configs/{{ inventory_hostname }}/mods/SNMP.conf"
+      commit_changes: True
+      replace_config: False
+      get_diffs: True
+      diff_file: "configs/{{ inventory_hostname }}/mods/diff_file"
+      optional_args:
+          inline_transfer: True
+          secret: fhe
+    register: result
+    tags: deploysnmp
+
+  - name: DEPLOY NO_SNMP CONFIG
+    napalm_install_config:
+      hostname: "{{ ansible_host }}"
+      provider: "{{cli}}"
+      dev_os: "{{ dev_os }}"
+      config_file: "configs/{{ inventory_hostname }}/mods/NO_SNMP.conf"
+      commit_changes: True
+      replace_config: False
+      get_diffs: True
+      diff_file: "configs/{{ inventory_hostname }}/mods/diff_file"
+      optional_args:
+          inline_transfer: True
+          secret: fhe
+    register: result
+    tags: deploynosnmp
+
+
+  - name: debug result_final
+    debug:
+      msg: "{{result}}"
+    tags:
+      - deploysnmp
+      - deploynosnmp

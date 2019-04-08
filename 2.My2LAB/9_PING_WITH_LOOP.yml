@@ -1,0 +1,111 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  vars:
+    PING_RESULTS: []
+
+  tasks:
+#####IOS
+  - name: IOS DEVICE ping TEST_IPS
+    ios_command:
+      commands: ping {{item}}
+      provider: "{{ cli }}"
+      timeout: 30
+    loop: "{{TEST_IPS}}"
+    register: pingios
+    when: dev_os == "ios"
+
+  - name: print pingios
+    debug:
+      msg: "{{ item.stdout_lines | to_nice_yaml }}"
+    loop: "{{pingios.results}}"
+    when: dev_os == "ios"
+
+
+##### EOS
+  - name: EOS DEVICE ping TEST_IPS
+    eos_command:
+      commands: ping {{item}}
+      provider: "{{ cli }}"
+      timeout: 30
+    loop: "{{TEST_IPS}}"
+    register: pingeos
+    when: dev_os == "eos"
+
+  - name: print sheos
+    debug:
+      msg: "{{ item.stdout_lines | to_nice_yaml }}"
+    loop: "{{pingeos.results}}"
+    when: dev_os == "eos"
+
+
+
+#####IOSXR
+  - name: IOSXR DEVICE ping TEST_IPS
+    iosxr_command:
+      commands: ping {{item}}
+      provider: "{{ cli }}"
+      timeout: 30
+    loop: "{{TEST_IPS}}"
+    register: pingiosxr
+    when: dev_os == "iosxr"
+
+  - name: print shiosxr NEW
+    debug:
+      msg: "{{ item.stdout_lines | to_nice_yaml }}"
+    loop: "{{pingiosxr.results}}"
+    when: dev_os == "iosxr"
+
+
+
+
+#####SET FACT
+
+  - name: SET FACT PING_RESULTS for ios
+    set_fact:
+      PING_RESULTS: "{{ PING_RESULTS + [item.stdout] }}"
+    loop: "{{ pingios.results }}"
+    when: dev_os == "ios"
+
+  - name: SET FACT PING_RESULTS for eos
+    set_fact:
+      PING_RESULTS: "{{ PING_RESULTS + [item.stdout] }}"
+    loop: "{{ pingeos.results }}"
+    when: dev_os == "eos"
+
+  - name: SET FACT PING_RESULTS for ios
+    set_fact:
+      PING_RESULTS: "{{ PING_RESULTS + [item.stdout] }}"
+    loop: "{{ pingiosxr.results }}"
+    when: dev_os == "iosxr"
+
+#####DEBUG
+  - debug: msg="{{ PING_RESULTS }}"
+  # - debug: msg="{{ PING_RESULTS|type_debug }}"
+  #
+  # - debug: msg="{{ PING_RESULTS[0] }}"
+  # - debug: msg="{{ PING_RESULTS[0]|type_debug }}"
+  #
+  #
+  # - debug: msg="{{ PING_RESULTS[0][0] }}"
+  # - debug: msg="{{ PING_RESULTS[0][0]|type_debug }}"
+
+  - debug: msg="{{ item }}"
+    loop: "{{ PING_RESULTS}}"
+
+  - name: TEST ASSERT
+    assert:
+      that:
+        - "'0% packet loss' in 'item.value"
+        # - "'Success rate is 100 percent' not in item"
+      msg: "PACKET LOSS HERE!!!! {{item}}"
+    loop: "{{ PING_RESULTS|flatten }}"
+
+
+
+
+
+#############VERIFY/ASSERT

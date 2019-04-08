@@ -32,7 +32,7 @@
   - name: IOSXR DEVICE sh ip int brie
     iosxr_command:
       commands: sh ip int brie
-      provider: "{{ cliXR }}"
+      provider: "{{ cli }}"
     register: shiosxr
     when: dev_os == "iosxr"
 

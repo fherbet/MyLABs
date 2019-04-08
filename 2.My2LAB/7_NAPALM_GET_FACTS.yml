@@ -5,3 +5,38 @@
   gather_facts: false
 
   tasks:
+  - name: get facts from device
+    napalm_get_facts:
+      hostname: "{{ ansible_host }}"
+      provider: "{{cli}}"
+      dev_os: "{{ dev_os }}"
+      filter: facts,interfaces,arp_table,interfaces_ip,config
+
+
+  - name: print napalm_interfaces
+    debug:
+      msg: "
+      NAPALM FACTS:
+
+      {{napalm_facts|to_nice_yaml}}
+
+      ----------------------------------
+      NAPALM INTERFACES:
+
+      {{napalm_interfaces|to_nice_yaml}}
+
+      ----------------------------------
+      NAPALM ARP TABLE
+
+      {{napalm_arp_table|to_nice_yaml}}
+
+      ----------------------------------
+      NAPALM IP INTERFACES
+
+      {{napalm_interfaces_ip|to_nice_yaml}}
+
+      ----------------------------------
+      NAPALM CONFIG
+
+      {{napalm_config|to_nice_yaml}}
+      "

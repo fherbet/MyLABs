@@ -5,3 +5,79 @@
   gather_facts: false
 
   tasks:
+####### CISCO IOS
+  - name: IOS DEVICE SNMP CONFIG
+    ios_config:
+      src: configs/{{ inventory_hostname }}/mods/SNMP.conf
+      provider: "{{ cli }}"
+    register: shios
+    when: dev_os == "ios"
+    tags: configsnmp
+
+  - name: IOS DEVICE NO_SNMP CONFIG
+    ios_config:
+      src: configs/{{ inventory_hostname }}/mods/NO_SNMP.conf
+      provider: "{{ cli }}"
+    register: shios
+    when: dev_os == "ios"
+    tags: confignosnmp
+
+  - name: print shios
+    debug:
+      msg: "{{shios}}"
+    when: dev_os == "ios"
+    tags:
+      - configsnmp
+      - confignosnmp
+
+####### ARISTA
+  - name: EOS DEVICE SNMP CONFIG
+    eos_config:
+      src: configs/{{ inventory_hostname }}/mods/SNMP.conf
+      provider: "{{ cli }}"
+      match: none
+    register: sheos
+    when: dev_os == "eos"
+    tags: configsnmp
+
+  - name: EOS DEVICE NO_SNMP CONFIG
+    eos_config:
+      src: configs/{{ inventory_hostname }}/mods/NO_SNMP.conf
+      provider: "{{ cli }}"
+      match: none
+    register: sheos
+    when: dev_os == "eos"
+    tags: confignosnmp
+
+  - name: print sheos
+    debug:
+      msg: "{{sheos}}"
+    when: dev_os == "eos"
+    tags:
+      - configsnmp
+      - confignosnmp
+
+####### CISCO IOS-XR
+  - name: IOSXR DEVICE SNMP CONFIG
+    iosxr_config:
+      src: configs/{{ inventory_hostname }}/mods/SNMP.conf
+      provider: "{{ cli }}"
+    register: shiosxr
+    when: dev_os == "iosxr"
+    tags: configsnmp
+
+  - name: IOSXR DEVICE NO_SNMP CONFIG
+    iosxr_config:
+      src: configs/{{ inventory_hostname }}/mods/NO_SNMP.conf
+      provider: "{{ cli }}"
+    register: shiosxr
+    when: dev_os == "iosxr"
+    tags: confignosnmp
+
+  - name: print shiosxr
+    debug:
+      msg: "{{shiosxr}}"
+    when: dev_os == "iosxr"
+    tags:
+      - configsnmp
+      - confignosnmp

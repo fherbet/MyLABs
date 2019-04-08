@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -16,13 +16,6 @@
+ line default
+  exec-timeout 720 0
+ !
+-snmp-server view cutdown system included
+-snmp-server view cutdown interfaces included
+-snmp-server community c1sc0 view cutdown RO ACL-20
+-ipv4 access-list ACL-20
+- 10 permit ipv4 10.10.10.0 0.0.0.255 any
+- 20 permit ipv4 host 10.20.20.20 any
+-!
+ interface MgmtEth0/0/CPU0/0
+  shutdown
+ !

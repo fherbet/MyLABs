@@ -1,0 +1,23 @@
+@@ -6,11 +6,6 @@
+ !
+ hostname Router-vEOS
+ ip domain-name lab
+-!
+-snmp-server view cutdown interfaces included
+-snmp-server view cutdown system included
+-snmp-server community 4r1st4 view cutdown ro ACL-20
+-snmp-server host 10.30.30.30 version 2c 4r1st4
+ !
+ spanning-tree mode mstp
+ !
+@@ -31,10 +26,6 @@
+ !
+ interface Management1
+ !
+-ip access-list standard ACL-20
+-   10 permit 10.10.10.0/24
+-   20 permit host 10.30.30.30
+-!
+ ip routing
+ !
+ management api http-commands

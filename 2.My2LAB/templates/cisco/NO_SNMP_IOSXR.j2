@@ -1,24 +1,18 @@
 #jinja2:trim_blocks: True, lstrip_blocks: True
 
-!!# START CONFIG NO_SNMP #!!
+!!# START CONFIG NO SNMP #!!
+
 {% if SNMP.RO_COMMUNITY %}
 
-snmp-server view cutdown system included
-snmp-server view cutdown interfaces included
+no snmp-server view cutdown
 !
-  {% for prefix in SNMP.ACL_20 %}
-    {% if prefix|ipaddr('prefix') != 32 %}
-ipv4 access-list ACL-20 permit {{prefix|ipaddr('network')}} {{prefix|ipaddr('hostmask')}}
-    {% else %}
-ipv4 access-list ACL-20 permit {{prefix|ipaddr('address')}}
-    {% endif %}
-  {% endfor %}
-
-snmp-server community {{SNMP.RO_COMMUNITY}} view cutdown RO COLT-BILLING
-
+no ipv4 access-list ACL-20
+!
+no snmp-server community {{SNMP.RO_COMMUNITY}} view cutdown RO COLT-BILLING
+!
   {% if SNMP.TRAPS_COMMUNITY %}
     {% for host in SNMP.TRAPS_HOSTS %}
-snmp-server host {{host|ipaddr}} {{SNMP.TRAPS_COMMUNITY}} snmp
+no snmp-server host {{host|ipaddr}} {{SNMP.TRAPS_COMMUNITY}} snmp
     {% endfor %}
   {% endif %}
 {% endif %}

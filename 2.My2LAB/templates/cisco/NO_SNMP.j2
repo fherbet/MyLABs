@@ -4,7 +4,8 @@
 
 {% if SNMP.RO_COMMUNITY %}
 !
-no snmp-server view cutdown
+no snmp-server view cutdown system included
+no snmp-server view cutdown interfaces included
 !
 no access-list 20
 !

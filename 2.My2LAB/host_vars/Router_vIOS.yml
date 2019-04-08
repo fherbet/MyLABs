@@ -2,3 +2,5 @@
 ORDER: '3333333'
 NAME_ALIAS: ROUTER-CISCO-IOS
 LOCATION: 1st FLOOR / ROOM 2
+ansible_host: 192.168.33.3
+dev_os: ios

@@ -1,0 +1,20 @@
+---
+- name: TS WORKSHOP ANSIBLE EXAMPLE
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+  - import_playbook: /home/fangio/Documents/NETWORK/MyLABs/2.My2LAB/9_PING_WITH_LOOP.yml
+
+
+# 1. is there a snmp location
+#
+# with loop in config from napalm get facts
+#
+#
+#
+# ping to  192.168.33.1
+#
+# assert that no ping
