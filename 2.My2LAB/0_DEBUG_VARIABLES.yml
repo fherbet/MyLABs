@@ -5,42 +5,42 @@
   gather_facts: false
 
   tasks:
-
-  - name: DEBUG EXAMPLE with hostvars
-    debug:
-      msg: "Device {{ inventory_hostname }} is located at {{ LOCATION }}"
-
-  # - name: DEBUG EXAMPLE 2 with groupvars from ALL Group
+  #
+  # - name: DEBUG EXAMPLE with hostvars
+  #   debug:
+  #     msg: "Device {{ inventory_hostname }} is located at {{ LOCATION }}"
+  #
+  # - name: DEBUG EXAMPLE 2 with groupvars from Groups
   #   debug:
   #     msg: "Device {{ inventory_hostname }} is located at {{ LOCATION }} / {{STREET}} / {{CITY}} / {{COUNTRY}}"
   #
-  # - name: DEBUG EXAMPLE 2 with groupvars from ALL Group
+  # - name: DEBUG EXAMPLE 2 with groupvars from Groups
   #   debug:
   #     msg: "{{ inventory_hostname }} SNMP COMMUNITY is {{SNMP.RO_COMMUNITY}}"
 
 
-##################
-  # - name: Get Timestamp
-  #   command: date +%Y%m%d-%H%M%S
-  #   register: timestamp
-  #   run_once: true
-  #
-  # - debug:
-  #     msg: "timestamp = {{ timestamp }}"
-  #   run_once: true
-  #
-  # - debug:
-  #     msg: "timestamp in nice YAML format = {{ timestamp | to_nice_yaml }}"
-  #   run_once: true
-  #
-  # - debug:
-  #     msg: "timestamp type is {{ timestamp | type_debug }}"
-  #   run_once: true
-  #
-  # - debug:
-  #     msg: "timestamp.stdout {{ timestamp.stdout }}"
-  #   run_once: true
-  #
+#################
+  - name: Get Timestamp
+    command: date +%Y%m%d-%H%M%S
+    register: timestamp
+    run_once: true
+
+  - debug:
+      msg: "timestamp = {{ timestamp }}"
+    run_once: true
+
+  - debug:
+      msg: "timestamp in nice YAML format = {{ timestamp | to_nice_yaml }}"
+    run_once: true
+
+  - debug:
+      msg: "timestamp type is {{ timestamp | type_debug }}"
+    run_once: true
+
+  - debug:
+      msg: "timestamp.stdout {{ timestamp.stdout }}"
+    run_once: true
+
 
 #################
 
